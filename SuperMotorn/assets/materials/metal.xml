@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<material>
+	<shader>shader.fx</shader>
+	<diffuseMap>metal3.png</diffuseMap>
+	<ambient x="0.2" y="0.2" z="0.2" w="1.0"/>
+	<diffuse x="0.2" y="0.2" z="0.2" w="1.0"/>
+	<specular x="0.05" y="0.05" z="0.05" w="1.0"/>
+	<reflect x="0.05" y="0.05" z="0.05" w="10.0"/>
+</material>

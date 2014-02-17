@@ -11,3 +11,14 @@
 *.lai
 *.la
 *.a
+
+*.exe
+*.ilk
+*.pdb
+SuperMotorn/assets/textures/*
+SuperMotorn/assets/models/*
+SuperMotorn/assets/levels/*
+Debug/*
+SuperMotorn/Debug/*
+Dependencies/*
+SuperMotorn/Release/*

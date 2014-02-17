@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{88F7E603-42C3-4843-ACBA-9148D2734AA4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>SuperMotorn</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\..\..\..\Desktop\SuperMotorn</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\DirectXTK\Inc;$(ProjectDir)/Components;$(ProjectDir)/Resources;$(ProjectDir)/Entities;$(ProjectDir)/Types;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <EnablePREfast>false</EnablePREfast>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\DirectXTK\Inc;$(ProjectDir)/Components;$(ProjectDir)/Resources;$(ProjectDir)/Entities;$(ProjectDir)/Types;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Components\CameraComponent.cpp" />
+    <ClCompile Include="Components\Component.cpp" />
+    <ClCompile Include="D3DInitializer.cpp" />
+    <ClCompile Include="DebugRenderer.cpp" />
+    <ClCompile Include="Entities\DroneEntity.cpp" />
+    <ClCompile Include="Entities\Entity.cpp" />
+    <ClCompile Include="Components\MeshComponent.cpp" />
+    <ClCompile Include="Components\InputComponent.cpp" />
+    <ClCompile Include="Components\PropellerComponent.cpp" />
+    <ClCompile Include="Components\PointLightComponent.cpp" />
+    <ClCompile Include="Resources\Material.cpp" />
+    <ClCompile Include="Resources\LevelLoader.cpp" />
+    <ClCompile Include="Resources\ResourceLoader.cpp" />
+    <ClCompile Include="Resources\AbstractResource.cpp" />
+    <ClCompile Include="BaseCamera.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="Resources\Mesh.cpp" />
+    <ClCompile Include="Resources\tinyxml2.cpp" />
+    <ClCompile Include="Resources\Shader.cpp" />
+    <ClCompile Include="Resources\Texture.cpp" />
+    <ClCompile Include="Types\Matrix.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Types\Vector3.cpp" />
+    <ClCompile Include="Types\Vector4.cpp" />
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="Entities\World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Components\CameraComponent.h" />
+    <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="D3DInitializer.h" />
+    <ClInclude Include="Components\PointLightComponent.h" />
+    <ClInclude Include="DebugRenderer.h" />
+    <ClInclude Include="Resources\Material.h" />
+    <ClInclude Include="Resources\LevelLoader.h" />
+    <ClInclude Include="Types\Socket.h" />
+    <ClInclude Include="Types\PointLight.h" />
+    <ClInclude Include="Types\DirectionalLight.h" />
+    <ClInclude Include="Entities\DroneEntity.h" />
+    <ClInclude Include="Entities\Entity.h" />
+    <ClInclude Include="Components\MeshComponent.h" />
+    <ClInclude Include="Components\InputComponent.h" />
+    <ClInclude Include="Components\PropellerComponent.h" />
+    <ClInclude Include="Resources\ResourceLoader.h" />
+    <ClInclude Include="Resources\AbstractResource.h" />
+    <ClInclude Include="BaseCamera.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Resources\Mesh.h" />
+    <ClInclude Include="Resources\tinyxml2.h" />
+    <ClInclude Include="Resources\Shader.h" />
+    <ClInclude Include="Resources\Texture.h" />
+    <ClInclude Include="Types\TimeStamp.h" />
+    <ClInclude Include="Types\Matrix.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Types\Vector3.h" />
+    <ClInclude Include="Types\Vertex.h" />
+    <ClInclude Include="Types\Vector4.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="Entities\World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dependencies\DirectXTK\DirectXTK_Desktop_2013.vcxproj">
+      <Project>{e0b52ae7-e160-4d32-bf3f-910b785e5a8e}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
