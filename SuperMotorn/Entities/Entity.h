@@ -9,9 +9,10 @@ class BaseCamera;
 class ColliderComponent;
 class Entity : public GameObject {
     Entity*                 mParent;
-    std::vector<Entity*>    mChildren;
     std::vector<Component*> mComponents;
     Vector3                 mPreviousPosition;
+protected:
+    std::vector<Entity*>    mChildren;
 public:
     virtual void    init(Renderer* pRenderer, ResourceLoader* pResourceLoader);
     virtual void    update(float pDelta);

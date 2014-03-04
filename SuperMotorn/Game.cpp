@@ -20,7 +20,7 @@ mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRen
     mClient.setListener(this);
     mConnected = mClient.connectTo(mConfig->getServerIp(), mConfig->getServerPort());
     if ( !mConnected ) {
-        DroneEntity* drone = new DroneEntity(0);
+        DroneEntity* drone = new DroneEntity(0, 1);
         drone->setPosition(Vector3(2.0f, 2.0f, -10.0f));
         InputComponent* input = new InputComponent(&mClient);
         drone->add(input);
@@ -89,7 +89,7 @@ Game::nextCamera() {
 }
 Entity*    
 Game::onSelfConnected(int pPlayerId, int pTeam) {
-    DroneEntity* drone = new DroneEntity(pPlayerId);
+    DroneEntity* drone = new DroneEntity(pPlayerId, pTeam);
     StartPoint* start = mWorld.getStartPoint(pTeam, pPlayerId);
     if ( start ) {
         drone->setPosition(start->getWorldPosition());
@@ -105,7 +105,7 @@ Game::onSelfConnected(int pPlayerId, int pTeam) {
 }
 void    
 Game::onPlayerConnected(int pPlayerId, int pTeam, InputComponent* pInput) {
-    DroneEntity* drone = new DroneEntity(pPlayerId);
+    DroneEntity* drone = new DroneEntity(pPlayerId, pTeam);
     StartPoint* start = mWorld.getStartPoint(pTeam, pPlayerId);
     if ( start ) {
         drone->setPosition(start->getWorldPosition());

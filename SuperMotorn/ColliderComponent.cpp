@@ -3,8 +3,13 @@
 #include "DebugRenderer.h"
 
 std::vector<ColliderComponent*> ColliderComponent::mColliders;
-
-ColliderComponent::ColliderComponent(Vector3 pExtents) : mAABB(new DirectX::BoundingBox(Vector3(), pExtents)) {
+bool ColliderComponent::mLayers[4][4] = {
+    {true,  true,  true,  true},
+    {true,  false, true,  false},
+    {true,  true,  false, false},
+    {true,  true,  true,  false},
+};
+ColliderComponent::ColliderComponent(Vector3 pExtents, int pLayer) : mAABB(new DirectX::BoundingBox(Vector3(), pExtents)), mLayer(pLayer) {
     mColliders.push_back(this);
 }
 void
@@ -22,7 +27,7 @@ ColliderComponent::update(float pDelta) {
         if ( mAABB ) {
             mAABB->Center = getWorldPosition();
             for ( auto it = mColliders.begin(); it != mColliders.end(); ++it ) {
-                if ( (*it)->getAABB() != mAABB ) {
+                if ( mLayers[mLayer][(*it)->getLayer()] && (*it)->getAABB() != mAABB ) {
                     if ( mAABB->Intersects(*(*it)->getAABB()) ) {
                         mOwner->onCollision(**it);
                     }
@@ -32,6 +37,10 @@ ColliderComponent::update(float pDelta) {
     }
     DebugRenderer::instance()->renderCube(mAABB->Center, Vector3(0.0f, 0.0f, 0.0f), Vector3(mAABB->Extents));
     mUpdatedThisFrame = false;
+}
+int                     
+ColliderComponent::getLayer() const {
+    return mLayer;
 }
 DirectX::BoundingBox*   
 ColliderComponent::getAABB() {

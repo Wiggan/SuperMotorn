@@ -4,9 +4,9 @@
 #include "PointLightComponent.h"
 #include "DroneCamera.h"
 #include "DebugRenderer.h"
-#include "RocketLauncherComponent.h"
+#include "RocketLauncher.h"
 #include "ColliderComponent.h"
-DroneEntity::DroneEntity(int pPlayerId) : mPlayerId(pPlayerId) {
+DroneEntity::DroneEntity(int pPlayerId, int pTeam) : mPlayerId(pPlayerId), mTeam(pTeam) {
 }
 void
 DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
@@ -27,11 +27,11 @@ DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     CameraComponent* droneCam = new CameraComponent();
     droneCam->setPosition(Vector3(0.0f, 10.0f, -25.0f));
     droneCam->setRotation(Vector3(0.4f, 0.0f, 0.0f));
-    ColliderComponent* collider = new ColliderComponent(Vector3(3.0f, 0.8f, 4.0f));
+    ColliderComponent* collider = new ColliderComponent(Vector3(3.0f, 0.8f, 4.0f), mTeam);
     add(collider);
     add(droneCam);
-    mRocketLauncher = new RocketLauncherComponent;
-    mRocketLauncher->setPosition(Vector3(0.0f, 1.0f, 0.0f));
+    mRocketLauncher = new RocketLauncher(mTeam);
+    mRocketLauncher->setPosition(Vector3(0.0f, 3.0f, 0.0f));
     add(mRocketLauncher);
     Entity::init(pRenderer, pResourceLoader);
 }
