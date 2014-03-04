@@ -1,7 +1,10 @@
 #include "BaseCamera.h"
 #include <DirectXMath.h>
 
+std::vector<BaseCamera*>  BaseCamera::mCameras;
+
 BaseCamera::BaseCamera() {
+    mCameras.push_back(this);
 }
 Vector3 
 BaseCamera::getPosition() {
@@ -20,6 +23,5 @@ BaseCamera::getViewTransform() {
     mViewTransform = DirectX::XMMatrixLookAtLH(getPosition(), getLookAt(), getUp());
     return mViewTransform;
 }
-
 BaseCamera::~BaseCamera() {
 }

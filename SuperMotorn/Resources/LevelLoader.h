@@ -3,8 +3,10 @@
 #include "ResourceLoader.h"
 #include "PointLightComponent.h"
 #include "MeshComponent.h"
+#include "ColliderComponent.h"
 #include "CameraComponent.h"
 #include "tinyxml2.h"
+#include "StartPoint.h"
 class LevelLoader {
     ResourceLoader* mResourceLoader;
     Renderer*       mRenderer;
@@ -12,8 +14,10 @@ class LevelLoader {
     PointLightComponent*        createPointLight(const tinyxml2::XMLNode* pNode);
     DirectionalLight*           createDirectionalLight(const tinyxml2::XMLNode* pNode);
     MeshComponent*              createMeshComponent(const tinyxml2::XMLElement* pNode);
+    ColliderComponent*          createColliderComponent(const tinyxml2::XMLElement* pNode);
     CameraComponent*            createCameraComponent(const tinyxml2::XMLElement* pNode);
     Entity*                     createEntity(const tinyxml2::XMLNode* pNode);
+    StartPoint*                 createStartPoint(const tinyxml2::XMLElement* pNode);
     Vector4                     createColor(const tinyxml2::XMLElement* pElement);
     Vector3                     createVector(const tinyxml2::XMLElement* pElement);
 

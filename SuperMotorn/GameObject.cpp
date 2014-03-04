@@ -1,5 +1,5 @@
 #include "GameObject.h"
-
+#include <iostream>
 static int objectCount = 0;
 GameObject::GameObject() : mLocalScale(1.0f, 1.0f, 1.0f), mName("Object"+objectCount++) {
 
@@ -34,7 +34,8 @@ GameObject::getWorldPosition() {
 }
 Vector3          
 GameObject::getWorldRotation() {
-    return mWorldTransform.getRotation();
+    Vector3 rotation = mWorldTransform.getRotation();
+    return rotation;
 }
 Vector3          
 GameObject::getWorldScale() {

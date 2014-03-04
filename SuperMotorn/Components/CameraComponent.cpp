@@ -10,7 +10,7 @@ CameraComponent::getPosition() {
 Vector3 
 CameraComponent::getLookAt() {
     //return mOwner->getWorldPosition();
-    return getWorldDirection();
+    return getWorldDirection() + mOwner->getWorldPosition();
 }
 Vector3 
 CameraComponent::getUp() {

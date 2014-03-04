@@ -1,7 +1,9 @@
 #include "ResourceLoader.h"
 #include <iostream>
 #include "Texture.h"
-#include "Shader.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
+#include "ComputeShader.h"
 ResourceLoader::ResourceLoader() {
 }
 ResourceLoader::~ResourceLoader() {
@@ -39,8 +41,16 @@ ResourceLoader::getTexture(const std::wstring &pFileName) {
     return getResource<Texture>(pFileName);
 }
 AbstractResource*
-ResourceLoader::getShader(const std::wstring &pFileName) {
-    return getResource<Shader>(pFileName);
+ResourceLoader::getVertexShader(const std::wstring &pFileName) {
+    return getResource<VertexShader>(pFileName);
+}
+AbstractResource*
+ResourceLoader::getPixelShader(const std::wstring &pFileName) {
+    return getResource<PixelShader>(pFileName);
+}
+AbstractResource*
+ResourceLoader::getComputeShader(const std::wstring &pFileName) {
+    return getResource<ComputeShader>(pFileName);
 }
 TimeStamp 
 ResourceLoader::getFileTimeStamp(const std::wstring &pPath) {

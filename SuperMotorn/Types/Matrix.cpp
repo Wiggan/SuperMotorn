@@ -1,6 +1,7 @@
 #include "Matrix.h"
 #include "tinyxml2.h"
 #include <sstream>
+#include <iostream>
 #include <vector>
 Matrix::Matrix() {
     DirectX::XMStoreFloat4x4(&mMatrix, DirectX::XMMatrixIdentity());
@@ -36,6 +37,9 @@ Matrix::Matrix(const DirectX::XMMATRIX& pMatrix) {
 Matrix::Matrix(const DirectX::XMFLOAT4X4& pMatrix) {
     mMatrix = pMatrix;
 }
+Matrix::Matrix(const float pMatrix[4][4]) {
+    memcpy(&mMatrix.m, pMatrix, 64);
+}
 Matrix::operator DirectX::XMMATRIX() {
     return DirectX::XMLoadFloat4x4(&mMatrix);
 }
@@ -47,6 +51,11 @@ Matrix::operator DirectX::XMFLOAT4X4() {
 }
 Matrix::operator DirectX::XMFLOAT4X4() const {
     return mMatrix;
+}
+Matrix::operator char*() {
+    char buf[64];
+    memcpy(buf, &mMatrix, 64);
+    return buf;
 }
 Matrix 
 Matrix::operator*(const Matrix & pOther) {
@@ -64,12 +73,11 @@ Matrix::transposed() const {
 }
 Vector3      
 Matrix::getDirection() {
-    //return Vector3(mMatrix._13, mMatrix._23, mMatrix._33) + getPosition();
-    return Vector3(mMatrix._31, mMatrix._32, mMatrix._33) + getPosition();
+    return Vector3(mMatrix._31, mMatrix._32, mMatrix._33);
 }
 Vector3  
 Matrix::getRotation() {
-    return getDirection().dir2Rot();
+    return getDirection().normalized().dir2Rot();
 }
 Vector3  
 Matrix::getPosition() {
@@ -77,11 +85,15 @@ Matrix::getPosition() {
 }
 Vector3  
 Matrix::getScale() {
-    return Vector3(mMatrix._11, mMatrix._22, mMatrix._33);
+    return Vector3(mMatrix._11, mMatrix._22, mMatrix._33); // FEL!!!
 }     
 Vector3
 Matrix::getUp() {
-    return Vector3(0.0f, 1.0f, 0.0f) * (*this) - Vector3(0.0f, 0.0f, 0.0f) * (*this);
+    return Vector3(mMatrix._21, mMatrix._22, mMatrix._23);
+}
+void
+Matrix::reset() {
+    *this = DirectX::XMMatrixIdentity();
 }
 void        
 Matrix::rotate(const Vector3 & pAxis, float pAngle) {

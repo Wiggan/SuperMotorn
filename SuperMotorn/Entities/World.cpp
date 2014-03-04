@@ -4,9 +4,9 @@
 World::World(Renderer* pRenderer) : mRenderer(pRenderer) {
 }
 void
-World::init(ResourceLoader* pResourceLoader, std::vector<BaseCamera*>* pCameras) {
-    for ( auto it = mEntities.begin(); it != mEntities.end(); it++ ) {
-        (*it)->init(mRenderer, pResourceLoader, pCameras);
+World::init(ResourceLoader* pResourceLoader) {
+    for ( auto it = mEntities.begin(); it != mEntities.end(); ++it ) {
+        (*it)->init(mRenderer, pResourceLoader);
     } 
     //SeldomConstants sc;
     //sc.fogColor = DirectX::XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
@@ -22,10 +22,6 @@ void
 World::setDirectionalLight(DirectionalLight* pDirectionalLight) {
     mSeldomConstants.directionalLight = *pDirectionalLight;
 }
-void
-World::setSkyBox(Material* pSkyBox) {
-    mRenderer->setSkyBox(pSkyBox->getDiffuseMap());
-}
 void    
 World::setFog(float pStart, float pRange, Vector4 pColor, bool pUseSkyColor) {
     mSeldomConstants.fogStart       = pStart;
@@ -36,6 +32,42 @@ World::setFog(float pStart, float pRange, Vector4 pColor, bool pUseSkyColor) {
 void 
 World::add(Entity* pEntity) {
     mEntities.push_back(pEntity);
+}
+void 
+World::addStartPoint(StartPoint* pEntity) {
+    if ( pEntity->getTeam() == 1 ) {
+        mStartPointsTeam1.push_back(pEntity);
+    } else {
+        mStartPointsTeam2.push_back(pEntity);
+    }
+    mEntities.push_back(pEntity);
+}
+StartPoint* 
+World::getStartPoint(int pTeam, int pPlayerId) {
+    if ( pTeam == 1 ) {
+        if ( pPlayerId < mStartPointsTeam1.size() ) {
+            return mStartPointsTeam1[pPlayerId];
+        } else {
+            std::cout << "Error: not enough start points for team 1 in level!" << std::endl;
+            return NULL;
+        }
+    } else {
+        if ( pPlayerId < mStartPointsTeam2.size() ) {
+            return mStartPointsTeam2[pPlayerId];
+        } else {
+            std::cout << "Error: not enough start points for team 1 in level!" << std::endl;
+            return NULL;
+        }
+    }
+}
+void 
+World::remove(Entity* pEntity) {
+    for ( auto it = mEntities.begin(); it != mEntities.end(); ++it ) {
+        if ( pEntity == (*it) ) {
+            mEntities.erase(it);
+            break;
+        }
+    }
 }
 void 
 World::tick(float pDelta, const Timer* pTimer) {

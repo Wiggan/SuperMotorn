@@ -4,13 +4,16 @@
 #include <Component.h>
 #include "ResourceLoader.h"
 #include "Renderer.h"
+#include <DirectXCollision.h>
 class BaseCamera;
+class ColliderComponent;
 class Entity : public GameObject {
     Entity*                 mParent;
     std::vector<Entity*>    mChildren;
     std::vector<Component*> mComponents;
+    Vector3                 mPreviousPosition;
 public:
-    virtual void    init(Renderer* pRenderer, ResourceLoader* pResourceLoader, std::vector<BaseCamera*>* pCameras);
+    virtual void    init(Renderer* pRenderer, ResourceLoader* pResourceLoader);
     virtual void    update(float pDelta);
     virtual Matrix  calculateLocalTransform();
     virtual void    draw();
@@ -19,6 +22,9 @@ public:
     void            setParent(Entity* pParent);
     virtual void    keyDown(unsigned int key) {}
     virtual void    keyUp(unsigned int key) {}
+    virtual void    onCollision(const ColliderComponent& pOther) {}
+    virtual void    setPosition(const Vector3& pPosition);
+    Vector3         getPreviousPosition();
                     Entity();
     virtual         ~Entity();
 };

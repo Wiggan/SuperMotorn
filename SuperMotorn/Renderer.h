@@ -8,6 +8,13 @@
 #include "D3DInitializer.h"
 #include "PointLight.h"
 #include "Material.h"
+class MeshComponent;
+enum TextureSlots {
+    CUBE_MAP = 0,
+    DIFFUSE_MAP = 1,
+    SPECULAR_MAP = 2,
+    GLOSS_MAP = 3,
+};
 struct RenderOrder {
     RenderOrder(Mesh* pMesh, const Matrix& pWorldTransform, Material* pMaterial) : mesh(pMesh), transform(pWorldTransform), material(pMaterial) {}
     Mesh*       mesh;
@@ -25,6 +32,8 @@ private:
     Matrix                          mProjectionTransform;
     std::vector<RenderOrder>        mRenderOrders;
     std::vector<const PointLight*>  mPointLights;
+    MeshComponent*                  mSkyMesh;
+    Material*                       mSkyMaterial;
 
     void                    setObjectConstants(const PerObjectConstants& pConstants);
     void                    setFrameConstants(const PerFrameConstants& pConstants);
@@ -35,7 +44,7 @@ public:
     ID3D11Device*           getDevice();
     ID3D11DeviceContext*    getContext();
     void                    setSeldomConstants(const SeldomConstants& pConstants);
-    void                    setSkyBox(Texture* pSkyBox);
+    void                    setSkyBox(Material* pMaterial, MeshComponent* pMesh);
     void                    init();
     void                    setActiveCamera(BaseCamera* pCamera);
     void                    begin();

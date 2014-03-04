@@ -7,6 +7,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SuperMotorn", "SuperMotorn\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTK_Desktop_2013", "Dependencies\DirectXTK\DirectXTK_Desktop_2013.vcxproj", "{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{C846445D-327C-4B89-8138-E3D5A0D96588}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{E99C97DF-D47B-448C-900F-EEACF813A98E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -29,6 +33,18 @@ Global
 		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|Win32.Build.0 = Release|Win32
 		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|x64.ActiveCfg = Release|x64
 		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|x64.Build.0 = Release|x64
+		{C846445D-327C-4B89-8138-E3D5A0D96588}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C846445D-327C-4B89-8138-E3D5A0D96588}.Debug|Win32.Build.0 = Debug|Win32
+		{C846445D-327C-4B89-8138-E3D5A0D96588}.Debug|x64.ActiveCfg = Debug|Win32
+		{C846445D-327C-4B89-8138-E3D5A0D96588}.Release|Win32.ActiveCfg = Release|Win32
+		{C846445D-327C-4B89-8138-E3D5A0D96588}.Release|Win32.Build.0 = Release|Win32
+		{C846445D-327C-4B89-8138-E3D5A0D96588}.Release|x64.ActiveCfg = Release|Win32
+		{E99C97DF-D47B-448C-900F-EEACF813A98E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E99C97DF-D47B-448C-900F-EEACF813A98E}.Debug|Win32.Build.0 = Debug|Win32
+		{E99C97DF-D47B-448C-900F-EEACF813A98E}.Debug|x64.ActiveCfg = Debug|Win32
+		{E99C97DF-D47B-448C-900F-EEACF813A98E}.Release|Win32.ActiveCfg = Release|Win32
+		{E99C97DF-D47B-448C-900F-EEACF813A98E}.Release|Win32.Build.0 = Release|Win32
+		{E99C97DF-D47B-448C-900F-EEACF813A98E}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

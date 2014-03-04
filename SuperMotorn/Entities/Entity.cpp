@@ -1,18 +1,16 @@
 #include "Entity.h"
 #include "BaseCamera.h"
-
+#include "MeshComponent.h"
+#include "ColliderComponent.h"
 Entity::Entity() {
 }
 void    
-Entity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader, std::vector<BaseCamera*>* pCameras) {
+Entity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     for ( auto it = mChildren.begin(); it != mChildren.end(); ++it ) {
-        (*it)->init(pRenderer, pResourceLoader, pCameras);
+        (*it)->init(pRenderer, pResourceLoader);
     }
     for ( auto it = mComponents.begin(); it != mComponents.end(); ++it ) {
-        BaseCamera* cam = dynamic_cast<BaseCamera*>(*it);
-        if ( cam != NULL ) {
-            pCameras->push_back(cam);
-        }
+        (*it)->init(pRenderer, pResourceLoader);
     }
 }
 void
@@ -42,6 +40,7 @@ Entity::update(float pDelta) {
 }
 Matrix  
 Entity::calculateLocalTransform() {
+    mPreviousPosition = mLocalPosition;
     return Matrix(mLocalScale, mLocalRotation, mLocalPosition);
 }
 void
@@ -66,6 +65,15 @@ Entity::add(Entity* pEntity) {
 void
 Entity::setParent(Entity* pParent) {
     mParent = pParent;
+}
+void            
+Entity::setPosition(const Vector3& pPosition) {
+    mPreviousPosition = mLocalPosition;
+    GameObject::setPosition(pPosition);
+}
+Vector3         
+Entity::getPreviousPosition() {
+    return mPreviousPosition;
 }
 Entity::~Entity() {
 }

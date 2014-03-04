@@ -3,6 +3,9 @@
 
 Component::Component() {
 }
+void    
+Component::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
+}
 void
 Component::update(float pDelta) {
     if ( mDirty ) {
@@ -17,6 +20,11 @@ Component::update(float pDelta) {
         mWorldTransform = mLocalTransform*mOwner->getWorldTransform();
     }
     mUpdatedThisFrame = false;
+}
+void            
+Component::setPosition(const Vector3& pPosition) {
+    mPreviousPosition = mLocalPosition;
+    GameObject::setPosition(pPosition);
 }
 void
 Component::draw() {

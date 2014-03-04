@@ -42,10 +42,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <ExcludePath>C:\Users\wiger_000\Documents\GitHub\SuperMotorn\SuperMotorn\Release;C:\Users\wiger_000\Documents\GitHub\SuperMotorn\SuperMotorn\Debug;C:\Users\wiger_000\Documents\GitHub\SuperMotorn\SuperMotorn\assets;$(ExcludePath)</ExcludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\..\..\Desktop\SuperMotorn</OutDir>
+    <OutDir>..\..\..\..\Desktop\SuperMotorn</OutDir>
+    <IncludePath>$(SolutionPath)\Common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -55,14 +58,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\DirectXTK\Inc;$(ProjectDir)/Components;$(ProjectDir)/Resources;$(ProjectDir)/Entities;$(ProjectDir)/Types;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSdkDir)\include;$(SolutionDir)\Dependencies\DirectXTK\Inc;$(ProjectDir)/Components;$(ProjectDir)/Resources;$(ProjectDir)/Entities;$(ProjectDir)/Types;$(ProjectDir);$(SolutionDir)/Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -75,19 +78,24 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\DirectXTK\Inc;$(ProjectDir)/Components;$(ProjectDir)/Resources;$(ProjectDir)/Entities;$(ProjectDir)/Types;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\DirectXTK\Inc;$(ProjectDir)/Components;$(ProjectDir)/Resources;$(ProjectDir)/Entities;$(ProjectDir)/Types;$(ProjectDir);$(SolutionDir)\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Components\CameraComponent.cpp" />
     <ClCompile Include="Components\Component.cpp" />
+    <ClCompile Include="Resources\Configuration.cpp" />
+    <ClCompile Include="DroneCamera.cpp" />
+    <ClCompile Include="Resources\ComputeShader.cpp" />
     <ClCompile Include="D3DInitializer.cpp" />
     <ClCompile Include="DebugRenderer.cpp" />
     <ClCompile Include="Entities\DroneEntity.cpp" />
@@ -96,6 +104,7 @@
     <ClCompile Include="Components\InputComponent.cpp" />
     <ClCompile Include="Components\PropellerComponent.cpp" />
     <ClCompile Include="Components\PointLightComponent.cpp" />
+    <ClCompile Include="Resources\PixelShader.cpp" />
     <ClCompile Include="Resources\Material.cpp" />
     <ClCompile Include="Resources\LevelLoader.cpp" />
     <ClCompile Include="Resources\ResourceLoader.cpp" />
@@ -106,8 +115,11 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\tinyxml2.cpp" />
-    <ClCompile Include="Resources\Shader.cpp" />
+    <ClCompile Include="Resources\VertexShader.cpp" />
     <ClCompile Include="Resources\Texture.cpp" />
+    <ClCompile Include="Entities\StartPoint.cpp" />
+    <ClCompile Include="Components\RocketComponent.cpp" />
+    <ClCompile Include="Components\RocketLauncherComponent.cpp" />
     <ClCompile Include="Types\Matrix.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -117,13 +129,22 @@
     <ClCompile Include="Entities\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Resources\Configuration.h" />
+    <ClInclude Include="DroneCamera.h" />
+    <ClInclude Include="Resources\ComputeShader.h" />
     <ClInclude Include="D3DInitializer.h" />
     <ClInclude Include="Components\PointLightComponent.h" />
     <ClInclude Include="DebugRenderer.h" />
+    <ClInclude Include="Resources\PixelShader.h" />
     <ClInclude Include="Resources\Material.h" />
     <ClInclude Include="Resources\LevelLoader.h" />
+    <ClInclude Include="Entities\StartPoint.h" />
+    <ClInclude Include="Components\RocketComponent.h" />
+    <ClInclude Include="Components\RocketLauncherComponent.h" />
     <ClInclude Include="Types\Socket.h" />
     <ClInclude Include="Types\PointLight.h" />
     <ClInclude Include="Types\DirectionalLight.h" />
@@ -139,7 +160,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Resources\Mesh.h" />
     <ClInclude Include="Resources\tinyxml2.h" />
-    <ClInclude Include="Resources\Shader.h" />
+    <ClInclude Include="Resources\VertexShader.h" />
     <ClInclude Include="Resources\Texture.h" />
     <ClInclude Include="Types\TimeStamp.h" />
     <ClInclude Include="Types\Matrix.h" />

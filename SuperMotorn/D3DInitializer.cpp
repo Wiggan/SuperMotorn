@@ -51,7 +51,11 @@ D3DInitializer::createDeviceAndContext() {
         NULL,
         D3D_DRIVER_TYPE_HARDWARE,
         NULL,
+#ifdef _DEBUG
         D3D11_CREATE_DEVICE_DEBUG | D3D11_CREATE_DEVICE_SINGLETHREADED,
+#else
+        D3D11_CREATE_DEVICE_SINGLETHREADED,
+#endif
         0, 0,
         D3D11_SDK_VERSION,
         &mDevice,
@@ -65,12 +69,14 @@ D3DInitializer::createDeviceAndContext() {
         MessageBox(0, L"Direct3D Feature Level 11 unsupported!", 0, 0);
         return;
     }
+#ifdef _DEBUG
     mDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&mDebug));
     mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL | D3D11_RLDO_SUMMARY);
     
     mDevice->QueryInterface(__uuidof(ID3D11InfoQueue), reinterpret_cast<void**>(&mInfoQueue));
     mInfoQueue->SetBreakOnSeverity( D3D11_MESSAGE_SEVERITY_CORRUPTION, true );
     mInfoQueue->SetBreakOnSeverity( D3D11_MESSAGE_SEVERITY_ERROR, true );
+#endif
 }
 void
 D3DInitializer::createSwapChain() {
@@ -133,6 +139,46 @@ D3DInitializer::createRasterizerStates() {
         MessageBox(0, L"CreateRasterizerState failed", 0, 0);
     }
 }
+void
+D3DInitializer::createComputeTexture() {
+    D3D11_TEXTURE2D_DESC computeTextureDesc;
+    computeTextureDesc.Width = mWidth;
+    computeTextureDesc.Height = mHeight;
+    computeTextureDesc.MipLevels = 1;
+    computeTextureDesc.ArraySize = 1;
+    computeTextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    computeTextureDesc.SampleDesc.Count = 1;
+    computeTextureDesc.SampleDesc.Quality = 0;
+    computeTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+    computeTextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+    computeTextureDesc.CPUAccessFlags = 0;
+    computeTextureDesc.MiscFlags = 0;
+    ID3D11Texture2D* computeTexture = 0;
+    HRESULT hr = mDevice->CreateTexture2D(&computeTextureDesc, 0, &computeTexture);
+    if ( FAILED(hr) ) {
+        MessageBox(0, L"CreateTexture2D failed", 0, 0);
+    }
+    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+    srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    srvDesc.Texture2D.MostDetailedMip = 0;
+    srvDesc.Texture2D.MipLevels = 1;
+    ID3D11ShaderResourceView* computeTextureView = 0;
+    hr = mDevice->CreateShaderResourceView(computeTexture, &srvDesc, &computeTextureView);
+    if ( FAILED(hr) ) {
+        MessageBox(0, L"CreateShaderResourceView failed", 0, 0);
+    }
+    D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc;
+    uavDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    uavDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
+    uavDesc.Texture2D.MipSlice = 0;
+    hr = mDevice->CreateUnorderedAccessView(computeTexture, &uavDesc, &mComputeUnorderedAccessView);
+    if ( FAILED(hr) ) {
+        MessageBox(0, L"CreateUnorderedAccessView failed", 0, 0);
+    }
+    computeTextureView->Release();
+    computeTexture->Release();
+}
 void                        
 D3DInitializer::setSamplerState() {
     D3D11_SAMPLER_DESC sd;
@@ -185,6 +231,9 @@ D3DInitializer::~D3DInitializer() {
     mPerObjectBuffer->Release();
     mSeldomBuffer->Release();
     mSamplerState->Release();
+    mComputeUnorderedAccessView->Release();
+#ifdef _DEBUG
     mInfoQueue->Release();
     mDebug->Release();
+#endif
 }

@@ -1,14 +1,21 @@
 #pragma once
 #include "GameObject.h"
+#include <DirectXCollision.h>
+#include <vector>
+#include "Renderer.h"
+#include "ResourceLoader.h"
 class Entity;
 class Component : public GameObject {
 protected:
-    Entity* mOwner;
+    Entity*                             mOwner;
+    Vector3                             mPreviousPosition;
 public:
-                    Component();
-    void            setOwner(Entity* pOwner);
-    virtual void    draw();
-    virtual void    update(float pDelta);
-    virtual         ~Component();
+                            Component();
+    virtual void            init(Renderer* pRenderer, ResourceLoader* pResourceLoader);
+    void                    setOwner(Entity* pOwner);
+    virtual void            draw();
+    virtual void            update(float pDelta);
+    virtual void            setPosition(const Vector3& pPosition);
+    virtual                 ~Component();
 };
 

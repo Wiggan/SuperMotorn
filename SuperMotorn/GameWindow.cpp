@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include <winsock2.h>
 #include "Game.h"
 #include <io.h>
 #include <stdio.h>
@@ -11,6 +11,7 @@ HWND window = 0;
 Game* game = NULL;
 int width = 1200;
 int height = 900;
+bool keyStatus[91];
 Timer timer;
 bool paused = false;
 LRESULT CALLBACK 
@@ -20,33 +21,45 @@ WndProc(HWND hWnd, UINT pMessage, WPARAM wParam, LPARAM lParam) {
         //MessageBox(0, L"Why hello there", 0, 0);
         return 0;
     case WM_KEYDOWN:
-        if ( wParam == VK_ESCAPE ) {
+        switch ( wParam ) {
+        case VK_ESCAPE:
             DestroyWindow(window);
-        } else if ( wParam == VK_PAUSE ) {
+            break;
+        case VK_PAUSE:
             paused = !paused;
             if ( paused ) {
                 timer.stop();
             } else {
                 timer.start();
             }
-        } else if ( 'A' <= wParam && wParam <= 'Z' ) {
-            game->keyDown(wParam);
-        } else if ( wParam == VK_F4 ) {
+            break;
+        case VK_F4:
             game->nextCamera();
-        } else if ( wParam == VK_F8 ) {
+            break;
+        case VK_F8:
             game->toggleFps();
-        } else if ( wParam == VK_F6 ) {
+            break;
+        case VK_F6:
             game->debug();
-        } else if ( wParam == VK_F5 ) {
+            break;
+        case VK_F5:
             timer.stop();
             delete game;
             game = new Game(window, width, height, &timer);
             timer.reset();
-        } 
+            ZeroMemory(&keyStatus, sizeof(keyStatus));
+            break;
+        default:
+            if ( wParam < 91 && !keyStatus[wParam] ) {
+                game->keyDown(wParam);
+                keyStatus[wParam] = true;
+            }
+        }
         return 0;
     case WM_KEYUP:
-        if (  'A' <= wParam && wParam <= 'Z' ) {
+        if ( wParam < 91 && keyStatus[wParam] ) {
             game->keyUp(wParam);
+            keyStatus[wParam] = false;
         }
         return 0;
     case WM_DESTROY:
@@ -79,6 +92,7 @@ Run() {
     if ( game == NULL ) {
         game = new Game(window, width, height, &timer);
         timer.reset();
+        ZeroMemory(&keyStatus, sizeof(keyStatus));
     }
     while ( msg.message != WM_QUIT ) {
         if ( PeekMessage(&msg, 0, 0, 0, PM_REMOVE) ) {

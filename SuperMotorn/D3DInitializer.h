@@ -49,12 +49,15 @@ public:
     ID3D11Device*               mDevice;
     ID3D11DeviceContext*        mContext;
     ID3D11SamplerState*         mSamplerState;
+    ID3D11UnorderedAccessView*  mComputeUnorderedAccessView;
     ID3D11RenderTargetView*     mRenderTargetView;
     IDXGISwapChain*             mSwapChain;
     ID3D11DepthStencilView*     mDepthStencilView;
     ID3D11RasterizerState*      mRasterStateSolid;
+#ifdef _DEBUG
     ID3D11Debug*                mDebug;
     ID3D11InfoQueue*            mInfoQueue;
+#endif
     ID3D11Buffer*               mPerFrameBuffer;
     ID3D11Buffer*               mPerObjectBuffer;
     ID3D11Buffer*               mSeldomBuffer;
@@ -65,6 +68,7 @@ public:
     void                        setRenderTarget();
     void                        loadShader();
     void                        createRasterizerStates();
+    void                        createComputeTexture();
     void                        setSamplerState();
     void                        createConstantBuffers();
                                 D3DInitializer(HWND pWindow, int width, int height);

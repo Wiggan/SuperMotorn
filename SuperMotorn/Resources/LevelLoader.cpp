@@ -14,7 +14,9 @@ LevelLoader::loadLevel(const std::wstring& pFileName, World* pWorld) {
         XMLElement* world = level.FirstChildElement("world");
         pWorld->setDirectionalLight(createDirectionalLight(world->FirstChildElement("directionalLight")));
         if ( world->FirstChildElement("skyBox") ) {
-            pWorld->setSkyBox(mResourceLoader->getResource<Material>(Util::string2wstring(world->FirstChildElement("skyBox")->FirstChildElement("materialFile")->GetText())));
+            MeshComponent* mesh = new MeshComponent(mRenderer, mResourceLoader->getResource<Mesh>(L"debugsphere.dae"));
+            Material* material = mResourceLoader->getResource<Material>(Util::string2wstring(world->FirstChildElement("skyBox")->FirstChildElement("materialFile")->GetText()));
+            mRenderer->setSkyBox(material, mesh);
         }
         XMLElement* fog = world->FirstChildElement("fog");
         float start = 0.0f;
@@ -26,6 +28,9 @@ LevelLoader::loadLevel(const std::wstring& pFileName, World* pWorld) {
         pWorld->setFog(start, range, createColor(fog->FirstChildElement("color")), useSkyColor);
         for ( const XMLElement* child = world->FirstChildElement("entity"); child != NULL; child = child->NextSiblingElement("entity") ) {
             pWorld->add(createEntity(child));
+        }
+        for ( const XMLElement* child = world->FirstChildElement("startPoint"); child != NULL; child = child->NextSiblingElement("startPoint") ) {
+            pWorld->addStartPoint(createStartPoint(child));
         }
     } else {
         std::cout << "Error loading level!" << std::endl;
@@ -44,6 +49,18 @@ LevelLoader::createMeshComponent(const tinyxml2::XMLElement* pNode) {
     }
     return mesh;
 }
+ColliderComponent*              
+LevelLoader::createColliderComponent(const tinyxml2::XMLElement* pNode) {
+    ColliderComponent* collider = NULL;
+    if ( strcmp(pNode->Attribute("type"), "aabb") == 0 ) {
+        const tinyxml2::XMLElement* extents = pNode->FirstChildElement("extents");
+        collider = new ColliderComponent(Vector3(extents));
+    }
+    if ( collider ) {
+        fillComponent(pNode, collider);
+    }
+    return collider;
+}
 CameraComponent*              
 LevelLoader::createCameraComponent(const tinyxml2::XMLElement* pNode) {
     CameraComponent* camera = new CameraComponent();
@@ -53,6 +70,14 @@ LevelLoader::createCameraComponent(const tinyxml2::XMLElement* pNode) {
 Entity* 
 LevelLoader::createEntity(const tinyxml2::XMLNode* pNode) {
     Entity* entity = new Entity();
+    fillEntity(pNode, entity);
+    return entity;
+}
+StartPoint* 
+LevelLoader::createStartPoint(const tinyxml2::XMLElement* pNode) {
+    int team = 0;
+    pNode->QueryIntAttribute("team", &team);
+    StartPoint* entity = new StartPoint(team);
     fillEntity(pNode, entity);
     return entity;
 }
@@ -125,6 +150,8 @@ LevelLoader::fillEntity(const tinyxml2::XMLNode* pNode, Entity* pEntity) {
             pEntity->add(createCameraComponent(child));
         } else if ( strcmp("pointLight", child->Name()) == 0 ) {
             pEntity->add(createPointLight(child));
+        } else if ( strcmp("collider", child->Name()) == 0 ) {
+            pEntity->add(createColliderComponent(child));
         }
     }
 }

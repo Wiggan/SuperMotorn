@@ -3,10 +3,12 @@
 #include "Vertex.h"
 #include "Texture.h"
 #include "Material.h"
-#include "Shader.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 #include <iostream>
+#include "MeshComponent.h"
 Renderer::Renderer(HWND pWindow, int width, int height) : mD3DInit(new D3DInitializer(pWindow, width, height)), mWindow(pWindow),
-    mProjectionTransform(DirectX::XMMatrixPerspectiveFovLH(0.25f*DirectX::XM_PI, (float)width / (float)height, 1.0f, 1000.0f)),
+    mProjectionTransform(DirectX::XMMatrixPerspectiveFovLH(0.25f*DirectX::XM_PI, (float)width / (float)height, 1.0f, 10000.0f)),
     mStride(sizeof(Vertex)) {
 }
 void
@@ -22,6 +24,7 @@ Renderer::init() {
     mD3DInit->createRasterizerStates();
     mD3DInit->createConstantBuffers();
     mD3DInit->setSamplerState();
+    mD3DInit->createComputeTexture();
     mDevice = mD3DInit->mDevice;
     mContext = mD3DInit->mContext;
 }
@@ -66,6 +69,7 @@ Renderer::renderSolids() {
 }
 void 
 Renderer::end() {
+    drawMesh(Matrix(Vector3(300.0f, 300.0f, 300.0f), Vector3(0,0,0), mCamera->getPosition()), mSkyMesh->getMesh(), mSkyMaterial);
     mPointLights.clear();
     mRenderOrders.clear();
     mD3DInit->mSwapChain->Present(0, 0);
@@ -74,9 +78,9 @@ Renderer::end() {
 void
 Renderer::drawMesh(const Matrix& pTransform, Mesh* pMesh, Material* pMaterial) {
     PerObjectConstants constants;
-    mContext->VSSetShader(pMaterial->getShader()->getVertexShader(), 0, 0);
-    mContext->PSSetShader(pMaterial->getShader()->getPixelShader(), 0, 0);
-    mContext->IASetInputLayout(pMaterial->getShader()->getInputLayout());
+    mContext->VSSetShader(pMaterial->getVertexShader()->getVertexShader(), 0, 0);
+    mContext->PSSetShader(pMaterial->getPixelShader()->getPixelShader(), 0, 0);
+    mContext->IASetInputLayout(pMaterial->getVertexShader()->getInputLayout());
     constants.worldMatrix   = pTransform.transposed();
     constants.ambient       = pMaterial->getAmbient();
     constants.diffuse       = pMaterial->getDiffuse();
@@ -87,17 +91,17 @@ Renderer::drawMesh(const Matrix& pTransform, Mesh* pMesh, Material* pMaterial) {
     ID3D11Buffer* ib        = pMesh->getIndexBuffer();
     if ( pMaterial->getDiffuseMap() ) {
         ID3D11ShaderResourceView* texture   = pMaterial->getDiffuseMap()->getTextureView();
-        mContext->PSSetShaderResources(1, 1, &texture);
+        mContext->PSSetShaderResources(DIFFUSE_MAP, 1, &texture);
         constants.useDiffuseMap = true;
     }
     if ( pMaterial->getSpecularMap() ) {
         ID3D11ShaderResourceView* texture   = pMaterial->getSpecularMap()->getTextureView();
-        mContext->PSSetShaderResources(2, 1, &texture);
+        mContext->PSSetShaderResources(SPECULAR_MAP, 1, &texture);
         constants.useSpecularMap = true;
     }
     if ( pMaterial->getGlossMap() ) {
         ID3D11ShaderResourceView* texture   = pMaterial->getGlossMap()->getTextureView();
-        mContext->PSSetShaderResources(3, 1, &texture);
+        mContext->PSSetShaderResources(GLOSS_MAP, 1, &texture);
         constants.useGlossMap = true;
     }
     setObjectConstants(constants);
@@ -147,10 +151,13 @@ Renderer::setSeldomConstants(const SeldomConstants& pConstants) {
     mContext->VSSetConstantBuffers(2, 1, &mD3DInit->mSeldomBuffer);
 }
 void
-Renderer::setSkyBox(Texture* pSkyBox) {
-    if ( pSkyBox ) {
-        ID3D11ShaderResourceView* texture   = pSkyBox->getTextureView();
-        mContext->PSSetShaderResources(0, 1, &texture);
+Renderer::setSkyBox(Material* pMaterial, MeshComponent* pMesh) {
+    if ( pMaterial ) {
+        ID3D11ShaderResourceView* texture   = pMaterial->getDiffuseMap()->getTextureView();
+        mContext->PSSetShaderResources(CUBE_MAP, 1, &texture);
+        mSkyMaterial = pMaterial;
+        mSkyMesh = pMesh;
+        mSkyMesh->setScale(Vector3(300.0f, 300.0f, 300.0f));
     }
 }
 Renderer::~Renderer() {

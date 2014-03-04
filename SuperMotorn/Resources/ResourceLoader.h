@@ -3,7 +3,6 @@
 #include "AbstractResource.h"
 #include <d3d11.h>
 #include "Util.h"
-class Texture;
 class ResourceLoader : public LoadingToolsInterface {
 private:
     ID3D11Device*                                       mDevice;
@@ -36,7 +35,9 @@ public:
     virtual ID3D11Device*           getDevice();
     virtual ID3D11DeviceContext*    getContext();
     virtual AbstractResource*       getTexture(const std::wstring &pFileName);
-    virtual AbstractResource*       getShader(const std::wstring &pFileName);
+    virtual AbstractResource*       getVertexShader(const std::wstring &pFileName);
+    virtual AbstractResource*       getPixelShader(const std::wstring &pFileName);
+    virtual AbstractResource*       getComputeShader(const std::wstring &pFileName);
     void                            lookForChanges();
                                     ~ResourceLoader();
 };

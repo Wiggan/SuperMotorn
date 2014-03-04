@@ -1,6 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
-#include <Windows.h>
+#include <windows.h>
 struct PointLight {
     DirectX::XMFLOAT4 ambient;
     DirectX::XMFLOAT4 diffuse;

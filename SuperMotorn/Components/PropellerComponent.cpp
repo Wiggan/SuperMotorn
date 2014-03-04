@@ -8,9 +8,9 @@ mSpinning(false), mRotationSpeed(0.0f) {
 void
 PropellerComponent::update(float pDelta) {
     if ( mSpinning ) {
-        mRotationSpeed = min(mRotationSpeed + pDelta*15, 30.0f);
+        mRotationSpeed = min(mRotationSpeed + pDelta*25, 30.0f);
     } else {
-        mRotationSpeed = max(mRotationSpeed - pDelta*15, 0.0f);
+        mRotationSpeed = max(mRotationSpeed - pDelta*25, 0.0f);
     }
     float y = pDelta*mRotationSpeed;
     if ( y > 0.00000001f ) {
@@ -37,7 +37,7 @@ PropellerComponent::setInput(char pInpunt) {
 float          
 PropellerComponent::getForce() {
     //return (Vector3(0.0f, -1.0f, 0.0f) + mLocalPosition)*-mRotationSpeed;
-    return mRotationSpeed * 0.05f;
+    return mRotationSpeed * 0.02f;
 }
 PropellerComponent::~PropellerComponent() {
 }

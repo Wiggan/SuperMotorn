@@ -1,5 +1,5 @@
 #include "MeshComponent.h"
-
+#include "DebugRenderer.h"
 
 MeshComponent::MeshComponent(Renderer* pRenderer, Mesh* pMesh) : mRenderer(pRenderer), mMesh(pMesh) {
 }
@@ -18,6 +18,7 @@ MeshComponent::getMesh() {
 void
 MeshComponent::draw() {
     mRenderer->drawSolid(mMesh, mWorldTransform, mMaterial);
+    //DebugRenderer::instance()->renderArrow(getWorldPosition() + Vector3(0.5f, 0.0f, 0.0f), getWorldRotation());
 }
 MeshComponent::~MeshComponent() {
 }

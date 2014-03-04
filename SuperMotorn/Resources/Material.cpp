@@ -8,7 +8,7 @@ mAmbient(0.1f, 0.1f, 0.1f, 1.0f),
 mDiffuse(0.1f, 0.1f, 0.1f, 1.0f),
 mSpecular(0.1f, 0.1f, 0.1f, 1.0f),
 mReflect(0.1f, 0.1f, 0.1f, 1.0f), 
-mColor(1.0f, 0.0f, 0.0f), mShader(NULL), mDiffuseMap(NULL), mSpecularMap(NULL) {
+mColor(1.0f, 0.0f, 0.0f), mVertexShader(NULL), mPixelShader(NULL), mComputeShader(NULL), mDiffuseMap(NULL), mSpecularMap(NULL) {
 }
 void
 Material::load() {
@@ -18,14 +18,27 @@ Material::load() {
     material.LoadFile(Util::wstring2string(mFileName).c_str());
     if ( material.ErrorID() == 0 ) {
         XMLElement* materialElement = material.FirstChildElement("material");
-        XMLElement* shaderName = materialElement->FirstChildElement("shader");
-        if ( shaderName != NULL ) {
-            mShader = (Shader*)mLoadingTools->getShader(Util::string2wstring(shaderName->GetText()));
+        XMLElement* verteShaderName = materialElement->FirstChildElement("vertexShader");
+        XMLElement* pixelShaderName = materialElement->FirstChildElement("pixelShader");
+        XMLElement* computeShaderName = materialElement->FirstChildElement("computeShader");
+        if ( verteShaderName != NULL ) {
+            mVertexShader = (VertexShader*)mLoadingTools->getVertexShader(Util::string2wstring(verteShaderName->GetText()));
         } else {
-            mShader = (Shader*)mLoadingTools->getShader(L"default.fx");
+            mVertexShader = (VertexShader*)mLoadingTools->getVertexShader(L"defaultVertex.fx");
         }
-        if ( mShader == NULL ) {
+        if ( mVertexShader == NULL ) {
+            wcout << L"Error loading vertex shader in material : " << mFileName << endl;
+        }
+        if ( pixelShaderName != NULL ) {
+            mPixelShader = (PixelShader*)mLoadingTools->getPixelShader(Util::string2wstring(pixelShaderName->GetText()));
+        } else {
+            mPixelShader = (PixelShader*)mLoadingTools->getPixelShader(L"defaultPixel.fx");
+        }
+        if ( mPixelShader == NULL ) {
             wcout << L"Error loading shader in material : " << mFileName << endl;
+        }
+        if ( computeShaderName != NULL ) {
+            mComputeShader = (ComputeShader*)mLoadingTools->getComputeShader(Util::string2wstring(computeShaderName->GetText()));
         }
         XMLElement* diffuseMapName = materialElement->FirstChildElement("diffuseMap");
         if ( diffuseMapName != NULL ) {
@@ -71,9 +84,13 @@ Vector3&
 Material::getColor() {
     return mColor;
 }
-Shader*
-Material::getShader() {
-    return mShader;
+VertexShader*
+Material::getVertexShader() {
+    return mVertexShader;
+}
+PixelShader*
+Material::getPixelShader() {
+    return mPixelShader;
 }
 Texture*
 Material::getDiffuseMap() {

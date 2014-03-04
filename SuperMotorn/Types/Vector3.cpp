@@ -10,6 +10,11 @@ Vector3::Vector3(float pX, float pY, float pZ) : mVector(pX, pY, pZ){
 Vector3::Vector3(const DirectX::XMVECTOR& pVector) {
     DirectX::XMStoreFloat3(&mVector, pVector);
 }
+Vector3::Vector3(const DirectX::XMFLOAT3& pVector) {
+    mVector = pVector;
+}
+Vector3::Vector3(float pVector[3]) : mVector(pVector[0], pVector[1], pVector[2]) {
+}
 Vector3::Vector3(const tinyxml2::XMLElement* element) : mVector(0.0f, 0.0f, 0.0f)  {
     if ( element != NULL ) {
         element->QueryFloatAttribute("x", &mVector.x);

@@ -3,44 +3,36 @@
 #include "MeshComponent.h"
 #include "DroneEntity.h"
 #include "CameraComponent.h"
-#include "Shader.h"
+#include "VertexShader.h"
 #include "LevelLoader.h"
 #include "Texture.h"
 #include "DebugRenderer.h"
+#include "Configuration.h"
 Game::Game(HWND pWindow, int width, int height, Timer* pTimer) : mWindow(pWindow),
 mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRenderer) {
+    mCameras = &BaseCamera::mCameras;
     mRenderer.init();
     mResourceLoader.init(mRenderer.getDevice(), mRenderer.getContext());
 #ifdef _DEBUG
-    /*Entity* entity = new Entity();
-    MeshComponent* componentX = new MeshComponent(&mRenderer, mResourceLoader.getResource<Mesh>(L"box.dae"));
-    componentX->setMaterial(mResourceLoader.getResource<Material>(L"default.xml"));
-    componentX->setScale(Vector3(5.0f, 0.1f, 0.1f));
-    componentX->setPosition(Vector3(5.0f, 0.0f, 0.0f));
-    entity->add(componentX);
-    MeshComponent* componentY = new MeshComponent(&mRenderer, mResourceLoader.getResource<Mesh>(L"box.dae"));
-    componentY->setMaterial(mResourceLoader.getResource<Material>(L"default.xml"));
-    componentY->setScale(Vector3(0.1f, 5.0f, 0.1f));
-    componentY->setPosition(Vector3(0.0f, 5.0f, 0.0f));
-    entity->add(componentY);
-    MeshComponent* componentZ = new MeshComponent(&mRenderer, mResourceLoader.getResource<Mesh>(L"box.dae"));
-    componentZ->setMaterial(mResourceLoader.getResource<Material>(L"default.xml"));
-    componentZ->setScale(Vector3(0.1f, 0.1f, 5.0f));
-    componentZ->setPosition(Vector3(0.0f, 0.0f, 5.0f));
-    entity->add(componentZ);
-    mWorld.add(entity);*/
     DebugRenderer::init(&mRenderer, &mResourceLoader);
 #endif
-    DroneEntity*        drone = new DroneEntity();
-    drone->setPosition(Vector3(2.0f, 2.0f, -10.0f));
-    InputComponent*     input = new InputComponent();
-    drone->add(input);
-    mInputComponents.push_back(input);
-    mWorld.add(drone);
+    mConfig = mResourceLoader.getResource<Configuration>(L"config.xml");
+    mClient.setListener(this);
+    mConnected = mClient.connectTo(mConfig->getServerIp(), mConfig->getServerPort());
+    if ( !mConnected ) {
+        DroneEntity* drone = new DroneEntity(0);
+        drone->setPosition(Vector3(2.0f, 2.0f, -10.0f));
+        InputComponent* input = new InputComponent(&mClient);
+        drone->add(input);
+        mInputComponents.push_back(input);
+        mWorld.add(drone);
+    } else {
+        std::cout << "Failed connecting to server" << std::endl;
+    }
     LevelLoader ll(mResourceLoader, mRenderer);
     ll.loadLevel(L"level01.xml", &mWorld);
-    mWorld.init(&mResourceLoader, &mCameras);
-    mRenderer.setActiveCamera(mCameras[0]);
+    mWorld.init(&mResourceLoader);
+    mRenderer.setActiveCamera(mCameras->back());
 }
 void 
 Game::tick(float pDelta) {
@@ -51,8 +43,9 @@ Game::tick(float pDelta) {
     mRenderer.renderSolids();
     mRenderer.end();
     calcFps(pDelta);
-    
+    mClient.receive(2);
     float usedTime = mTimer->getTotalTimeNow() - start;
+    
     int sleep = (int)(16.6666f - usedTime*1000);
     if ( sleep > 0.0f ) {
         Sleep(sleep);
@@ -92,10 +85,49 @@ Game::debug() {
 }
 void
 Game::nextCamera() {
-    mRenderer.setActiveCamera(mCameras[++mCurrentCamera % mCameras.size()]);
+    mRenderer.setActiveCamera((*mCameras)[++mCurrentCamera % mCameras->size()]);
+}
+Entity*    
+Game::onSelfConnected(int pPlayerId, int pTeam) {
+    DroneEntity* drone = new DroneEntity(pPlayerId);
+    StartPoint* start = mWorld.getStartPoint(pTeam, pPlayerId);
+    if ( start ) {
+        drone->setPosition(start->getWorldPosition());
+    }
+    InputComponent* input = new InputComponent(&mClient);
+    drone->add(input);
+    mInputComponents.push_back(input);
+    mWorld.add(drone);
+    mDrones.push_back(drone);
+    drone->init(&mRenderer, &mResourceLoader);
+    mRenderer.setActiveCamera(mCameras->back());
+    return drone;
+}
+void    
+Game::onPlayerConnected(int pPlayerId, int pTeam, InputComponent* pInput) {
+    DroneEntity* drone = new DroneEntity(pPlayerId);
+    StartPoint* start = mWorld.getStartPoint(pTeam, pPlayerId);
+    if ( start ) {
+        drone->setPosition(start->getWorldPosition());
+    }
+    drone->add(pInput);
+    drone->init(&mRenderer, &mResourceLoader);
+    mWorld.add(drone);
+    mDrones.push_back(drone);
+}
+void    
+Game::onPlayerDisconnected(int pPlayerId) {
+    for ( auto it = mDrones.begin(); it != mDrones.end(); ++it ) {
+        if ( (*it)->getPlayerId() == pPlayerId ) {
+            mWorld.remove(*it);
+            delete (*it);
+            mDrones.erase(it);
+            return;
+        }
+    }
 }
 Game::~Game() {
-    for ( auto it = mCameras.begin(); it != mCameras.end(); it++ ) {
+    /*for ( auto it = mCameras.begin(); it != mCameras.end(); it++ ) {
         delete (*it);
-    }
+    }*/
 }

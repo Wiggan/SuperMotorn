@@ -8,7 +8,9 @@ public:
     virtual ID3D11Device*               getDevice() = 0;
     virtual ID3D11DeviceContext*        getContext() = 0;
     virtual AbstractResource*           getTexture(const std::wstring &pFileName) = 0;
-    virtual AbstractResource*           getShader(const std::wstring &pFileName) = 0;
+    virtual AbstractResource*           getVertexShader(const std::wstring &pFileName) = 0;
+    virtual AbstractResource*           getPixelShader(const std::wstring &pFileName) = 0;
+    virtual AbstractResource*           getComputeShader(const std::wstring &pFileName) = 0;
 };
 class AbstractResource {
 protected:

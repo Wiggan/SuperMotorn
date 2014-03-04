@@ -1,0 +1,12 @@
+﻿Build started 2014-02-26 23:41:32.
+     1>Project "C:\Users\wiger_000\Documents\GitHub\SuperMotorn\Server\Server.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Client.cpp Server.cpp
+         Client.cpp
+         Server.cpp
+     1>c:\users\wiger_000\documents\github\supermotorn\server\Server.h(5): fatal error C1083: Cannot open include file: 'NetworkTypes.h': No such file or directory
+     1>Done Building Project "C:\Users\wiger_000\Documents\GitHub\SuperMotorn\Server\Server.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.86

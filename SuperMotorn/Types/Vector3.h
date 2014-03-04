@@ -11,6 +11,8 @@ public:
     Vector3();
     Vector3(float pX, float pY, float pZ);
     Vector3(const DirectX::XMVECTOR& pVector);
+    Vector3(const DirectX::XMFLOAT3& pVector);
+    Vector3(float pVector[3]);
     Vector3(const tinyxml2::XMLElement* element);
     operator                DirectX::XMVECTOR();
     operator                DirectX::XMVECTOR() const;
