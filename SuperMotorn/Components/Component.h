@@ -13,6 +13,7 @@ public:
                             Component();
     virtual void            init(Renderer* pRenderer, ResourceLoader* pResourceLoader);
     void                    setOwner(Entity* pOwner);
+    Entity*                 getOwner() const;
     virtual void            draw();
     virtual void            update(float pDelta);
     virtual void            setPosition(const Vector3& pPosition);

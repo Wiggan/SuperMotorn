@@ -17,20 +17,20 @@ mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRen
     DebugRenderer::init(&mRenderer, &mResourceLoader);
 #endif
     mConfig = mResourceLoader.getResource<Configuration>(L"config.xml");
+    LevelLoader ll(mResourceLoader, mRenderer);
+    ll.loadLevel(L"level01.xml", &mWorld);
     mClient.setListener(this);
     mConnected = mClient.connectTo(mConfig->getServerIp(), mConfig->getServerPort());
     if ( !mConnected ) {
         DroneEntity* drone = new DroneEntity(0, 1);
-        drone->setPosition(Vector3(2.0f, 2.0f, -10.0f));
         InputComponent* input = new InputComponent(&mClient);
+        drone->setStartPoint(mWorld.getStartPoint(1, 0));
         drone->add(input);
         mInputComponents.push_back(input);
         mWorld.add(drone);
     } else {
         std::cout << "Failed connecting to server" << std::endl;
     }
-    LevelLoader ll(mResourceLoader, mRenderer);
-    ll.loadLevel(L"level01.xml", &mWorld);
     mWorld.init(&mResourceLoader);
     mRenderer.setActiveCamera(mCameras->back());
 }
@@ -92,7 +92,7 @@ Game::onSelfConnected(int pPlayerId, int pTeam) {
     DroneEntity* drone = new DroneEntity(pPlayerId, pTeam);
     StartPoint* start = mWorld.getStartPoint(pTeam, pPlayerId);
     if ( start ) {
-        drone->setPosition(start->getWorldPosition());
+        drone->setStartPoint(start);
     }
     InputComponent* input = new InputComponent(&mClient);
     drone->add(input);
@@ -108,7 +108,7 @@ Game::onPlayerConnected(int pPlayerId, int pTeam, InputComponent* pInput) {
     DroneEntity* drone = new DroneEntity(pPlayerId, pTeam);
     StartPoint* start = mWorld.getStartPoint(pTeam, pPlayerId);
     if ( start ) {
-        drone->setPosition(start->getWorldPosition());
+        drone->setStartPoint(start);
     }
     drone->add(pInput);
     drone->init(&mRenderer, &mResourceLoader);

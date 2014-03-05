@@ -48,7 +48,7 @@ Rocket::onCollision(const ColliderComponent& pOther) {
     if ( pOther.getLayer() == mTeam && mFlyTime < 2.0f ) {
         return;
     }
-    std::cout << "Reset by " << pOther.getLayer() << std::endl;
+    pOther.getOwner()->onEvent(ROCKET_HIT, this);
     reset();
 }
 void 

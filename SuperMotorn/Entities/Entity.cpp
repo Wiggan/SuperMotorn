@@ -6,6 +6,12 @@ Entity::Entity() {
 }
 void    
 Entity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
+    mLocalTransform = calculateLocalTransform();
+    if ( mParent ) {
+        mWorldTransform = mLocalTransform*mParent->getWorldTransform();
+    } else {
+        mWorldTransform = mLocalTransform;
+    }
     for ( auto it = mChildren.begin(); it != mChildren.end(); ++it ) {
         (*it)->init(pRenderer, pResourceLoader);
     }

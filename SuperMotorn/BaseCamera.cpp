@@ -24,4 +24,6 @@ BaseCamera::getViewTransform() {
     return mViewTransform;
 }
 BaseCamera::~BaseCamera() {
+    auto me = std::find(mCameras.begin(), mCameras.end(), this);
+    mCameras.erase(me);
 }

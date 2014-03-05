@@ -14,6 +14,9 @@ class Entity : public GameObject {
 protected:
     std::vector<Entity*>    mChildren;
 public:
+    enum Events {
+        ROCKET_HIT
+    };
     virtual void    init(Renderer* pRenderer, ResourceLoader* pResourceLoader);
     virtual void    update(float pDelta);
     virtual Matrix  calculateLocalTransform();
@@ -24,6 +27,7 @@ public:
     virtual void    keyDown(unsigned int key) {}
     virtual void    keyUp(unsigned int key) {}
     virtual void    onCollision(const ColliderComponent& pOther) {}
+    virtual void    onEvent(Events pType, void* pObject) {}
     virtual void    setPosition(const Vector3& pPosition);
     Vector3         getPreviousPosition();
                     Entity();

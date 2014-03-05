@@ -5,6 +5,7 @@
 #include "DroneCamera.h"
 #include "DebugRenderer.h"
 #include "RocketLauncher.h"
+#include "StartPoint.h"
 #include "ColliderComponent.h"
 DroneEntity::DroneEntity(int pPlayerId, int pTeam) : mPlayerId(pPlayerId), mTeam(pTeam) {
 }
@@ -33,6 +34,7 @@ DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     mRocketLauncher = new RocketLauncher(mTeam);
     mRocketLauncher->setPosition(Vector3(0.0f, 3.0f, 0.0f));
     add(mRocketLauncher);
+    setPosition(mStartPoint->getWorldPosition());
     Entity::init(pRenderer, pResourceLoader);
 }
 void    
@@ -68,6 +70,18 @@ void
 DroneEntity::onCollision(const ColliderComponent& pOther) {
     mVelocity = Vector3(mVelocity.getX(), 0.0f, mVelocity.getZ());
     setPosition(Vector3(getLocalPosition().getX(), getPreviousPosition().getY(), getLocalPosition().getZ()));
+}
+void
+DroneEntity::setStartPoint(StartPoint* pStartPoint) {
+    mStartPoint = pStartPoint;
+}
+void    
+DroneEntity::onEvent(Events pType, void* pObject) {
+    switch ( pType ) {
+    case ROCKET_HIT:
+        setPosition(mStartPoint->getWorldPosition());
+        break;
+    }
 }
 Matrix  
 DroneEntity::calculateLocalTransform() {

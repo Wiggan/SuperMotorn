@@ -47,4 +47,6 @@ ColliderComponent::getAABB() {
     return mAABB;
 }
 ColliderComponent::~ColliderComponent() {
+    auto me = std::find(mColliders.begin(), mColliders.end(), this);
+    mColliders.erase(me);
 }

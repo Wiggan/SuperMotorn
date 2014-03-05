@@ -33,5 +33,9 @@ void
 Component::setOwner(Entity* pOwner) {
     mOwner = pOwner;
 }
+Entity*                 
+Component::getOwner() const {
+    return mOwner;
+}
 Component::~Component() {
 }
