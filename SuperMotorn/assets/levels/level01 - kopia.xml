@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<world>
+	<directionalLight>
+		<direction x="-1.1" y="-1.0" z="0.1"></direction>
+		<ambient r="0.1" g="0.1" b="0.1" a="1.0"></ambient>
+		<diffuse r="0.3" g="0.3" b="0.3" a="1.0"></diffuse>
+		<specular r="0.5" g="0.5" b="0.5" a="1.0"></specular>
+	</directionalLight>
+	<skyBox>
+		<materialFile>skybox.xml</materialFile>
+	</skyBox>
+	<fog start="20" range="90" useSky="true">
+		<color r="0.2" g="0.2" b="0.2" a="1.0"></color>
+	</fog>
+	<entity>
+		<mesh>
+			<meshFile>debugarrow.dae</meshFile>
+			<materialFile>flag.xml</materialFile>
+			<position x="0" y="0" z="0"></position>
+			<rotation x="1" y="1" z="0"></rotation>
+		</mesh>
+	</entity>
+	<entity>
+		<camera>
+			<position x="0" y="20" z="-60"></position>
+			<rotation x="0.4" y="0" z="0"></rotation>
+		</camera>
+		
+	</entity>
+</world>

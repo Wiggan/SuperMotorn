@@ -150,7 +150,7 @@ D3DInitializer::createComputeTexture() {
     computeTextureDesc.SampleDesc.Count = 1;
     computeTextureDesc.SampleDesc.Quality = 0;
     computeTextureDesc.Usage = D3D11_USAGE_DEFAULT;
-    computeTextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+    computeTextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_RENDER_TARGET;
     computeTextureDesc.CPUAccessFlags = 0;
     computeTextureDesc.MiscFlags = 0;
     ID3D11Texture2D* computeTexture = 0;

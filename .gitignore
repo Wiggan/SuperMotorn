@@ -15,9 +15,11 @@
 *.exe
 *.ilk
 *.pdb
-SuperMotorn/assets/textures/*
-SuperMotorn/assets/models/*
-SuperMotorn/assets/levels/*
+#SuperMotorn/assets/textures/*
+#SuperMotorn/assets/models/*
+#SuperMotorn/assets/levels/*
 Debug/*
 SuperMotorn/Debug/*
 SuperMotorn/Release/*
+*.blend?
+*.psd

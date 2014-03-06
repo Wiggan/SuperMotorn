@@ -5,6 +5,7 @@
 #include "Material.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "ComputeShader.h"
 #include <iostream>
 #include "MeshComponent.h"
 Renderer::Renderer(HWND pWindow, int width, int height) : mD3DInit(new D3DInitializer(pWindow, width, height)), mWindow(pWindow),
@@ -80,6 +81,12 @@ Renderer::drawMesh(const Matrix& pTransform, Mesh* pMesh, Material* pMaterial) {
     PerObjectConstants constants;
     mContext->VSSetShader(pMaterial->getVertexShader()->getVertexShader(), 0, 0);
     mContext->PSSetShader(pMaterial->getPixelShader()->getPixelShader(), 0, 0);
+    if ( pMaterial->getComputeShader() ) {
+        mContext->CSSetShader(pMaterial->getComputeShader()->getComputeShader(), 0, 0);
+        mContext->CSSetShaderResources();
+        UINT hum = -1;
+        mContext->CSSetUnorderedAccessViews(0, 1, &mD3DInit->mComputeUnorderedAccessView, &hum);
+    }
     mContext->IASetInputLayout(pMaterial->getVertexShader()->getInputLayout());
     constants.worldMatrix   = pTransform.transposed();
     constants.ambient       = pMaterial->getAmbient();
