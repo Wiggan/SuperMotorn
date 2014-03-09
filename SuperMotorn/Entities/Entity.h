@@ -15,7 +15,8 @@ protected:
     std::vector<Entity*>    mChildren;
 public:
     enum Events {
-        ROCKET_HIT
+        ROCKET_HIT,
+        DRONE_LANDED,
     };
     virtual void    init(Renderer* pRenderer, ResourceLoader* pResourceLoader);
     virtual void    update(float pDelta);

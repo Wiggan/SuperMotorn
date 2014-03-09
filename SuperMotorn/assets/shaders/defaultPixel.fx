@@ -41,7 +41,7 @@ void calculatePointLight(in float3 pToCamera, in PointLight pLight, in Material 
 		pSpecular = specularFactor * pMaterial.specular * pLight.specular * att * diffuseFactor;
 	}
 }
-float4 PS(VOut input) : SV_Target {
+POut PS(VOut input) : SV_Target {
 	float3 toCamera = normalize(gCameraPosition - input.positionW);
 	float distToCamera = length(toCamera);
 	float4 texColor = float4(gColor, 1.0f);
@@ -88,7 +88,14 @@ float4 PS(VOut input) : SV_Target {
 	//color = texColor * (ambient + diffuse);
 	//color = float4( distToCamera*0.01f, distToCamera*0.01, distToCamera*0.01f, 1.0f);
 	//color = gDiffuseTexture.Sample(samplerState0, input.uv);
-	return color;
+	float4 glow = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	if(gUseGlowMap) {
+		glow = (texColor + float4(0.2f, 0.2f, 0.2f, 1.0f)) * gGlowTexture.Sample(samplerState0, input.uv);
+	}
+	POut output;
+	output.diffuse = color;
+	output.glow = glow;
+	return output;
 }
 
 

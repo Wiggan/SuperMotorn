@@ -14,8 +14,8 @@ D3DInitializer::createDepthStencil() {
     depthStencilDesc.Height             = mHeight;
     depthStencilDesc.MipLevels          = 1;
     depthStencilDesc.Format             = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    depthStencilDesc.SampleDesc.Count   = 4;
-    depthStencilDesc.SampleDesc.Quality = m4xMsaaQuality - 1;
+    depthStencilDesc.SampleDesc.Count   = 1;//4;
+    depthStencilDesc.SampleDesc.Quality = 0;// m4xMsaaQuality - 1;
     depthStencilDesc.Usage              = D3D11_USAGE_DEFAULT;
     depthStencilDesc.CPUAccessFlags     = 0;
     depthStencilDesc.MiscFlags          = 0;
@@ -89,8 +89,8 @@ D3DInitializer::createSwapChain() {
     sd.BufferDesc.Format                    = DXGI_FORMAT_R8G8B8A8_UNORM;
     sd.BufferDesc.ScanlineOrdering          = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     sd.BufferDesc.Scaling                   = DXGI_MODE_SCALING_UNSPECIFIED;
-    sd.SampleDesc.Count                     = 4;
-    sd.SampleDesc.Quality                   = m4xMsaaQuality - 1;
+    sd.SampleDesc.Count                     = 1;
+    sd.SampleDesc.Quality                   = 0;
     sd.BufferUsage                          = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     sd.BufferCount                          = 1;
     sd.OutputWindow                         = mWindow;
@@ -140,17 +140,54 @@ D3DInitializer::createRasterizerStates() {
     }
 }
 void
-D3DInitializer::createComputeTexture() {
+D3DInitializer::createOffscreenTexture(ID3D11ShaderResourceView** pSRV, ID3D11RenderTargetView** pRTV) {
+    D3D11_TEXTURE2D_DESC offscreenTextureDesc;
+    offscreenTextureDesc.Width = mWidth;
+    offscreenTextureDesc.Height = mHeight;
+    offscreenTextureDesc.MipLevels = 1;
+    offscreenTextureDesc.ArraySize = 1;
+    offscreenTextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    offscreenTextureDesc.SampleDesc.Count   = 4;
+    offscreenTextureDesc.SampleDesc.Quality = m4xMsaaQuality - 1;
+    offscreenTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+    offscreenTextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+    offscreenTextureDesc.CPUAccessFlags = 0;
+    offscreenTextureDesc.MiscFlags = 0;
+    ID3D11Texture2D* offscreenTexture = 0;
+    HRESULT hr = mDevice->CreateTexture2D(&offscreenTextureDesc, 0, &offscreenTexture);
+    if ( FAILED(hr) ) {
+        MessageBox(0, L"CreateTexture2D failed", 0, 0);
+    }
+    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+    srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMS;
+    srvDesc.Texture2D.MostDetailedMip = 0;
+    srvDesc.Texture2D.MipLevels = 1;
+    hr = mDevice->CreateShaderResourceView(offscreenTexture, &srvDesc, pSRV);
+    if ( FAILED(hr) ) {
+        MessageBox(0, L"CreateShaderResourceView failed", 0, 0);
+    }
+    D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+    rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMS;
+    hr = mDevice->CreateRenderTargetView(offscreenTexture, &rtvDesc, pRTV);
+    if ( FAILED(hr) ) {
+        MessageBox(0, L"CreateRenderTargetView failed", 0, 0);
+    }
+    offscreenTexture->Release();
+}
+void
+D3DInitializer::createComputeTexture(ID3D11ShaderResourceView** pSRV, ID3D11UnorderedAccessView** pUAV) {
     D3D11_TEXTURE2D_DESC computeTextureDesc;
     computeTextureDesc.Width = mWidth;
     computeTextureDesc.Height = mHeight;
     computeTextureDesc.MipLevels = 1;
     computeTextureDesc.ArraySize = 1;
     computeTextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    computeTextureDesc.SampleDesc.Count = 1;
-    computeTextureDesc.SampleDesc.Quality = 0;
+    computeTextureDesc.SampleDesc.Count = 1;// 4;
+    computeTextureDesc.SampleDesc.Quality = 0;// m4xMsaaQuality - 1;
     computeTextureDesc.Usage = D3D11_USAGE_DEFAULT;
-    computeTextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_RENDER_TARGET;
+    computeTextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
     computeTextureDesc.CPUAccessFlags = 0;
     computeTextureDesc.MiscFlags = 0;
     ID3D11Texture2D* computeTexture = 0;
@@ -163,8 +200,7 @@ D3DInitializer::createComputeTexture() {
     srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
     srvDesc.Texture2D.MostDetailedMip = 0;
     srvDesc.Texture2D.MipLevels = 1;
-    ID3D11ShaderResourceView* computeTextureView = 0;
-    hr = mDevice->CreateShaderResourceView(computeTexture, &srvDesc, &computeTextureView);
+    hr = mDevice->CreateShaderResourceView(computeTexture, &srvDesc, pSRV);
     if ( FAILED(hr) ) {
         MessageBox(0, L"CreateShaderResourceView failed", 0, 0);
     }
@@ -172,11 +208,73 @@ D3DInitializer::createComputeTexture() {
     uavDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     uavDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
     uavDesc.Texture2D.MipSlice = 0;
-    hr = mDevice->CreateUnorderedAccessView(computeTexture, &uavDesc, &mComputeUnorderedAccessView);
+    hr = mDevice->CreateUnorderedAccessView(computeTexture, &uavDesc, pUAV);
     if ( FAILED(hr) ) {
         MessageBox(0, L"CreateUnorderedAccessView failed", 0, 0);
     }
-    computeTextureView->Release();
+    
+    computeTexture->Release();
+}
+void
+D3DInitializer::createTexture(ID3D11ShaderResourceView** pSRV, ID3D11RenderTargetView** pRTV, ID3D11UnorderedAccessView** pUAV) {
+    UINT flags = 0;
+    if ( pSRV ) {
+        flags = flags | D3D11_BIND_SHADER_RESOURCE;
+    }
+    if ( pRTV ) {
+        flags = flags | D3D11_BIND_RENDER_TARGET;
+    }
+    if ( pUAV ) {
+        flags = flags | D3D11_BIND_UNORDERED_ACCESS;
+    }
+    D3D11_TEXTURE2D_DESC computeTextureDesc;
+    computeTextureDesc.Width = mWidth;
+    computeTextureDesc.Height = mHeight;
+    computeTextureDesc.MipLevels = 1;
+    computeTextureDesc.ArraySize = 1;
+    computeTextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    computeTextureDesc.SampleDesc.Count = 1;// 4;
+    computeTextureDesc.SampleDesc.Quality = 0;// m4xMsaaQuality - 1;
+    computeTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+    computeTextureDesc.BindFlags = flags;
+    computeTextureDesc.CPUAccessFlags = 0;
+    computeTextureDesc.MiscFlags = 0;
+    ID3D11Texture2D* computeTexture = 0;
+    HRESULT hr = mDevice->CreateTexture2D(&computeTextureDesc, 0, &computeTexture);
+    if ( FAILED(hr) ) {
+        MessageBox(0, L"CreateTexture2D failed", 0, 0);
+    }
+    if ( pSRV ) {
+        D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+        srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+        srvDesc.Texture2D.MostDetailedMip = 0;
+        srvDesc.Texture2D.MipLevels = 1;
+        hr = mDevice->CreateShaderResourceView(computeTexture, &srvDesc, pSRV);
+        if ( FAILED(hr) ) {
+            MessageBox(0, L"CreateShaderResourceView failed", 0, 0);
+        }
+    }
+    if ( pUAV ) {
+        D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc;
+        uavDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        uavDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
+        uavDesc.Texture2D.MipSlice = 0;
+        hr = mDevice->CreateUnorderedAccessView(computeTexture, &uavDesc, pUAV);
+        if ( FAILED(hr) ) {
+            MessageBox(0, L"CreateUnorderedAccessView failed", 0, 0);
+        }
+    }
+    if ( pRTV ) {
+        D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+        rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+        rtvDesc.Texture2D.MipSlice = 0;
+        hr = mDevice->CreateRenderTargetView(computeTexture, &rtvDesc, pRTV);
+        if ( FAILED(hr) ) {
+            MessageBox(0, L"CreateRenderTargetView failed", 0, 0);
+        }
+    }
     computeTexture->Release();
 }
 void                        
@@ -231,7 +329,14 @@ D3DInitializer::~D3DInitializer() {
     mPerObjectBuffer->Release();
     mSeldomBuffer->Release();
     mSamplerState->Release();
-    mComputeUnorderedAccessView->Release();
+    mComputeUAV->Release();
+    mComputeSRV->Release();
+    mBlurUAV->Release();
+    mBlurSRV->Release();
+    mOffscreenRTV->Release();
+    mOffscreenSRV->Release();
+    mGlowRTV->Release();
+    mGlowSRV->Release();
 #ifdef _DEBUG
     mInfoQueue->Release();
     mDebug->Release();

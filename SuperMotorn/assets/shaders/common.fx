@@ -29,14 +29,15 @@ cbuffer cbPerObject : register(b0) {
 	int	 	 gUseDiffuseMap;
 	int	 	 gUseSpecularMap;
 	int	 	 gUseGlossMap;
-	float2	pad1234;
+	int	 	 gUseGlowMap;
+	float	 pad1234;
 };
 cbuffer cbPerFrame : register(b1) {
 	float4x4 	gView;
 	float4x4 	gProjection;
 	float3	 	gCameraPosition;
 	int		 	gPointLightCount;
-	PointLight 	gPointLights[3];
+	PointLight 	gPointLights[10];
 };
 cbuffer cbSeldom : register(b2) {
 	DirectionalLight 	gDirectionalLight;
@@ -49,8 +50,10 @@ TextureCube gCubeMap : register( t0 );
 Texture2D gDiffuseTexture : register( t1 );
 Texture2D gSpecularTexture : register( t2 );
 Texture2D gGlossTexture : register( t3 );
-Texture2D gInput1 : register( t4 );
-Texture2D gInput2 : register( t5 );
+Texture2D gGlowTexture : register( t4 );
+Texture2D gInput1 : register( t5 );
+Texture2D gInput2 : register( t6 );
+Texture2D gComputeResult : register( t7 );
 RWTexture2D<float4> gOutput;
 SamplerState samplerState0 : register( s0 );
 struct VOut
@@ -67,4 +70,8 @@ struct VIn
 	float2 uv : TEX0;
 	float2 uv2 : TEX1;
 };
-
+struct POut
+{
+	float4 diffuse: SV_Target0;
+    float4 glow: SV_Target1;
+};

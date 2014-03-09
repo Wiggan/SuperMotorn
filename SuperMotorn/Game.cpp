@@ -11,8 +11,8 @@
 Game::Game(HWND pWindow, int width, int height, Timer* pTimer) : mWindow(pWindow),
 mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRenderer) {
     mCameras = &BaseCamera::mCameras;
-    mRenderer.init();
-    mResourceLoader.init(mRenderer.getDevice(), mRenderer.getContext());
+    mRenderer.init(&mResourceLoader);
+    //mResourceLoader.init(mRenderer.getDevice(), mRenderer.getContext());
 #ifdef _DEBUG
     DebugRenderer::init(&mRenderer, &mResourceLoader);
 #endif
@@ -24,7 +24,7 @@ mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRen
     if ( !mConnected ) {
         DroneEntity* drone = new DroneEntity(0, 1);
         InputComponent* input = new InputComponent(&mClient);
-        drone->setStartPoint(mWorld.getStartPoint(1, 0));
+        drone->setStartPoint(mWorld.getStartPoint(2, 0));
         drone->add(input);
         mInputComponents.push_back(input);
         mWorld.add(drone);
@@ -41,6 +41,8 @@ Game::tick(float pDelta) {
     mWorld.draw();
     mRenderer.begin();
     mRenderer.renderSolids();
+    //mRenderer.renderTransparents();
+    mRenderer.renderToBackBuffer();
     mRenderer.end();
     calcFps(pDelta);
     mClient.receive(2);
@@ -81,7 +83,9 @@ Game::toggleFps() {
 }
 void
 Game::debug() {
+#ifdef _DEBUG
     DebugRenderer::instance()->toggleActive();
+#endif
 }
 void
 Game::nextCamera() {

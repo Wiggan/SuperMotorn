@@ -3,7 +3,6 @@
 
 PropellerComponent::PropellerComponent(Renderer* pRenderer, Mesh* pMesh) : MeshComponent(pRenderer, pMesh), 
 mSpinning(false), mRotationSpeed(0.0f) {
-
 }
 void
 PropellerComponent::update(float pDelta) {

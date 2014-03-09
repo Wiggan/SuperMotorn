@@ -9,6 +9,7 @@ public:
                     PointLightComponent(Renderer* pRenderer, PointLight pPointLight);
     virtual void    draw();
     virtual void    update(float pDelta);
+    void            setLight(PointLight pPointLight);
                     ~PointLightComponent();
 };
 

@@ -19,6 +19,7 @@ class Material :
     Texture*        mDiffuseMap;
     Texture*        mSpecularMap;
     Texture*        mGlossMap;
+    Texture*        mGlowMap;
 public:
                     Material(const std::wstring& pFileName, TimeStamp pTimeStamp, LoadingToolsInterface* pLoadingTools);
     virtual void    load();
@@ -33,6 +34,7 @@ public:
     Texture*        getDiffuseMap();
     Texture*        getSpecularMap();
     Texture*        getGlossMap();
+    Texture*        getGlowMap();
                     ~Material();
 };
 

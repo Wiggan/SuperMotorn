@@ -5,6 +5,7 @@
 #include "MeshComponent.h"
 #include "ColliderComponent.h"
 #include "CameraComponent.h"
+#include "FlagPlatform.h"
 #include "tinyxml2.h"
 #include "StartPoint.h"
 class LevelLoader {
@@ -18,6 +19,7 @@ class LevelLoader {
     CameraComponent*            createCameraComponent(const tinyxml2::XMLElement* pNode);
     Entity*                     createEntity(const tinyxml2::XMLNode* pNode);
     StartPoint*                 createStartPoint(const tinyxml2::XMLElement* pNode);
+    FlagPlatform*               createFlagPlatform(const tinyxml2::XMLElement* pNode);
     Vector4                     createColor(const tinyxml2::XMLElement* pElement);
     Vector3                     createVector(const tinyxml2::XMLElement* pElement);
 

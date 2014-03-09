@@ -7,10 +7,13 @@
 #include "RocketLauncher.h"
 #include "StartPoint.h"
 #include "ColliderComponent.h"
-DroneEntity::DroneEntity(int pPlayerId, int pTeam) : mPlayerId(pPlayerId), mTeam(pTeam) {
+DroneEntity::DroneEntity(int pPlayerId, int pTeam) : mPlayerId(pPlayerId), mTeam(1) {
 }
 void
 DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
+    setPosition(mStartPoint->getWorldPosition());
+    //setRotation(mStartPoint->getWorldRotation());
+    mRotationMatrix.rotate(Vector3(0.0f, 1.0f, 0.0f), mStartPoint->getWorldRotation().getY()); //TODO fixa rotate?
     MeshComponent* drone = new MeshComponent(pRenderer, pResourceLoader->getResource<Mesh>(L"drone4.dae"));
     auto sockets = drone->getMesh()->getSockets();
     for ( auto it = sockets->begin(); it != sockets->end(); ++it ) {
@@ -23,7 +26,11 @@ DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
             add(propeller);
         }
     }
-    drone->setMaterial(pResourceLoader->getResource<Material>(L"drone4.xml"));
+    if ( mTeam == 1 ) {
+        drone->setMaterial(pResourceLoader->getResource<Material>(L"drone4red.xml"));
+    } else {
+        drone->setMaterial(pResourceLoader->getResource<Material>(L"drone4blue.xml"));
+    }
     add(drone);
     CameraComponent* droneCam = new CameraComponent();
     droneCam->setPosition(Vector3(0.0f, 10.0f, -25.0f));
@@ -34,7 +41,7 @@ DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     mRocketLauncher = new RocketLauncher(mTeam);
     mRocketLauncher->setPosition(Vector3(0.0f, 3.0f, 0.0f));
     add(mRocketLauncher);
-    setPosition(mStartPoint->getWorldPosition());
+    
     Entity::init(pRenderer, pResourceLoader);
 }
 void    
@@ -65,11 +72,13 @@ DroneEntity::update(float pDelta) {
     mVelocity = mVelocity*0.985f + force * pDelta;
     //std::cout << "Player " << mPlayerId << ", mVelocity: " << mVelocity.getLengthEst() << std::endl;
     Entity::update(pDelta);
+    //std::cout << "Drone" << mPlayerId << " rotation: " << getWorldRotation().toString() << std::endl;
 }
 void    
 DroneEntity::onCollision(const ColliderComponent& pOther) {
     mVelocity = Vector3(mVelocity.getX(), 0.0f, mVelocity.getZ());
     setPosition(Vector3(getLocalPosition().getX(), getPreviousPosition().getY(), getLocalPosition().getZ()));
+    pOther.getOwner()->onEvent(DRONE_LANDED, &mTeam);
 }
 void
 DroneEntity::setStartPoint(StartPoint* pStartPoint) {

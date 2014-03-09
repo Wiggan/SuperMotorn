@@ -29,6 +29,9 @@ LevelLoader::loadLevel(const std::wstring& pFileName, World* pWorld) {
         for ( const XMLElement* child = world->FirstChildElement("entity"); child != NULL; child = child->NextSiblingElement("entity") ) {
             pWorld->add(createEntity(child));
         }
+        for ( const XMLElement* child = world->FirstChildElement("flagPlatform"); child != NULL; child = child->NextSiblingElement("flagPlatform") ) {
+            pWorld->add(createFlagPlatform(child));
+        }
         for ( const XMLElement* child = world->FirstChildElement("startPoint"); child != NULL; child = child->NextSiblingElement("startPoint") ) {
             pWorld->addStartPoint(createStartPoint(child));
         }
@@ -70,6 +73,14 @@ LevelLoader::createCameraComponent(const tinyxml2::XMLElement* pNode) {
 Entity* 
 LevelLoader::createEntity(const tinyxml2::XMLNode* pNode) {
     Entity* entity = new Entity();
+    fillEntity(pNode, entity);
+    return entity;
+}
+FlagPlatform* 
+LevelLoader::createFlagPlatform(const tinyxml2::XMLElement* pNode) {
+    int team = 0;
+    pNode->QueryIntAttribute("team", &team);
+    FlagPlatform* entity = new FlagPlatform(team);
     fillEntity(pNode, entity);
     return entity;
 }

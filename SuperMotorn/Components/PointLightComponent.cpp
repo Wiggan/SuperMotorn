@@ -12,5 +12,9 @@ PointLightComponent::draw() {
     mRenderer->drawPointLight(&mPointLight);
     DebugRenderer::instance()->renderSphere(getWorldPosition());
 }
+void            
+PointLightComponent::setLight(PointLight pPointLight) {
+    mPointLight = pPointLight;
+}
 PointLightComponent::~PointLightComponent() {
 }

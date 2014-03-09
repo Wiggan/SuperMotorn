@@ -32,7 +32,7 @@ ComputeShader::load() {
         exit(-1);
     }
     ID3DBlob *cs, *error = NULL;
-    HRESULT hr = D3DCompile(shader, size, Util::wstring2string( mFileName ).c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "CS", "cs_5_0", 0, 0, &cs, &error);
+    HRESULT hr = D3DCompile(shader, size, Util::wstring2string( mFileName ).c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "CSMain", "cs_5_0", 0, 0, &cs, &error);
     if ( FAILED(hr) ) {
         char* err = (char*)malloc(error->GetBufferSize());
         memcpy(err, error->GetBufferPointer(), error->GetBufferSize());
@@ -55,8 +55,10 @@ ComputeShader::load() {
     }
     cs->Release();
 }
-
-
+ID3D11ComputeShader*    
+ComputeShader::getComputeShader() {
+    return mComputeShader;
+}
 ComputeShader::~ComputeShader() {
     mComputeShader->Release();
 }

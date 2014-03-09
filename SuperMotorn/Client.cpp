@@ -100,8 +100,9 @@ Client::handleCommand(int pStart) {
         }
         case FULL_UPDATE: {
             FullUpdateMessage update(&mBuffer[pStart]);
+            std::cout << "Received FULL_UPDATE, rotation: " << Vector3(update.message.rotation).toString() << std::endl;
             mRemoteParts[update.message.playerId]->input->lerpTo(update.message.position, update.message.rotation);
-            std::cout << "Received FULL_UPDATE: " << update.message.toString() ;
+            std::cout << "After update, rotation: " << mRemoteParts[update.message.playerId]->input->getOwner()->getWorldRotation().toString() << std::endl;
             return pStart + sizeof(FullUpdateMessage);
         }
         case CONNECTED: {
@@ -163,7 +164,7 @@ Client::sendFullUpdate() {
     update.message.rotation[1] = mLocalDrone->getLocalRotation().getY();
     update.message.rotation[2] = mLocalDrone->getLocalRotation().getZ();
     sendMsg(update.buffer, sizeof(FullUpdateMessage));
-    std::cout << "Sending FULL_UPDATE: " << update.message.toString() ;
+    std::cout << "Sending FULL_UPDATE, rotation: " << mLocalDrone->getLocalRotation().toString() << std::endl;
     //update.message.transform = ((DirectX::XMFLOAT4X4) mLocalDrone->getWorldTransform()).m;
 }
 void

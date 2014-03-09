@@ -90,11 +90,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
-    <ClCompile Include="ColliderComponent.cpp" />
+    <ClCompile Include="Components\ColliderComponent.cpp" />
     <ClCompile Include="Components\CameraComponent.cpp" />
     <ClCompile Include="Components\Component.cpp" />
+    <ClCompile Include="Entities\FlagPlatform.cpp" />
     <ClCompile Include="Resources\Configuration.cpp" />
-    <ClCompile Include="DroneCamera.cpp" />
+    <ClCompile Include="Components\DroneCamera.cpp" />
     <ClCompile Include="Resources\ComputeShader.cpp" />
     <ClCompile Include="D3DInitializer.cpp" />
     <ClCompile Include="DebugRenderer.cpp" />
@@ -130,11 +131,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
-    <ClInclude Include="ColliderComponent.h" />
+    <ClInclude Include="Components\ColliderComponent.h" />
     <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Entities\FlagPlatform.h" />
     <ClInclude Include="Resources\Configuration.h" />
-    <ClInclude Include="DroneCamera.h" />
+    <ClInclude Include="Components\DroneCamera.h" />
     <ClInclude Include="Resources\ComputeShader.h" />
     <ClInclude Include="D3DInitializer.h" />
     <ClInclude Include="Components\PointLightComponent.h" />

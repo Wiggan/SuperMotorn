@@ -57,6 +57,10 @@ Material::load() {
         if ( glossMapName != NULL ) {
             mGlossMap = (Texture*)mLoadingTools->getTexture(Util::string2wstring(glossMapName->GetText()));
         }
+        XMLElement* glowMapName = materialElement->FirstChildElement("glowMap");
+        if ( glowMapName != NULL ) {
+            mGlowMap = (Texture*)mLoadingTools->getTexture(Util::string2wstring(glowMapName->GetText()));
+        }
         mAmbient = Vector4(materialElement->FirstChildElement("ambient"));
         mDiffuse = Vector4(materialElement->FirstChildElement("diffuse"));
         mSpecular = Vector4(materialElement->FirstChildElement("specular"));
@@ -103,6 +107,10 @@ Material::getSpecularMap() {
 Texture*
 Material::getGlossMap() {
     return mGlossMap;
+}
+Texture*
+Material::getGlowMap() {
+    return mGlowMap;
 }
 Material::~Material() {
 }

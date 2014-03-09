@@ -17,7 +17,8 @@ struct PerObjectConstants {
     int                 useDiffuseMap;
     int                 useSpecularMap;
     int                 useGlossMap;
-    DirectX::XMFLOAT2   pad;
+    int                 useGlowMap;
+    float               pad;
 };
 struct PerFrameConstants {
     PerFrameConstants() {
@@ -27,7 +28,7 @@ struct PerFrameConstants {
     DirectX::XMFLOAT4X4 projectionMatrix;
     DirectX::XMFLOAT3   cameraPosition;
     int                 pointLightCount;
-    PointLight          pointLights[3];
+    PointLight          pointLights[10];
 };
 struct SeldomConstants {
     SeldomConstants() {
@@ -49,7 +50,15 @@ public:
     ID3D11Device*               mDevice;
     ID3D11DeviceContext*        mContext;
     ID3D11SamplerState*         mSamplerState;
-    ID3D11UnorderedAccessView*  mComputeUnorderedAccessView;
+    ID3D11UnorderedAccessView*  mComputeUAV;
+    ID3D11ShaderResourceView*   mComputeSRV;
+    ID3D11UnorderedAccessView*  mBlurUAV;
+    ID3D11ShaderResourceView*   mBlurSRV;
+    ID3D11RenderTargetView*     mOffscreenRTV;
+    ID3D11ShaderResourceView*   mOffscreenSRV;
+    ID3D11RenderTargetView*     mGlowRTV;
+    ID3D11ShaderResourceView*   mGlowSRV;
+    ID3D11UnorderedAccessView*  mGlowUAV;
     ID3D11RenderTargetView*     mRenderTargetView;
     IDXGISwapChain*             mSwapChain;
     ID3D11DepthStencilView*     mDepthStencilView;
@@ -68,7 +77,9 @@ public:
     void                        setRenderTarget();
     void                        loadShader();
     void                        createRasterizerStates();
-    void                        createComputeTexture();
+    void                        createComputeTexture(ID3D11ShaderResourceView** pSRV, ID3D11UnorderedAccessView** pUAV);
+    void                        createOffscreenTexture(ID3D11ShaderResourceView** pSRV, ID3D11RenderTargetView** pRTV);
+    void                        createTexture(ID3D11ShaderResourceView** pSRV, ID3D11RenderTargetView** pRTV, ID3D11UnorderedAccessView** pUAV);
     void                        setSamplerState();
     void                        createConstantBuffers();
                                 D3DInitializer(HWND pWindow, int width, int height);
