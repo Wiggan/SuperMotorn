@@ -7,7 +7,7 @@ public:
     InputComponent(Client* pClient);
     void    keyDown(unsigned int key);
     void    keyUp(unsigned int key);
-    void    lerpTo(Vector3 pPosition, Vector3 pRotation);
+    void    lerpTo(Vector3 pPosition, Vector3 pRotation, Matrix pRotationMatrix);
     virtual void update(float pDelta) {}
     ~InputComponent();
 };

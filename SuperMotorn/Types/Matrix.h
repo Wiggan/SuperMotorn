@@ -30,6 +30,7 @@ public:
     Vector3     getUp();
     void        rotate(const Vector3 & pAxis, float pAngle);
     void        reset();
+    std::string toString() const;
                 ~Matrix();
 };
 

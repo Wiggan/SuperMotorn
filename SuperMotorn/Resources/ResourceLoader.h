@@ -16,9 +16,14 @@ public:
     template<typename T>
     T* getResource(const std::wstring &pFileName) {
         using namespace std;
+        wcout << L"    Loading resource " << pFileName << endl;
         auto it = mResources.find(pFileName);
         if ( it == mResources.end() ) {
+#ifdef _DEBUG
             wstring completePath = Util::searchDirectory(L"..", pFileName);
+#else
+            wstring completePath = Util::searchDirectory(L".", pFileName);
+#endif
             if ( !completePath.empty() ) {
                 T* resource = new T(completePath, getFileTimeStamp(completePath), this);
                 resource->load();

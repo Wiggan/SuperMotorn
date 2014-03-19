@@ -89,6 +89,7 @@ CreateConsole() {
 int 
 Run() {
     MSG msg = { 0 };
+    std::cout << "Starting..." << std::endl;
     if ( game == NULL ) {
         game = new Game(window, width, height, &timer);
         timer.reset();

@@ -67,7 +67,7 @@ struct FullUpdate {
     unsigned char command;
     unsigned char playerId;
     float timestamp;
-    //float transform[4][4];
+    float rotationMatrix[4][4];
     float position[3];
     float rotation[3];
     std::string toString() {

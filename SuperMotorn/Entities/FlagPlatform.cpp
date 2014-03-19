@@ -14,12 +14,12 @@ FlagPlatform::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
 
     mRedLight.diffuse = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
     mRedLight.specular = Vector4(1.0f, 0.0f, 0.0f, 8.0f);
-    mRedLight.attenuation = Vector3(1.8f, 0.1f, 0.0f);
-    mRedLight.range = 30.0f;
+    mRedLight.attenuation = Vector3(1.8f, 0.25f, 0.0f);
+    mRedLight.range = 100.0f;
     mBlueLight.diffuse = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
     mBlueLight.specular = Vector4(0.0f, 0.0f, 1.0f, 8.0f);
-    mBlueLight.attenuation = Vector3(1.8f, 0.1f, 0.0f);
-    mBlueLight.range = 30.0f;
+    mBlueLight.attenuation = Vector3(1.8f, 0.25f, 0.0f);
+    mBlueLight.range = 100.0f;
     mRedMaterial = pResourceLoader->getResource<Material>(L"flagred.xml");
     mBlueMaterial = pResourceLoader->getResource<Material>(L"flagblue.xml");
     if ( mCurrentTeam == 1 ) {

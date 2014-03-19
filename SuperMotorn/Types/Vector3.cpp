@@ -98,7 +98,7 @@ Vector3::dir2Rot() {
 std::string
 Vector3::toString() const {
     std::ostringstream buf;
-    buf << "x:" << mVector.x << "   y:" << mVector.y << "    z:" << mVector.z << std::endl;
+    buf << "x:" << mVector.x << " y:" << mVector.y << " z:" << mVector.z;
     return buf.str();
 }
 Vector3::~Vector3() {

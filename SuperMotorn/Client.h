@@ -6,7 +6,7 @@
 #include "InputComponent.h"
 #include <vector>
 #include <unordered_map>
-#include "Entity.h"
+#include "DroneEntity.h"
 #include "Matrix.h"
 #include "NetworkTypes.h"
 class NetworkListener {
@@ -27,9 +27,7 @@ class Client {
     NetworkListener*                        mListener;
     SOCKET                                  mConnectSocket;
     bool                                    mConnected = false;
-    int                                     mPlayerId;
-    int                                     mTeam;
-    Entity*                                 mLocalDrone;
+    DroneEntity*                            mLocalDrone;
     Timer                                   mVirtualTimer;
     Timer                                   mSendTransformTimer;
     fd_set                                  mReadFs;
@@ -37,13 +35,13 @@ class Client {
     std::unordered_map<int, RemotePart*>    mRemoteParts;
 
     int                         handleCommand(int start);
-    void                        sendFullUpdate();
 public:
     Client();
     void setListener(NetworkListener* pListener);
     bool connectTo(const std::string& pIp, const std::string& pPort);
     void sendMsg(const char* pMsg, int pLength);
     void receive(int pTimeout);
+    void sendFullUpdate();
     void keyUp(char pKey);
     void keyDown(char pKey);
     ~Client();

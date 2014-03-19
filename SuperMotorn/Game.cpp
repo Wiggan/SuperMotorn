@@ -10,41 +10,50 @@
 #include "Configuration.h"
 Game::Game(HWND pWindow, int width, int height, Timer* pTimer) : mWindow(pWindow),
 mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRenderer) {
+    using namespace std;
+    cout << "Starting game" << endl;
     mCameras = &BaseCamera::mCameras;
+    cout << "Initializing renderer" << endl;
     mRenderer.init(&mResourceLoader);
     //mResourceLoader.init(mRenderer.getDevice(), mRenderer.getContext());
 #ifdef _DEBUG
     DebugRenderer::init(&mRenderer, &mResourceLoader);
 #endif
+    cout << "Loading config" << endl;
     mConfig = mResourceLoader.getResource<Configuration>(L"config.xml");
+    cout << "Creating level loader" << endl;
     LevelLoader ll(mResourceLoader, mRenderer);
     ll.loadLevel(L"level01.xml", &mWorld);
+    cout << "Creating network client" << endl;
     mClient.setListener(this);
     mConnected = mClient.connectTo(mConfig->getServerIp(), mConfig->getServerPort());
     if ( !mConnected ) {
+        cout << "Failed connecting to server, creating local drone." << endl;
         DroneEntity* drone = new DroneEntity(0, 1);
-        InputComponent* input = new InputComponent(&mClient);
+        InputComponent* input = new InputComponent(NULL);
         drone->setStartPoint(mWorld.getStartPoint(2, 0));
         drone->add(input);
         mInputComponents.push_back(input);
         mWorld.add(drone);
     } else {
-        std::cout << "Failed connecting to server" << std::endl;
+        cout << "Connected!" << endl;
     }
+    cout << "Initializing world" << endl;
     mWorld.init(&mResourceLoader);
     mRenderer.setActiveCamera(mCameras->back());
 }
 void 
 Game::tick(float pDelta) {
+    float delta = min(pDelta, 0.2);
     float start = mTimer->getTotalTime();
-    mWorld.tick(pDelta, mTimer);
+    mWorld.tick(delta, mTimer);
     mWorld.draw();
     mRenderer.begin();
     mRenderer.renderSolids();
     //mRenderer.renderTransparents();
     mRenderer.renderToBackBuffer();
     mRenderer.end();
-    calcFps(pDelta);
+    calcFps(delta);
     mClient.receive(2);
     float usedTime = mTimer->getTotalTimeNow() - start;
     

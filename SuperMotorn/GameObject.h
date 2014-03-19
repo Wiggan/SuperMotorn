@@ -29,6 +29,7 @@ public:
     void            setScale(const Vector3& pScale);
     void            setPosition(const Vector3& pPosition);
     void            setRotation(const Vector3& pRotation);
+    void            setRotation(const Matrix& pRotation);
     bool            isUpdatedThisFrame();
                     GameObject();
     virtual         ~GameObject();

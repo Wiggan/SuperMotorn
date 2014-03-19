@@ -126,10 +126,10 @@
     <ClCompile Include="Components\ColliderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\DroneCamera.cpp">
+    <ClCompile Include="Entities\FlagPlatform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entities\FlagPlatform.cpp">
+    <ClCompile Include="Entities\DroneCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -257,10 +257,10 @@
     <ClInclude Include="Components\ColliderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\DroneCamera.h">
+    <ClInclude Include="Entities\FlagPlatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entities\FlagPlatform.h">
+    <ClInclude Include="Entities\DroneCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -64,6 +64,11 @@ GameObject::setRotation(const Vector3& pRotation) {
     mDirty = true;
     mLocalRotation = DirectX::XMVectorModAngles(pRotation);
 }
+void           
+GameObject::setRotation(const Matrix& pRotation) {
+    mDirty = true;
+    //mLocalRotation = DirectX::XMVectorModAngles(pRotation);
+}
 bool
 GameObject::isUpdatedThisFrame() {
     return mUpdatedThisFrame;

@@ -100,5 +100,14 @@ Matrix::rotate(const Vector3 & pAxis, float pAngle) {
     DirectX::XMVECTOR quaternion = DirectX::XMQuaternionRotationAxis(pAxis.normalized(), pAngle);
     *this = *this * DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionNormalize (quaternion));
 }
+std::string
+Matrix::toString() const {
+    std::ostringstream buf;
+    buf << "[ " << mMatrix._11 << ", " << mMatrix._12 << ", " << mMatrix._13 << ", " << mMatrix._14 << " ]" << std::endl
+        << "[ " << mMatrix._21 << ", " << mMatrix._22 << ", " << mMatrix._23 << ", " << mMatrix._24 << " ]" << std::endl
+        << "[ " << mMatrix._31 << ", " << mMatrix._32 << ", " << mMatrix._33 << ", " << mMatrix._34 << " ]" << std::endl
+        << "[ " << mMatrix._41 << ", " << mMatrix._42 << ", " << mMatrix._43 << ", " << mMatrix._44 << " ]";
+    return buf.str();
+}
 Matrix::~Matrix() {
 }

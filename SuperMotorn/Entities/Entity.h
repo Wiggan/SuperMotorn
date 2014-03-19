@@ -8,10 +8,10 @@
 class BaseCamera;
 class ColliderComponent;
 class Entity : public GameObject {
-    Entity*                 mParent;
-    std::vector<Component*> mComponents;
     Vector3                 mPreviousPosition;
 protected:
+    std::vector<Component*> mComponents;
+    Entity*                 mParent;
     std::vector<Entity*>    mChildren;
 public:
     enum Events {

@@ -1,5 +1,6 @@
 #include "Client.h"
 #include <iostream>
+#include "DroneEntity.h"
 Client::Client() {
     mVirtualTimer.reset();
 }
@@ -54,6 +55,7 @@ Client::connectTo(const std::string& pIp, const std::string& pPort) {
     }
     mConnected = true;
     std::cout << "Client connected" << std::endl;
+    return true;
 }
 
 void
@@ -68,12 +70,11 @@ Client::receive(int pTimeout) {
         if ( FD_ISSET(mConnectSocket, &mReadFs) ) {
             int receiveResult = recv(mConnectSocket, mBuffer, 512, 0);
             if ( receiveResult > 0 ) {
-                std::cout << "Received: " << std::string(mBuffer, receiveResult) << std::endl;
+                //std::cout << "Received: " << std::string(mBuffer, receiveResult) << std::endl;
                 int start = 0;
                 while ( start < receiveResult ) {
                     start = handleCommand(start);
                 }
-                
             }
         }
         mVirtualTimer.tick();
@@ -100,36 +101,39 @@ Client::handleCommand(int pStart) {
         }
         case FULL_UPDATE: {
             FullUpdateMessage update(&mBuffer[pStart]);
-            std::cout << "Received FULL_UPDATE, rotation: " << Vector3(update.message.rotation).toString() << std::endl;
-            mRemoteParts[update.message.playerId]->input->lerpTo(update.message.position, update.message.rotation);
+            std::cout << "Received FULL_UPDATE, rotation, position" << Vector3(update.message.position).toString() << 
+            ", rotation: " << Vector3(update.message.rotation).toString() << 
+            ", rotation matrix: " << std::endl << Matrix(update.message.rotationMatrix).toString() << std::endl;
+            RemotePart* part = mRemoteParts[update.message.playerId];
+            part->input->lerpTo(update.message.position, update.message.rotation, update.message.rotationMatrix);
             std::cout << "After update, rotation: " << mRemoteParts[update.message.playerId]->input->getOwner()->getWorldRotation().toString() << std::endl;
             return pStart + sizeof(FullUpdateMessage);
         }
         case CONNECTED: {
+            ConnectedMessage connected(&mBuffer[pStart]);
             RemotePart* part = new RemotePart;
-            part->playerId   = (int)mBuffer[pStart+1];
-            part->team       = (int)mBuffer[pStart+2];
+            part->playerId   = connected.message.playerId;
+            part->team       = connected.message.team;
             part->input      = new InputComponent(NULL);
             mRemoteParts.insert(std::pair<int, RemotePart*>(part->playerId, part));
-            std::cout << "CONNECTED playerId:" << mPlayerId << " team: " << mTeam << std::endl;
+            std::cout << "CONNECTED playerId:" << part->playerId << " team: " << part->team << std::endl;
             mListener->onPlayerConnected(part->playerId, part->team, part->input);
-            return pStart + 3;
+            return pStart + sizeof(ConnectedMessage);
         }
         case DISCONNECTED: {
-            int playerId   = (int)mBuffer[pStart+1];
-            std::cout << "DISCONNECTED playerId:" << mPlayerId << std::endl;
-            mListener->onPlayerDisconnected(playerId);
-            mRemoteParts.erase(playerId);
-            return pStart + 3;
+            DisconnectedMessage disconnected(&mBuffer[pStart]);
+            std::cout << "DISCONNECTED playerId:" << disconnected.message.playerId << std::endl;
+            mListener->onPlayerDisconnected(disconnected.message.playerId);
+            mRemoteParts.erase(disconnected.message.playerId);
+            return pStart + sizeof(DisconnectedMessage);
         }
         case CONNECTION_INFO: {
             mVirtualTimer.reset();
             mSendTransformTimer.reset();
-            mPlayerId   = (int)mBuffer[pStart+1];
-            mTeam       = (int)mBuffer[pStart+2];
-            std::cout << "CONNECTION_INFO playerId:" << mPlayerId << " team: " << mTeam << std::endl;
-            mLocalDrone = mListener->onSelfConnected(mPlayerId, mTeam);
-            return pStart + 3;
+            ConnectionInfoMessage info(&mBuffer[pStart]);
+            std::cout << "CONNECTION_INFO playerId:" << info.message.playerId << " team: " << info.message.team << std::endl;
+            mLocalDrone = (DroneEntity*)mListener->onSelfConnected(info.message.playerId, info.message.team);
+            return pStart + sizeof(ConnectionInfoMessage);
         }
         default:
             std::cout << "Rest of command: " << std::string(mBuffer, pStart+1).substr(pStart) << std::endl;
@@ -155,7 +159,7 @@ void
 Client::sendFullUpdate() {
     FullUpdateMessage update;
     update.message.command = FULL_UPDATE;
-    update.message.playerId = (unsigned char)mPlayerId;
+    update.message.playerId = (unsigned char)mLocalDrone->getPlayerId();
     update.message.timestamp = mVirtualTimer.getTotalTime();
     update.message.position[0] = mLocalDrone->getLocalPosition().getX();
     update.message.position[1] = mLocalDrone->getLocalPosition().getY();
@@ -163,14 +167,16 @@ Client::sendFullUpdate() {
     update.message.rotation[0] = mLocalDrone->getLocalRotation().getX();
     update.message.rotation[1] = mLocalDrone->getLocalRotation().getY();
     update.message.rotation[2] = mLocalDrone->getLocalRotation().getZ();
+    memcpy(&update.message.rotationMatrix, &(DirectX::XMFLOAT4X4) mLocalDrone->getRotationMatrix(), 16*sizeof(float));
     sendMsg(update.buffer, sizeof(FullUpdateMessage));
-    std::cout << "Sending FULL_UPDATE, rotation: " << mLocalDrone->getLocalRotation().toString() << std::endl;
-    //update.message.transform = ((DirectX::XMFLOAT4X4) mLocalDrone->getWorldTransform()).m;
+    std::cout << "Sending FULL_UPDATE, position" << mLocalDrone->getLocalPosition().toString() << 
+        ", rotation: " << mLocalDrone->getLocalRotation().toString() << 
+        ", rotation matrix: " << std::endl << mLocalDrone->getRotationMatrix().toString() << std::endl;
 }
 void
 Client::keyDown(char key) {
     UpdateMessage update;
-    update.message.playerId = mPlayerId;
+    update.message.playerId = (unsigned char)mLocalDrone->getPlayerId();
     update.message.timestamp = mVirtualTimer.getTotalTime();
     update.message.command = UPDATE;
     update.message.action = KEYDOWN;
@@ -180,7 +186,7 @@ Client::keyDown(char key) {
 void
 Client::keyUp(char key) {
     UpdateMessage update;
-    update.message.playerId = mPlayerId;
+    update.message.playerId = (unsigned char)mLocalDrone->getPlayerId();
     update.message.timestamp = mVirtualTimer.getTotalTime();
     update.message.command = UPDATE;
     update.message.action = KEYUP;
