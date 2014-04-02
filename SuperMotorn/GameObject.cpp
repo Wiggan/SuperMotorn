@@ -14,7 +14,7 @@ GameObject::getLocalPosition() {
 }
 Vector3          
 GameObject::getLocalRotation() {
-    return mLocalRotation;
+    return mLocalRotation.getRotation();
 }
 Vector3          
 GameObject::getLocalScale() {
@@ -33,7 +33,7 @@ GameObject::getWorldPosition() {
     return mWorldTransform.getPosition();
 }
 Vector3          
-GameObject::getWorldRotation() {
+GameObject::getWorldRotation() const {
     Vector3 rotation = mWorldTransform.getRotation();
     return rotation;
 }
@@ -62,12 +62,17 @@ GameObject::setPosition(const Vector3& pPosition) {
 void           
 GameObject::setRotation(const Vector3& pRotation) {
     mDirty = true;
-    mLocalRotation = DirectX::XMVectorModAngles(pRotation);
+    mLocalRotation = DirectX::XMMatrixRotationRollPitchYawFromVector(pRotation);
 }
 void           
 GameObject::setRotation(const Matrix& pRotation) {
     mDirty = true;
-    //mLocalRotation = DirectX::XMVectorModAngles(pRotation);
+    mLocalRotation = pRotation;
+}
+void           
+GameObject::rotate(const Vector3 & pAxis, float pAngle) {
+    mDirty = true;
+    mLocalRotation.rotate(pAxis, pAngle);
 }
 bool
 GameObject::isUpdatedThisFrame() {

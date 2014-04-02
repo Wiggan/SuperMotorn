@@ -5,14 +5,21 @@
 #include "ResourceLoader.h"
 #include "Renderer.h"
 #include <DirectXCollision.h>
+#include "CollisionListener.h"
 class BaseCamera;
 class ColliderComponent;
-class Entity : public GameObject {
-    Vector3                 mPreviousPosition;
+class Entity : public GameObject, public CollisionListener {
 protected:
-    std::vector<Component*> mComponents;
-    Entity*                 mParent;
-    std::vector<Entity*>    mChildren;
+    std::vector<CollisionListener*> mCollisionListeners;
+    std::vector<Component*>         mComponents;
+    Entity*                         mParent;
+    std::vector<Entity*>            mChildren;
+    //Matrix                          mDesiredRotation;
+    //Vector3                         mDesiredPosition;
+    //float                           mTimeRotated;
+    //float                           mTimeMoved;
+    //bool                            mMoveToDesired = false;
+    //bool                            mRotateToDesired = false;
 public:
     enum Events {
         ROCKET_HIT,
@@ -27,10 +34,11 @@ public:
     void            setParent(Entity* pParent);
     virtual void    keyDown(unsigned int key) {}
     virtual void    keyUp(unsigned int key) {}
-    virtual void    onCollision(const ColliderComponent& pOther) {}
     virtual void    onEvent(Events pType, void* pObject) {}
-    virtual void    setPosition(const Vector3& pPosition);
-    Vector3         getPreviousPosition();
+    void            setDesiredRotation(Matrix pRotation);
+    void            setDesiredPosition(Vector3 pPosition);
+    Matrix          getRotationMatrix();
+    virtual void    onCollision(const ColliderComponent& pOther);
                     Entity();
     virtual         ~Entity();
 };

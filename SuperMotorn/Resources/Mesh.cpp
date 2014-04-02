@@ -9,7 +9,9 @@
 #include "Util.h"
 #include "Material.h"
 Mesh::Mesh(const std::wstring& pFileName, TimeStamp pTimeStamp, LoadingToolsInterface* pLoadingTools) : AbstractResource(pFileName, pTimeStamp, pLoadingTools) {
-    mDevice = pLoadingTools->getDevice();
+}
+Mesh::Mesh(std::vector<DirectX::XMFLOAT3> pPositions, std::vector<DirectX::XMFLOAT3> pNormals, std::vector<DirectX::XMFLOAT2> pUV, std::vector<int> pPolyList, LoadingToolsInterface* pLoadingTools) : AbstractResource(L"", TimeStamp(), pLoadingTools) {
+    createBuffers(pPositions, pNormals, pUV, pPolyList);
 }
 void
 Mesh::load() {
@@ -30,7 +32,7 @@ Mesh::load() {
                     string positionString = source->FirstChildElement("float_array")->GetText();
                     istringstream iss(positionString);
                     vector<string> tokens;
-                    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(tokens));  
+                    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(tokens));
                     for ( int j = 0; j < tokens.size(); j += 3 ) {
                         positions.push_back(DirectX::XMFLOAT3(atof(tokens[j].c_str()), atof(tokens[j + 1].c_str()), atof(tokens[j + 2].c_str())));
                     }
@@ -38,7 +40,7 @@ Mesh::load() {
                     string normalString = source->FirstChildElement("float_array")->GetText();
                     istringstream iss(normalString);
                     vector<string> tokens;
-                    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(tokens));  
+                    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(tokens));
                     for ( int j = 0; j < tokens.size(); j += 3 ) {
                         normals.push_back(DirectX::XMFLOAT3(atof(tokens[j].c_str()), atof(tokens[j + 1].c_str()), atof(tokens[j + 2].c_str())));
                     }
@@ -46,61 +48,70 @@ Mesh::load() {
                     string normalString = source->FirstChildElement("float_array")->GetText();
                     istringstream iss(normalString);
                     vector<string> tokens;
-                    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(tokens));  
+                    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(tokens));
                     for ( int j = 0; j < tokens.size(); j += 2 ) {
                         tex0.push_back(DirectX::XMFLOAT2(atof(tokens[j].c_str()), atof(tokens[j + 1].c_str())));
                     }
                 }
             }
         }
-        vector<Vertex> vertices;
-        vector<int> indices;
         string vertexString = geometry->FirstChildElement("mesh")->FirstChildElement("polylist")->FirstChildElement("p")->GetText();
         istringstream iss(vertexString);
         vector<string> tokens;
         copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(tokens));  
-        for ( int j = 0; j < tokens.size(); j += 3 ) {
-            Vertex v;
-            v.Position = positions[atoi(tokens[j].c_str())];
-            v.Normal = normals[atoi(tokens[j+1].c_str())];
-            v.Tex0 = tex0[atoi(tokens[j+2].c_str())];
-            vertices.push_back(v);
-            indices.push_back(indices.size());
+        vector<int> polyList;
+        for ( auto it = tokens.begin(); it != tokens.end(); ++it ) {
+            polyList.push_back(atoi((*it).c_str()));
         }
-        
-        D3D11_BUFFER_DESC vbd;
-        vbd.Usage = D3D11_USAGE_IMMUTABLE;
-        vbd.ByteWidth = sizeof(Vertex) * vertices.size();
-        vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-        vbd.CPUAccessFlags = 0;
-        vbd.MiscFlags = 0;
-        vbd.StructureByteStride = 0;
-        D3D11_SUBRESOURCE_DATA vertexData;
-        vertexData.pSysMem = &vertices[0];
-        HRESULT hr = mDevice->CreateBuffer(&vbd, &vertexData, &mVertexBuffer);
-        if ( FAILED(hr) ) {
-            cout << "Failed creting vertex buffer!" << endl;
-            return;
-        }
-        mIndexCount = indices.size();
-        D3D11_BUFFER_DESC ibd;
-        ibd.Usage = D3D11_USAGE_IMMUTABLE;
-        ibd.ByteWidth = sizeof(int) * mIndexCount;
-        ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-        ibd.CPUAccessFlags = 0;
-        ibd.MiscFlags = 0;
-        ibd.StructureByteStride = 0;
-        D3D11_SUBRESOURCE_DATA indexData;
-        indexData.pSysMem = &indices[0];
-        hr = mDevice->CreateBuffer(&ibd, &indexData, &mIndexBuffer);
-        if ( FAILED(hr) ) {
-            cout << "Failed creting index buffer!" << endl;
-            return;
-        }
-        //loadImages(mesh);
+        createBuffers(positions, normals, tex0, polyList);
         loadSockets(mesh);
     } else {
         cout << "Failed loading mesh! " << mesh.ErrorID() << endl;
+        return;
+    }
+}
+void
+Mesh::createBuffers(std::vector<DirectX::XMFLOAT3> pPositions, std::vector<DirectX::XMFLOAT3> pNormals, std::vector<DirectX::XMFLOAT2> pUV, std::vector<int> pPolyList) {
+    using namespace std;
+    vector<Vertex> vertices;
+    vector<int> indices;
+        
+    for ( int j = 0; j < pPolyList.size(); j += 3 ) {
+        Vertex v;
+        v.Position = pPositions[pPolyList[j]];
+        v.Normal = pNormals[pPolyList[j+1]];
+        v.Tex0 = pUV[pPolyList[j+2]];
+        vertices.push_back(v);
+        indices.push_back(indices.size());
+    }
+        
+    D3D11_BUFFER_DESC vbd;
+    vbd.Usage = D3D11_USAGE_IMMUTABLE;
+    vbd.ByteWidth = sizeof(Vertex) * vertices.size();
+    vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vbd.CPUAccessFlags = 0;
+    vbd.MiscFlags = 0;
+    vbd.StructureByteStride = 0;
+    D3D11_SUBRESOURCE_DATA vertexData;
+    vertexData.pSysMem = &vertices[0];
+    HRESULT hr = mLoadingTools->getDevice()->CreateBuffer(&vbd, &vertexData, &mVertexBuffer);
+    if ( FAILED(hr) ) {
+        cout << "Failed creting vertex buffer!" << endl;
+        return;
+    }
+    mIndexCount = indices.size();
+    D3D11_BUFFER_DESC ibd;
+    ibd.Usage = D3D11_USAGE_IMMUTABLE;
+    ibd.ByteWidth = sizeof(int) * mIndexCount;
+    ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    ibd.CPUAccessFlags = 0;
+    ibd.MiscFlags = 0;
+    ibd.StructureByteStride = 0;
+    D3D11_SUBRESOURCE_DATA indexData;
+    indexData.pSysMem = &indices[0];
+    hr = mLoadingTools->getDevice()->CreateBuffer(&ibd, &indexData, &mIndexBuffer);
+    if ( FAILED(hr) ) {
+        cout << "Failed creting index buffer!" << endl;
         return;
     }
 }
@@ -122,21 +133,6 @@ std::vector<Socket>*
 Mesh::getSockets() {
     return &mSockets;
 }
-//void            
-//Mesh::loadImages(const tinyxml2::XMLDocument& document) {
-//    using namespace tinyxml2;
-//    const XMLElement* imagesElement = document.FirstChildElement("COLLADA")->FirstChildElement("library_images");
-//    if ( imagesElement->FirstChildElement("image") ) {
-//        const XMLElement* fileNameElement = imagesElement->FirstChildElement("image")->FirstChildElement("init_from");
-//        std::string path(fileNameElement->GetText());
-//        int slashPosition = path.find_last_of("/");
-//        std::string fileName = path;
-//        if ( slashPosition != std::string::npos ) {
-//            fileName = path.substr(slashPosition+1);
-//        }
-//        mTexture = (Texture*)mLoadingTools->getTexture(Util::string2wstring(fileName));
-//    }
-//}
 ID3D11Buffer*   
 Mesh::getVertexBuffer() {
     return mVertexBuffer;
@@ -149,10 +145,6 @@ UINT
 Mesh::getIndexCount() {
     return mIndexCount;
 }
-//Texture*                    
-//Mesh::getTexture() {
-//    return mTexture;
-//}
 Mesh::~Mesh() {
     mVertexBuffer->Release();
     mIndexBuffer->Release();

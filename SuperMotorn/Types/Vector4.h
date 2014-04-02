@@ -10,6 +10,7 @@ public:
     Vector4();
     Vector4(float pX, float pY, float pZ, float pW);
     Vector4(const DirectX::XMVECTOR& pVector);
+    Vector4(const DirectX::XMFLOAT4& pVector);
     Vector4(const tinyxml2::XMLElement* element);
     operator DirectX::XMVECTOR();
     operator DirectX::XMVECTOR() const;

@@ -90,7 +90,7 @@ Vector3::rotate(const Vector3 & pAxis, float pAngle) {
     *this = *this * DirectX::XMMatrixRotationQuaternion(quaternion);
 }
 Vector3 
-Vector3::dir2Rot() {
+Vector3::dir2Rot() const {
     float yaw = -atan2(mVector.x, -mVector.z) + DirectX::XM_PI;
     float pitch = -atan2(mVector.y, sqrt(mVector.x*mVector.x + mVector.z*mVector.z));
     return Vector3(pitch, yaw, 0.0f);

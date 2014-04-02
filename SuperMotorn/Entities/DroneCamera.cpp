@@ -34,7 +34,7 @@ DroneCamera::update(float pDelta) {
 }
 Matrix  
 DroneCamera::calculateLocalTransform() {
-    return Matrix(mLocalScale, mLocalRotation, mRotationMatrix, mParent->getWorldPosition() + Vector3(0.0f, 0.0f, mParent->getWorldUp().getZ()*5));
+    return Matrix(mLocalScale, mRotationMatrix, mParent->getWorldPosition() + Vector3(0.0f, 0.0f, mParent->getWorldUp().getZ()*5));
 }
 DroneCamera::~DroneCamera() {
 }

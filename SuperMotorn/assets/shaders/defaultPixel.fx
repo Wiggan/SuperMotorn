@@ -88,9 +88,9 @@ POut PS(VOut input) : SV_Target {
 	//color = texColor * (ambient + diffuse);
 	//color = float4( distToCamera*0.01f, distToCamera*0.01, distToCamera*0.01f, 1.0f);
 	//color = gDiffuseTexture.Sample(samplerState0, input.uv);
-	float4 glow = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	float4 glow = specular;
 	if(gUseGlowMap) {
-		glow = (texColor + float4(0.2f, 0.2f, 0.2f, 1.0f)) * gGlowTexture.Sample(samplerState0, input.uv);
+		glow += (texColor + float4(0.2f, 0.2f, 0.2f, 1.0f)) * gGlowTexture.Sample(samplerState0, input.uv);
 	}
 	POut output;
 	output.diffuse = color;

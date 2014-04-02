@@ -25,3 +25,4 @@ SuperMotorn/Debug/*
 SuperMotorn/Release/*
 *.blend?
 *.psd
+*.tlog

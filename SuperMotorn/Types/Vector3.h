@@ -23,8 +23,8 @@ public:
     Vector3                 operator*(float pScale);
     Vector3                 cross(const Vector3 & pOther);
     void                    rotate(const Vector3 & pAxis, float pAngle);
-    Vector3                 dir2Rot();
-    Vector3                 normalized() const ;
+    Vector3                 dir2Rot() const;
+    Vector3                 normalized() const;
     float                   getLengthEst();
     float                   getX();
     float                   getY();

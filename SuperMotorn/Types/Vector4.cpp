@@ -8,6 +8,8 @@ Vector4::Vector4(float pX, float pY, float pZ, float pW) : mVector(pX, pY, pZ, p
 Vector4::Vector4(const DirectX::XMVECTOR& pVector) {
     DirectX::XMStoreFloat4(&mVector, pVector);
 }
+Vector4::Vector4(const DirectX::XMFLOAT4& pVector) : mVector(pVector) {
+}
 Vector4::Vector4(const tinyxml2::XMLElement* element) {
     if ( element != NULL ) {
         element->QueryFloatAttribute("x", &mVector.x);

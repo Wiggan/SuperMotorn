@@ -32,6 +32,24 @@ DebugRenderer::renderCube(Vector3 pPosition, Vector3 pRotation, Vector3 pScale) 
 #endif
 }
 void                    
+DebugRenderer::renderCube(Vector3 pPosition, Matrix pRotation, Vector3 pScale) {
+#ifdef _DEBUG
+    if ( mActive ) {
+        Matrix transform(pScale, pRotation, pPosition);
+        mRenderer->drawSolid(mCube, transform, mMaterial);
+    }
+#endif
+}
+void                    
+DebugRenderer::renderCube(Vector3 pPosition, Vector4 pQuaternion, Vector3 pScale) {
+#ifdef _DEBUG
+    if ( mActive ) {
+        Matrix transform(pScale, DirectX::XMMatrixRotationQuaternion(pQuaternion), pPosition);
+        mRenderer->drawSolid(mCube, transform, mMaterial);
+    }
+#endif
+}
+void                    
 DebugRenderer::renderArrow(Vector3 pPosition, Vector3 pRotation, Vector3 pScale) {
 #ifdef _DEBUG
     if ( mActive ) {

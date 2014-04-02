@@ -25,7 +25,7 @@ void
 InputComponent::lerpTo(Vector3 pPosition, Vector3 pRotation, Matrix pRotationMatrix) {
     mOwner->setPosition(pPosition);
     mOwner->setRotation(pRotation);
-    ((DroneEntity*)mOwner)->setRotationMatrix(pRotationMatrix);
+    ((DroneEntity*)mOwner)->setRotation(pRotationMatrix);
 }
 InputComponent::~InputComponent() {
 }

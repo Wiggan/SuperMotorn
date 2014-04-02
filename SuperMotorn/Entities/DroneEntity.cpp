@@ -7,14 +7,14 @@
 #include "RocketLauncher.h"
 #include "StartPoint.h"
 #include "ColliderComponent.h"
+#include "RigidBodyComponent.h"
 #include "DroneCamera.h"
 DroneEntity::DroneEntity(int pPlayerId, int pTeam) : mPlayerId(pPlayerId), mTeam(pTeam) {
 }
 void
 DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     setPosition(mStartPoint->getWorldPosition());
-    //setRotation(mStartPoint->getWorldRotation());
-    mRotationMatrix.rotate(Vector3(0.0f, 1.0f, 0.0f), mStartPoint->getWorldRotation().getY()); //TODO fixa rotate?
+    setRotation(mStartPoint->getWorldRotation());
     MeshComponent* drone = new MeshComponent(pRenderer, pResourceLoader->getResource<Mesh>(L"drone4.dae"));
     auto sockets = drone->getMesh()->getSockets();
     for ( auto it = sockets->begin(); it != sockets->end(); ++it ) {
@@ -34,8 +34,12 @@ DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     }
     add(drone);
     
-    ColliderComponent* collider = new ColliderComponent(Vector3(3.0f, 0.8f, 4.0f), mTeam);
+    ColliderComponent* collider = new ColliderComponent(Vector3(3.0f, 0.8f, 4.0f), Vector3(0,0,0), mTeam);
+    mRigidBody = new RigidBodyComponent(collider);
+    mRigidBody->setAngularDrag(0.9f);
+    mRigidBody->setMaxAngularVelocity(0.1f);
     add(collider);
+    add(mRigidBody);
     DroneCamera* droneCam = new DroneCamera;
     add(droneCam);
     mRocketLauncher = new RocketLauncher(mTeam);
@@ -46,39 +50,39 @@ DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
 }
 void    
 DroneEntity::update(float pDelta) {
-    Vector3 sum;
+    //Vector3 sum;
     for ( auto it = mPropellers.begin(); it != mPropellers.end(); ++it ) {
-        sum = sum - (*it)->getLocalPosition()*(*it)->getForce();
+        mRigidBody->addForceAtPoint((*it)->getLocalPosition(), Vector3(0.0f, (*it)->getForce(), 0.0f), pDelta);
+        //sum = sum - (*it)->getLocalPosition()*(*it)->getForce();
     }
-    mAngularVelocity = mAngularVelocity*0.95f + sum * pDelta;
-    float forceScalar = 0;
+    //mRigidBody->setAngularVelocity(mAngularVelocity*0.95f + sum * pDelta);
+    /*float forceScalar = 0;
     forceScalar = mAngularVelocity.getLengthEst();
     if ( mAngularVelocity.getLengthEst() > 0.0001f ) {
-        Vector3 axis = getLocalUp().cross((mAngularVelocity*mRotationMatrix).normalized());
-        mRotationMatrix.rotate(axis, forceScalar*pDelta + forceScalar*pDelta*pDelta*0.5f);
+        Vector3 axis = getLocalUp().cross((mAngularVelocity*mLocalRotation).normalized());
+        mLocalRotation.rotate(axis, forceScalar*pDelta + forceScalar*pDelta*pDelta*0.5f);
         mDirty = true;
     }
     for ( auto it = mPropellers.begin(); it != mPropellers.end(); ++it ) {
         forceScalar += (*it)->getForce();
     }
     sum = getWorldUp() * forceScalar * 7;
-    Vector3 force = sum + Vector3(0.0f, -9.82f, 0.0f);
-    Vector3 newPosition = getLocalPosition() + mVelocity*pDelta + force*pDelta*pDelta*0.5f;
-    if ( newPosition.getY() < -40.0f ) {
-        newPosition.setY(-40.0f);
-        mVelocity = Vector3(0.0f, 0.0f, 0.0f);
-    }
-    setPosition(newPosition);
-    mVelocity = mVelocity*0.99f + force * pDelta;
-    //std::cout << "Player " << mPlayerId << ", mVelocity: " << mVelocity.getLengthEst() << std::endl;
+    Vector3 force = sum + Vector3(0.0f, -9.82f, 0.0f);*/
+    
+    //if ( mRotateToDesired ) {
+    //    using namespace DirectX;
+    //    mTimeRotated += pDelta;
+    //    mLocalRotation = XMMatrixRotationQuaternion(XMQuaternionSlerp(XMQuaternionRotationMatrix(mLocalRotation), XMQuaternionRotationMatrix(mDesiredRotation), mTimeRotated/4.0f));
+    //    if ( mTimeRotated >= 4.0f ) {
+    //        mRotateToDesired = false;
+    //    }
+    //}
     Entity::update(pDelta);
-    //std::cout << "Drone" << mPlayerId << " rotation: " << getWorldRotation().toString() << std::endl;
 }
 void    
 DroneEntity::onCollision(const ColliderComponent& pOther) {
-    mVelocity = Vector3(mVelocity.getX(), 0.0f, mVelocity.getZ());
-    setPosition(Vector3(getLocalPosition().getX(), getPreviousPosition().getY(), getLocalPosition().getZ()));
     pOther.getOwner()->onEvent(DRONE_LANDED, &mTeam);
+    Entity::onCollision(pOther);
 } 
 void
 DroneEntity::setStartPoint(StartPoint* pStartPoint) {
@@ -89,22 +93,9 @@ DroneEntity::onEvent(Events pType, void* pObject) {
     switch ( pType ) {
     case ROCKET_HIT:
         setPosition(mStartPoint->getWorldPosition());
-        mRotationMatrix.rotate(Vector3(0.0f, 1.0f, 0.0f), mStartPoint->getWorldRotation().getY());
+        mLocalRotation.rotate(Vector3(0.0f, 1.0f, 0.0f), mStartPoint->getWorldRotation().getY());
         break;
     }
-}
-void
-DroneEntity::setRotationMatrix(Matrix pMatrix) {
-    mRotationMatrix = pMatrix;
-}
-
-Matrix          
-DroneEntity::getRotationMatrix() {
-    return mRotationMatrix;
-}
-Matrix  
-DroneEntity::calculateLocalTransform() {
-    return Matrix(mLocalScale, mLocalRotation, mRotationMatrix, mLocalPosition);
 }
 void
 DroneEntity::keyDown(unsigned int key) {
@@ -112,6 +103,7 @@ DroneEntity::keyDown(unsigned int key) {
         (*it)->keyDown(key);
     }
     mRocketLauncher->keyDown(key);
+    
 }
 void    
 DroneEntity::keyUp(unsigned int key) {

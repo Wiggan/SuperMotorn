@@ -8,7 +8,7 @@ Rocket::Rocket(int pTeam) : mFree(true), mTeam(pTeam), mFlyTime(0.0f) {
 void
 Rocket::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     MeshComponent* rocketMesh = new MeshComponent(pRenderer, pResourceLoader->getResource<Mesh>(L"rocket.dae"));
-    rocketMesh->setMaterial(pResourceLoader->getResource<Material>(L"metal.xml"));
+    rocketMesh->setMaterial(pResourceLoader->getResource<Material>(L"rocket.xml"));
     rocketMesh->setScale(Vector3(0.6f, 0.6f, 0.6f));
     add(rocketMesh);
     ColliderComponent* collider = new ColliderComponent(Vector3(0.3f, 0.3f, 0.6f), 3);
@@ -18,9 +18,9 @@ Rocket::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
 void
 Rocket::update(float pDelta) {
     if ( !mFree ) {
-        mVelocity = mVelocity + mVelocity * 4.0f*pDelta;
+        mVelocity = mVelocity + mVelocity * 2.0f*pDelta;
         setPosition(getLocalPosition() + mVelocity*pDelta*0.3f);
-        mRotationMatrix.rotate(getLocalDirection(), pDelta*3);
+        mLocalRotation.rotate(getLocalDirection(), pDelta*3);
         if ( mLocalPosition.getLengthEst() > 1000.0f ) {
             reset();
             return;
@@ -31,7 +31,7 @@ Rocket::update(float pDelta) {
 }
 Matrix  
 Rocket::calculateLocalTransform() {
-    return Matrix(mLocalScale, mLocalRotation, mRotationMatrix, mLocalPosition);
+    return Matrix(mLocalScale, mLocalRotation, mLocalPosition);
 }
 void
 Rocket::draw() {
@@ -58,13 +58,13 @@ Rocket::reset() {
     mVelocity = Vector3(0.0f, 0.0f, 0.0f);
     mFlyTime = 0.0f;
     setRotation(Vector3(0.0f, 0.0f, 0.0f));
-    mRotationMatrix.reset();
+    mLocalRotation.reset();
 }
 void            
 Rocket::fire(Vector3 pPosition, Vector3 pDirection) {
     setPosition(pPosition);
     setRotation(pDirection.dir2Rot());
-    mVelocity = pDirection*8.0f;
+    mVelocity = pDirection*25.0f;
     mFree = false;
 }
 Rocket::~Rocket() {

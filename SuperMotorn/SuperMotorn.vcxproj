@@ -95,6 +95,8 @@
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Entities\DroneCamera.cpp" />
     <ClCompile Include="Entities\FlagPlatform.cpp" />
+    <ClCompile Include="Entities\HexaTerrain.cpp" />
+    <ClCompile Include="Resources\HexaTerrainResource.cpp" />
     <ClCompile Include="Resources\Configuration.cpp" />
     <ClCompile Include="Resources\ComputeShader.cpp" />
     <ClCompile Include="D3DInitializer.cpp" />
@@ -121,6 +123,7 @@
     <ClCompile Include="Entities\StartPoint.cpp" />
     <ClCompile Include="Entities\Rocket.cpp" />
     <ClCompile Include="Entities\RocketLauncher.cpp" />
+    <ClCompile Include="Components\RigidBodyComponent.cpp" />
     <ClCompile Include="Types\Matrix.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -131,11 +134,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
+    <ClInclude Include="CollisionListener.h" />
     <ClInclude Include="Components\ColliderComponent.h" />
     <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Entities\DroneCamera.h" />
     <ClInclude Include="Entities\FlagPlatform.h" />
+    <ClInclude Include="Entities\HexaTerrain.h" />
+    <ClInclude Include="Resources\HexaTerrainResource.h" />
     <ClInclude Include="Resources\Configuration.h" />
     <ClInclude Include="Resources\ComputeShader.h" />
     <ClInclude Include="D3DInitializer.h" />
@@ -147,6 +153,7 @@
     <ClInclude Include="Entities\StartPoint.h" />
     <ClInclude Include="Entities\Rocket.h" />
     <ClInclude Include="Entities\RocketLauncher.h" />
+    <ClInclude Include="Components\RigidBodyComponent.h" />
     <ClInclude Include="Types\Socket.h" />
     <ClInclude Include="Types\PointLight.h" />
     <ClInclude Include="Types\DirectionalLight.h" />

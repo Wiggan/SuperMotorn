@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "DebugRenderer.h"
 #include "Configuration.h"
+#include "HexaTerrain.h"
 Game::Game(HWND pWindow, int width, int height, Timer* pTimer) : mWindow(pWindow),
 mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRenderer) {
     using namespace std;
@@ -39,6 +40,7 @@ mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRen
         cout << "Connected!" << endl;
     }
     cout << "Initializing world" << endl;
+    mWorld.add(new HexaTerrain(L"terrain1.xml"));
     mWorld.init(&mResourceLoader);
     mRenderer.setActiveCamera(mCameras->back());
 }

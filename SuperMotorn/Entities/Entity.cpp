@@ -46,8 +46,11 @@ Entity::update(float pDelta) {
 }
 Matrix  
 Entity::calculateLocalTransform() {
-    mPreviousPosition = mLocalPosition;
     return Matrix(mLocalScale, mLocalRotation, mLocalPosition);
+}
+Matrix          
+Entity::getRotationMatrix() {
+    return mLocalRotation;
 }
 void
 Entity::draw() {
@@ -62,6 +65,10 @@ void
 Entity::add(Component* pComponent) {
     mComponents.push_back(pComponent);
     pComponent->setOwner(this);
+    CollisionListener* collisionListener = dynamic_cast<CollisionListener*>(pComponent);
+    if ( collisionListener != NULL ) {
+        mCollisionListeners.push_back(collisionListener);
+    }
 }
 void            
 Entity::add(Entity* pEntity) {
@@ -72,14 +79,11 @@ void
 Entity::setParent(Entity* pParent) {
     mParent = pParent;
 }
-void            
-Entity::setPosition(const Vector3& pPosition) {
-    mPreviousPosition = mLocalPosition;
-    GameObject::setPosition(pPosition);
-}
-Vector3         
-Entity::getPreviousPosition() {
-    return mPreviousPosition;
+void    
+Entity::onCollision(const ColliderComponent& pOther) {
+    for ( auto it = mCollisionListeners.begin(); it != mCollisionListeners.end(); ++it ) {
+        (*it)->onCollision(pOther);
+    }
 }
 Entity::~Entity() {
 }

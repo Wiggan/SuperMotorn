@@ -6,16 +6,16 @@
 Matrix::Matrix() {
     DirectX::XMStoreFloat4x4(&mMatrix, DirectX::XMMatrixIdentity());
 }
-Matrix::Matrix(const Vector3& pScale, const Vector3& pRotation, const Matrix& pRotationMatrix, const Vector3& pPosition) {
-    using namespace DirectX;
-    XMStoreFloat4x4(&mMatrix,XMMatrixScalingFromVector(pScale)*
-        XMMatrixRotationRollPitchYawFromVector(pRotation)*pRotationMatrix*
-        XMMatrixTranslationFromVector(pPosition));
-}
 Matrix::Matrix(const Vector3& pScale, const Vector3& pRotation, const Vector3& pPosition) {
     using namespace DirectX;
     XMStoreFloat4x4(&mMatrix,XMMatrixScalingFromVector(pScale)*
         XMMatrixRotationRollPitchYawFromVector(pRotation)*
+        XMMatrixTranslationFromVector(pPosition));
+}
+Matrix::Matrix(const Vector3& pScale, const Matrix& pRotation, const Vector3& pPosition) {
+    using namespace DirectX;
+    XMStoreFloat4x4(&mMatrix,XMMatrixScalingFromVector(pScale)*
+        pRotation*
         XMMatrixTranslationFromVector(pPosition));
 }
 Matrix::Matrix(const tinyxml2::XMLElement* element) {
@@ -72,23 +72,23 @@ Matrix::transposed() const {
     return XMMatrixTranspose(XMLoadFloat4x4(&mMatrix));
 }
 Vector3      
-Matrix::getDirection() {
+Matrix::getDirection() const {
     return Vector3(mMatrix._31, mMatrix._32, mMatrix._33);
 }
 Vector3  
-Matrix::getRotation() {
+Matrix::getRotation() const {
     return getDirection().normalized().dir2Rot();
 }
 Vector3  
-Matrix::getPosition() {
+Matrix::getPosition() const {
     return Vector3(mMatrix._41, mMatrix._42, mMatrix._43);
 }
 Vector3  
-Matrix::getScale() {
+Matrix::getScale() const {
     return Vector3(mMatrix._11, mMatrix._22, mMatrix._33); // FEL!!!
 }     
 Vector3
-Matrix::getUp() {
+Matrix::getUp() const {
     return Vector3(mMatrix._21, mMatrix._22, mMatrix._23);
 }
 void
