@@ -26,3 +26,9 @@ SuperMotorn/Release/*
 *.blend?
 *.psd
 *.tlog
+Dependencies/DirectXTK/Bin/Desktop_2013/Win32/Debug/DirectXTK.idb
+*.lib
+*.pch
+*.idb
+*.tlog
+*.tlog
