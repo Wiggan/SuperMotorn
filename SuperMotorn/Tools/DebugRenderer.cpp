@@ -58,10 +58,37 @@ DebugRenderer::renderArrow(Vector3 pPosition, Vector3 pRotation, Vector3 pScale)
     }
 #endif
 }
+void                    
+DebugRenderer::renderMesh(Mesh* pMesh, Matrix pTransform) {
+    mRenderer->drawSolid(pMesh, pTransform, mMaterial);
+}
+void                    
+DebugRenderer::renderMesh(Mesh* pMesh, Matrix pTransform, Material* pMaterial) {
+    mRenderer->drawSolid(pMesh, pTransform, pMaterial);
+}
+void                    
+DebugRenderer::setStaticSphere(Vector3 pPosition) {
+    mStaticSpherePos = new Vector3(pPosition);
+}
+void                    
+DebugRenderer::setStaticRay(Vector3 pPosition, Vector3 pDirection) {
+    mStaticRayPos = new Vector3(pPosition);
+    mStaticRayDir = new Vector3(pDirection);
+}
+void                    
+DebugRenderer::draw() {
+    if ( mStaticSpherePos ) {
+        renderSphere(*mStaticSpherePos);
+    }
+    if ( mStaticRayPos ) {
+        renderArrow(*mStaticRayPos, *mStaticRayDir, Vector3(1.1f, 1.1f, 10.0f));
+    }
+}
 DebugRenderer*   
 DebugRenderer::instance() {
     return mInstance;
 }
+
 void
 DebugRenderer::toggleActive() {
     mActive = !mActive;

@@ -39,6 +39,8 @@ private:
     BaseCamera*                     mCamera;
     HWND                            mWindow;
     Matrix                          mProjectionTransform;
+    int                             mWidth;
+    int                             mHeight;
     std::vector<RenderOrder>        mRenderOrders;
     std::vector<const PointLight*>  mPointLights;
     MeshComponent*                  mSkyMesh;
@@ -55,10 +57,14 @@ private:
     void                    drawMesh(const Matrix& pTransform, Mesh* pMesh, Material* pMaterial);
     void                    drawGlow(const Matrix& pTransform, Mesh* pMesh, Material* pMaterial);
 public:
-                            Renderer(HWND pWindow, int width, int height);
+                            Renderer(HWND pWindow, int width, int height, float pNear, float pFar);
                             ~Renderer();
     ID3D11Device*           getDevice();
     ID3D11DeviceContext*    getContext();
+    const Matrix&           getProjection();
+    int                     getHeight();
+    int                     getWidth();
+    HWND                    getWindow();
     void                    setSeldomConstants(const SeldomConstants& pConstants);
     void                    setSkyBox(Material* pMaterial, MeshComponent* pMesh);
     void                    init(ResourceLoader* pResourceLoader);

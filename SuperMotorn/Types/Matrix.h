@@ -23,6 +23,7 @@ public:
     Matrix      operator*(const Matrix & pOther);
     Matrix      transposed();
     Matrix      transposed() const;
+    Matrix      inversed();
     Vector3     getDirection() const;
     Vector3     getRotation() const;
     Vector3     getPosition() const;

@@ -16,9 +16,9 @@ public:
     template<typename T>
     T* getResource(const std::wstring &pFileName) {
         using namespace std;
-        wcout << L"    Loading resource " << pFileName << endl;
         auto it = mResources.find(pFileName);
         if ( it == mResources.end() ) {
+            wcout << L"    Loading resource " << pFileName << endl;
 #ifdef _DEBUG
             wstring completePath = Util::searchDirectory(L"..", pFileName);
 #else
@@ -43,6 +43,8 @@ public:
     virtual AbstractResource*       getVertexShader(const std::wstring &pFileName);
     virtual AbstractResource*       getPixelShader(const std::wstring &pFileName);
     virtual AbstractResource*       getComputeShader(const std::wstring &pFileName);
+    virtual AbstractResource*       getMaterial(const std::wstring &pFileName);
+    virtual AbstractResource*       getMesh(const std::wstring &pFileName);
     void                            lookForChanges();
                                     ~ResourceLoader();
 };

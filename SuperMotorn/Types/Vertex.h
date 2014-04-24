@@ -5,6 +5,7 @@
 struct Vertex {
     DirectX::XMFLOAT3 Position;
     DirectX::XMFLOAT3 Normal;
+    DirectX::XMFLOAT3 Color;
     DirectX::XMFLOAT2 Tex0;
     DirectX::XMFLOAT2 Tex1;
 };

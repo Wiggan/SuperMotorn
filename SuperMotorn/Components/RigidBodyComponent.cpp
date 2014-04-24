@@ -64,7 +64,7 @@ void
 RigidBodyComponent::addForceAtPoint(Vector3 pPoint, Vector3 pForce, float pTime) {
     mVelocity = mVelocity + pForce*pTime;
     if ( pForce.getLengthEst() > 0.0000001f ) {
-        std::cout << mAngularVelocity.toString() << std::endl;
+        //std::cout << mAngularVelocity.toString() << std::endl;
         mAngularVelocity = mAngularVelocity + (pPoint * pForce.getLengthEst())*pTime;
     }
 }

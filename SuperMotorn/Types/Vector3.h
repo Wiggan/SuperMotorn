@@ -3,6 +3,7 @@
 #include <string>
 namespace tinyxml2 {
     class XMLElement;
+    class XMLDocument;
 }
 class Matrix;
 class Vector3 {
@@ -13,7 +14,7 @@ public:
     Vector3(const DirectX::XMVECTOR& pVector);
     Vector3(const DirectX::XMFLOAT3& pVector);
     Vector3(float pVector[3]);
-    Vector3(const tinyxml2::XMLElement* element);
+    Vector3(const tinyxml2::XMLElement* element, Vector3 pDefault = Vector3(0.0f, 0.0f, 0.0f));
     operator                DirectX::XMVECTOR();
     operator                DirectX::XMVECTOR() const;
     operator                DirectX::XMFLOAT3();
@@ -33,6 +34,7 @@ public:
     void                    setY(float y);
     void                    setZ(float z);
     std::string             toString() const;
+    tinyxml2::XMLElement*   toXml(tinyxml2::XMLDocument* pDocument, std::string pName);
     ~Vector3();
 };
 

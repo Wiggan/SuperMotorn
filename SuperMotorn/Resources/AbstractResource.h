@@ -11,6 +11,8 @@ public:
     virtual AbstractResource*           getVertexShader(const std::wstring &pFileName) = 0;
     virtual AbstractResource*           getPixelShader(const std::wstring &pFileName) = 0;
     virtual AbstractResource*           getComputeShader(const std::wstring &pFileName) = 0;
+    virtual AbstractResource*           getMaterial(const std::wstring &pFileName) = 0;
+    virtual AbstractResource*           getMesh(const std::wstring &pFileName) = 0;
 };
 class AbstractResource {
 protected:

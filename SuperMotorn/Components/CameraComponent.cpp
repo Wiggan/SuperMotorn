@@ -3,6 +3,24 @@
 
 CameraComponent::CameraComponent() {
 }
+void    
+CameraComponent::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
+    mProjection = pRenderer->getProjection();
+    mWidth = pRenderer->getWidth();
+    mHeight = pRenderer->getHeight();
+}
+const Matrix&           
+CameraComponent::getProjection() {
+    return mProjection;
+}
+int
+CameraComponent::getWidth() {
+    return mWidth;
+}
+int
+CameraComponent::getHeight() {
+    return mHeight;
+}
 Vector3 
 CameraComponent::getPosition() {
     return Component::getWorldPosition();

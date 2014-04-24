@@ -18,8 +18,14 @@ LRESULT CALLBACK
 WndProc(HWND hWnd, UINT pMessage, WPARAM wParam, LPARAM lParam) {
     switch ( pMessage ) {
     case WM_LBUTTONDOWN:
-        //MessageBox(0, L"Why hello there", 0, 0);
+        game->mouseDown(0);
         return 0;
+    case WM_RBUTTONDOWN:
+        game->mouseDown(1);
+        return 0;
+    case WM_MOUSEWHEEL:
+        game->mouseWheel(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
+        break;
     case WM_KEYDOWN:
         switch ( wParam ) {
         case VK_ESCAPE:
@@ -72,6 +78,19 @@ WndProc(HWND hWnd, UINT pMessage, WPARAM wParam, LPARAM lParam) {
     }
     return DefWindowProc(hWnd, pMessage, wParam, lParam);
 }
+void handleInput() {
+    POINT p;
+    GetCursorPos(&p);
+    RECT windowRect;
+    GetWindowRect(window, &windowRect);
+    RECT clientRect;
+    GetClientRect(window, &clientRect);
+    int xWidth = (windowRect.right - windowRect.left - clientRect.right) / 2;
+    int yWidth = windowRect.bottom - windowRect.top - clientRect.bottom - xWidth;
+    int winX = windowRect.left + xWidth;
+    int winY = windowRect.top + yWidth;
+    game->mouseMoved( p.x, p.y, winX, winY );
+}
 void 
 CreateConsole() {
     AllocConsole();
@@ -102,6 +121,7 @@ Run() {
         } else {
             if ( !paused ) {
                 timer.tick();
+                handleInput();
                 game->tick(timer.getDeltaTime());
             } else {
                 Sleep(100);

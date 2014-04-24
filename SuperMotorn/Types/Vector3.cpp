@@ -15,7 +15,7 @@ Vector3::Vector3(const DirectX::XMFLOAT3& pVector) {
 }
 Vector3::Vector3(float pVector[3]) : mVector(pVector[0], pVector[1], pVector[2]) {
 }
-Vector3::Vector3(const tinyxml2::XMLElement* element) : mVector(0.0f, 0.0f, 0.0f)  {
+Vector3::Vector3(const tinyxml2::XMLElement* element, Vector3 pDefault) : mVector(pDefault)  {
     if ( element != NULL ) {
         element->QueryFloatAttribute("x", &mVector.x);
         element->QueryFloatAttribute("y", &mVector.y);
@@ -85,7 +85,7 @@ Vector3::normalized() const {
 }
 void        
 Vector3::rotate(const Vector3 & pAxis, float pAngle) {
-    std::cout << pAxis.toString() << std::endl;
+    //std::cout << pAxis.toString() << std::endl;
     DirectX::XMVECTOR quaternion = DirectX::XMQuaternionRotationAxis(pAxis.normalized(), pAngle);
     *this = *this * DirectX::XMMatrixRotationQuaternion(quaternion);
 }
@@ -100,6 +100,14 @@ Vector3::toString() const {
     std::ostringstream buf;
     buf << "x:" << mVector.x << " y:" << mVector.y << " z:" << mVector.z;
     return buf.str();
+}
+tinyxml2::XMLElement*   
+Vector3::toXml(tinyxml2::XMLDocument* pDocument, std::string pName) {
+    tinyxml2::XMLElement* element = pDocument->NewElement(pName.c_str());
+    element->SetAttribute("x", getX());
+    element->SetAttribute("y", getY());
+    element->SetAttribute("z", getZ());
+    return element;
 }
 Vector3::~Vector3() {
 }

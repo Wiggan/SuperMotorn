@@ -9,16 +9,32 @@
 #include "DebugRenderer.h"
 #include "Configuration.h"
 #include "HexaTerrain.h"
+#include "HexagonYTool.h"
+#include "HexagonAddTool.h"
+#include "HexagonMeshTool.h"
+#include "HexagonMaterialTool.h"
+#include "HexagonTextureTool.h"
 Game::Game(HWND pWindow, int width, int height, Timer* pTimer) : mWindow(pWindow),
-mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRenderer) {
+mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height, 1.0f, 1000.0f), mWorld(&mRenderer) {
     using namespace std;
     cout << "Starting game" << endl;
     mCameras = &BaseCamera::mCameras;
     cout << "Initializing renderer" << endl;
     mRenderer.init(&mResourceLoader);
     //mResourceLoader.init(mRenderer.getDevice(), mRenderer.getContext());
+    HexaTerrain* hexa = new HexaTerrain(L"terrain1.xml");
 #ifdef _DEBUG
+    cout << "Loading tools" << endl;
     DebugRenderer::init(&mRenderer, &mResourceLoader);
+    mCurrentTool = new HexagonYTool(hexa);
+    mTools.push_back(mCurrentTool);
+    mTools.push_back(new HexagonAddTool(hexa));
+    mTools.push_back(new HexagonMeshTool(hexa, &mResourceLoader));
+    mTools.push_back(new HexagonMaterialTool(hexa, &mResourceLoader) );
+    mTools.push_back(new HexagonTextureTool(hexa, &mResourceLoader) );
+    InputComponent::inputs.push_back(mCurrentTool);
+    mDebugCamera = new DebugCamera;
+    mWorld.add(mDebugCamera);
 #endif
     cout << "Loading config" << endl;
     mConfig = mResourceLoader.getResource<Configuration>(L"config.xml");
@@ -31,18 +47,24 @@ mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height), mWorld(&mRen
     if ( !mConnected ) {
         cout << "Failed connecting to server, creating local drone." << endl;
         DroneEntity* drone = new DroneEntity(0, 1);
-        InputComponent* input = new InputComponent(NULL);
+        InputComponent* input = new InputComponent;
         drone->setStartPoint(mWorld.getStartPoint(2, 0));
         drone->add(input);
-        mInputComponents.push_back(input);
         mWorld.add(drone);
     } else {
         cout << "Connected!" << endl;
     }
     cout << "Initializing world" << endl;
-    mWorld.add(new HexaTerrain(L"terrain1.xml"));
+    mWorld.add(hexa);
     mWorld.init(&mResourceLoader);
     mRenderer.setActiveCamera(mCameras->back());
+#ifdef _DEBUG
+    for ( auto it = mTools.begin(); it != mTools.end(); ++it ) {
+        (*it)->setCamera(mDebugCamera->getCamera());
+        (*it)->setProjection(mRenderer.getProjection(), width, height);
+    }
+#endif
+    //exit(0);
 }
 void 
 Game::tick(float pDelta) {
@@ -50,6 +72,9 @@ Game::tick(float pDelta) {
     float start = mTimer->getTotalTime();
     mWorld.tick(delta, mTimer);
     mWorld.draw();
+#ifdef _DEBUG
+    DebugRenderer::instance()->draw();
+#endif
     mRenderer.begin();
     mRenderer.renderSolids();
     //mRenderer.renderTransparents();
@@ -78,14 +103,47 @@ Game::calcFps(float pDelta) {
 }
 void    
 Game::keyDown(UINT pKey) {
-    for ( auto it = mInputComponents.begin(); it != mInputComponents.end(); ++it ) {
+#ifdef _DEBUG
+    if ( '1' <= pKey && pKey <= '9' ) {
+        int newTool = pKey - '1';
+        if ( mTools.size() > newTool ) {
+            for ( auto it = InputComponent::inputs.begin(); it != InputComponent::inputs.end(); ++it ) {
+                if ( *it == mCurrentTool ) {
+                    InputComponent::inputs.erase(it);
+                    break;
+                }
+            }
+            mCurrentTool = mTools[newTool];
+            InputComponent::inputs.push_back(mCurrentTool);
+        }
+    }
+#endif
+    for ( auto it = InputComponent::inputs.begin(); it != InputComponent::inputs.end(); ++it ) {
         (*it)->keyDown(pKey);
     }
 }
 void    
 Game::keyUp(UINT pKey) {
-    for ( auto it = mInputComponents.begin(); it != mInputComponents.end(); ++it ) {
+    for ( auto it = InputComponent::inputs.begin(); it != InputComponent::inputs.end(); ++it ) {
         (*it)->keyUp(pKey);
+    }
+}
+void
+Game::mouseMoved(UINT x, UINT y, UINT winX, UINT winY) {
+    for ( auto it = InputComponent::inputs.begin(); it != InputComponent::inputs.end(); ++it ) {
+        (*it)->mouseMoved(x, y, winY, winX);
+    }
+}
+void
+Game::mouseWheel(int delta) {
+    for ( auto it = InputComponent::inputs.begin(); it != InputComponent::inputs.end(); ++it ) {
+        (*it)->mouseWheel(delta);
+    }
+}
+void
+Game::mouseDown(UINT button) {
+    for ( auto it = InputComponent::inputs.begin(); it != InputComponent::inputs.end(); ++it ) {
+        (*it)->mouseDown(button);
     }
 }
 void
@@ -100,7 +158,8 @@ Game::debug() {
 }
 void
 Game::nextCamera() {
-    mRenderer.setActiveCamera((*mCameras)[++mCurrentCamera % mCameras->size()]);
+    BaseCamera* nextCam =  (*mCameras)[++mCurrentCamera % mCameras->size()];
+    mRenderer.setActiveCamera(nextCam);
 }
 Entity*    
 Game::onSelfConnected(int pPlayerId, int pTeam) {
@@ -111,7 +170,6 @@ Game::onSelfConnected(int pPlayerId, int pTeam) {
     }
     InputComponent* input = new InputComponent(&mClient);
     drone->add(input);
-    mInputComponents.push_back(input);
     mWorld.add(drone);
     mDrones.push_back(drone);
     drone->init(&mRenderer, &mResourceLoader);

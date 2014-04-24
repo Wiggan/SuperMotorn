@@ -8,9 +8,9 @@
 #include "ComputeShader.h"
 #include <iostream>
 #include "MeshComponent.h"
-Renderer::Renderer(HWND pWindow, int width, int height) : mD3DInit(new D3DInitializer(pWindow, width, height)), mWindow(pWindow),
-    mProjectionTransform(DirectX::XMMatrixPerspectiveFovLH(0.25f*DirectX::XM_PI, (float)width / (float)height, 1.0f, 10000.0f)),
-    mStride(sizeof(Vertex)) {
+Renderer::Renderer(HWND pWindow, int width, int height, float pNear, float pFar) : mD3DInit(new D3DInitializer(pWindow, width, height)), mWindow(pWindow),
+    mProjectionTransform(DirectX::XMMatrixPerspectiveFovLH(0.25f*DirectX::XM_PI, (float)width / (float)height, pNear, pFar)),
+    mStride(sizeof(Vertex)), mWidth(width), mHeight(height) {
 }
 void
 Renderer::setActiveCamera(BaseCamera* pCamera) {
@@ -234,6 +234,22 @@ Renderer::setSkyBox(Material* pMaterial, MeshComponent* pMesh) {
         mSkyMesh = pMesh;
         mSkyMesh->setScale(Vector3(300.0f, 300.0f, 300.0f));
     }
+}
+const Matrix&           
+Renderer::getProjection() {
+    return mProjectionTransform;
+}
+int
+Renderer::getWidth() {
+    return mWidth;
+}
+int
+Renderer::getHeight() {
+    return mHeight;
+}
+HWND
+Renderer::getWindow() {
+    return mWindow;
 }
 Renderer::~Renderer() {
     delete mD3DInit;

@@ -62,11 +62,13 @@ struct VOut
 	float3 positionW : POSITION;
 	float2 uv : TEXCOORD0;
 	float4 normalW : TEXCOORD1;
+	float3 color : COLOR;
 };
 struct VIn
 {
 	float3 positionL : POSITION;
 	float3 normal : NORMAL;
+	float3 color : COLOR;
 	float2 uv : TEX0;
 	float2 uv2 : TEX1;
 };

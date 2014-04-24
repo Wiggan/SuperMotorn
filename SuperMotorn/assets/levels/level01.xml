@@ -2,7 +2,7 @@
 <world>
 	<directionalLight>
 		<direction x="-1.1" y="-1.0" z="0.1"></direction>
-		<ambient r="0.1" g="0.1" b="0.1" a="1.0"></ambient>
+		<ambient r="0.3" g="0.3" b="0.3" a="1.0"></ambient>
 		<diffuse r="0.3" g="0.3" b="0.3" a="1.0"></diffuse>
 		<specular r="0.5" g="0.5" b="0.5" a="1.0"></specular>
 	</directionalLight>
@@ -28,28 +28,6 @@
 		<position x="-20" y="-20" z="-40"></position>
 		<rotation x="0" y="0" z="0"></rotation>
 	</flagPlatform>
-	<entity>
-		<camera>
-			<position x="0" y="20" z="-60"></position>
-			<rotation x="0.4" y="0" z="0"></rotation>
-		</camera>
-		<camera>
-			<position x="0" y="20" z="-10"></position>
-			<rotation x="0.1" y="0" z="0"></rotation>
-		</camera>
-		<camera>
-			<position x="0" y="20" z="0"></position>
-			<rotation x="0" y="1.5708" z="0"></rotation>
-		</camera>
-		<camera>
-			<position x="0" y="20" z="10"></position>
-			<rotation x="0" y="3.1415" z="0"></rotation>
-		</camera>
-		<camera>
-			<position x="0" y="20" z="0"></position>
-			<rotation x="0" y="4.7108" z="0"></rotation>
-		</camera>
-	</entity>
 	<startPoint team="1">
 		<position x="20" y="30" z="-85"></position>
 		<rotation x="0" y="0" z="0"></rotation>

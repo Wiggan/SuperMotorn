@@ -1,61 +1,1444 @@
 <?xml version="1.0" ?>
-<hexaTerrain radius="1.5" distance="1.5" slope="0.1" scale="12">
-	<material>grass.xml</material>
-	<tile>
-		<position x="0" y="1" z="0" />
-	</tile>
-	<tile>
-		<position x="0" y="0" z="1" />
-	</tile>
-	<tile>
-		<position x="0" y="0" z="2" />
-	</tile>
-		<tile>
-		<position x="0" y="1" z="3" />
-	</tile>
-	<tile>
-		<position x="1" y="0" z="0" />
-	</tile>
-	<tile>
-		<position x="1" y="1" z="1" />
-	</tile>	
-	<tile>
-		<position x="1" y="0" z="2" />
-	</tile>	
-	<tile>
-		<position x="1" y="0" z="3" />
-	</tile>
-	<tile>
-		<position x="2" y="0" z="0" />
-	</tile>
-	<tile>
-		<position x="2" y="1" z="1" />
-	</tile>
-	<tile>
-		<position x="2" y="0" z="2" />
-	</tile>
-		<tile>
-		<position x="2" y="0" z="3" />
-	</tile>
-	<tile>
-		<position x="3" y="0" z="0" />
-	</tile>
-	<tile>
-		<position x="3" y="0" z="1" />
-	</tile>
-	<tile>
-		<position x="3" y="0" z="2" />
-	</tile>
-		<tile>
-		<position x="3" y="0" z="3" />
-	</tile>		
-		<tile>
-		<position x="4" y="0" z="0" />
-	</tile>
-	<tile>
-		<position x="4" y="1" z="1" />
-	</tile>
-	<tile>
-		<position x="4" y="2" z="2" />
-	</tile>
+<hexaTerrain radius="2" distance="0.8" slope="0.1" scale="12" increment="0.2">
+    <offset x="10" z="10"/>
+    <material>ground.xml</material>
+    <tile>
+        <position x="10" y="22" z="10"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="11.000000" y="12" z="10.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="11.000000" y="0" z="9.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="10.000000" y="0" z="9.000000"/>
+    </tile>
+    <tile>
+        <position x="9.000000" y="4.000000" z="9.000000"/>
+    </tile>
+    <tile>
+        <position x="9.000000" y="29" z="10.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="10.000000" y="16" z="11.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="12.000000" y="4.000000" z="10.000000"/>
+    </tile>
+    <tile>
+        <position x="12.000000" y="1" z="9.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="11.000000" y="-1" z="8.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="13.000000" y="0.000000" z="10.000000"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="13.000000" y="2.000000" z="9.000000"/>
+        <mesh>hexatree02.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.89999998" y="0.89999998" z="0.89999998"/>
+        <rotation x="0" y="4.1887903" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="12.000000" y="5" z="11.000000"/>
+    </tile>
+    <tile>
+        <position x="13.000000" y="0.000000" z="8.000000"/>
+        <mesh>hexatree01.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.89999998" y="0.89999998" z="0.89999998"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="12.000000" y="10" z="8.000000"/>
+        <mesh>hexatree02.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.75" y="0.75" z="0.75"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="10" z="9.000000"/>
+        <mesh>hexatree01.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.75" y="0.75" z="0.75"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="5" z="8.000000"/>
+        <mesh>hexatree02.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.75" y="0.75" z="0.75"/>
+        <rotation x="0" y="2.0943952" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="13.000000" y="2.000000" z="7.000000"/>
+        <mesh>hexatree02.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.89999998" y="0.89999998" z="0.89999998"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="4" z="10.000000"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="0.000000" z="11.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="13.000000" y="0.000000" z="11.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="11.000000" y="8" z="11.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="12.000000" y="5" z="12.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="0" z="10.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="4.000000" z="9.000000"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="2.000000" z="7.000000"/>
+        <mesh>hexatree01.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.69999999" y="0.69999999" z="0.69999999"/>
+        <rotation x="0" y="0" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="3" z="8.000000"/>
+        <mesh>hexatree01.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.55000001" y="0.55000001" z="0.55000001"/>
+        <rotation x="0" y="2.0943952" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="10.000000" y="16" z="8.000000"/>
+    </tile>
+    <tile>
+        <position x="9.000000" y="11" z="8.000000"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="8.000000" y="14" z="9.000000"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="8.000000" y="61" z="10.000000"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="4.000000" z="7.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="12.000000" y="-1" z="7.000000"/>
+        <mesh>hexatree01.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.60000002" y="0.60000002" z="0.60000002"/>
+        <rotation x="0" y="0" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="11.000000" y="10" z="7.000000"/>
+        <mesh>hexatree02.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.80000001" y="0.80000001" z="0.80000001"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="13.000000" y="0.000000" z="6.000000"/>
+    </tile>
+    <tile>
+        <position x="16.000000" y="-10" z="11.000000"/>
+        <mesh>hexarock02.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.94999999" y="0.94999999" z="0.94999999"/>
+        <rotation x="0" y="2.0943952" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="16.000000" y="-1" z="10.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="4.000000" z="11.000000"/>
+        <mesh>hexarock01.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.94999999" y="0.94999999" z="0.94999999"/>
+        <rotation x="0" y="0" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="16.000000" y="0" z="12.000000"/>
+        <mesh>hexarock02.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.69999999" y="0.69999999" z="0.69999999"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="0.000000" z="12.000000"/>
+        <mesh>hexarock04.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.75" y="0.75" z="0.75"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="0.000000" z="12.000000"/>
+        <mesh>hexarock01.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.75" y="0.75" z="0.75"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="16.000000" y="0.000000" z="13.000000"/>
+        <mesh>hexarock03.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.75" y="0.75" z="0.75"/>
+        <rotation x="0" y="4.1887903" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="20" z="13.000000"/>
+        <mesh>hexarock01.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.94999999" y="0.94999999" z="0.94999999"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="22" z="13.000000"/>
+        <mesh>hexarock04.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.89999998" y="0.89999998" z="0.89999998"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17.000000" y="-6" z="11.000000"/>
+        <mesh>hexarock03.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.85000002" y="0.85000002" z="0.85000002"/>
+        <rotation x="0" y="4.1887903" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17.000000" y="-0" z="10.000000"/>
+        <mesh>hexarock02.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.94999999" y="0.94999999" z="0.94999999"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17.000000" y="-1" z="9.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="16.000000" y="0.000000" z="9.000000"/>
+    </tile>
+    <tile>
+        <position x="17.000000" y="0.000000" z="8.000000"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="16.000000" y="2.000000" z="8.000000"/>
+    </tile>
+    <tile>
+        <position x="16.000000" y="0.000000" z="7.000000"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="0.000000" z="6.000000"/>
+    </tile>
+    <tile>
+        <position x="16.000000" y="-1" z="6.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="15.000000" y="-1" z="5.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="0.000000" z="6.000000"/>
+    </tile>
+    <tile>
+        <position x="13.000000" y="0.000000" z="5.000000"/>
+    </tile>
+    <tile>
+        <position x="12.000000" y="0.000000" z="6.000000"/>
+    </tile>
+    <tile>
+        <position x="14.000000" y="-1" z="5.000000"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="11.000000" y="20" z="6.000000"/>
+    </tile>
+    <tile>
+        <position x="10.000000" y="40" z="7.000000"/>
+    </tile>
+    <tile>
+        <position x="13.000000" y="24" z="12.000000"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="13" y="0" z="4"/>
+    </tile>
+    <tile>
+        <position x="12" y="0" z="5"/>
+    </tile>
+    <tile>
+        <position x="15" y="0" z="4"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="14" y="-1" z="4"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="16" y="0" z="5"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17" y="-1" z="6"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="17" y="0" z="5"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17" y="-1" z="7"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="18" y="-1" z="8"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="18" y="1" z="7"/>
+        <texture layer="1"/>
+        <mesh>hexarock01.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.89999998" y="0.89999998" z="0.89999998"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+    </tile>
+    <tile>
+        <position x="18" y="-1" z="9"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="19" y="0" z="7"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="19" y="3" z="6"/>
+    </tile>
+    <tile>
+        <position x="18" y="2" z="6"/>
+    </tile>
+    <tile>
+        <position x="20" y="8" z="7"/>
+    </tile>
+    <tile>
+        <position x="20" y="7" z="6"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="19" y="16" z="5"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="19" y="-1" z="9"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="19" y="0" z="8"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="18" y="0" z="10"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="20" y="-1" z="10"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="20" y="0" z="9"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="19" y="0" z="10"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="20" y="0" z="8"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="21" y="8" z="7"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="21" y="14" z="6"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="21" y="0" z="9"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="21" y="0" z="8"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="20" y="0" z="11"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="18" y="0" z="11"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="19" y="0" z="11"/>
+    </tile>
+    <tile>
+        <position x="18" y="-0.40000001" z="12"/>
+        <mesh>hexarock01.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.89999998" y="0.89999998" z="0.89999998"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17" y="-0.40000001" z="12"/>
+        <mesh>hexarock04.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.64999998" y="0.64999998" z="0.64999998"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="16" y="20" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="14" y="49" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="15" y="49" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17" y="0" z="13"/>
+        <texture layer="1"/>
+        <mesh>hexarock04.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.94999999" y="0.94999999" z="0.94999999"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+    </tile>
+    <tile>
+        <position x="18" y="0" z="14"/>
+        <texture layer="1"/>
+        <mesh>hexarock03.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.80000001" y="0.80000001" z="0.80000001"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+    </tile>
+    <tile>
+        <position x="18" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="17" y="20" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="21" y="0" z="11"/>
+        <texture layer="0"/>
+    </tile>
+    <tile>
+        <position x="21" y="-1" z="10"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="20" y="0" z="12"/>
+    </tile>
+    <tile>
+        <position x="19" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="19" y="0" z="12"/>
+    </tile>
+    <tile>
+        <position x="12" y="51" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="13" y="51" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="10" y="60" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="11" y="57" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="8" y="48" z="11"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="9" y="40" z="11"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="8" y="40" z="8"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="7" y="53" z="8"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="7" y="60" z="9"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="9" y="0.40000001" z="7"/>
+    </tile>
+    <tile>
+        <position x="10" y="35" z="6"/>
+    </tile>
+    <tile>
+        <position x="9" y="42" z="6"/>
+    </tile>
+    <tile>
+        <position x="11" y="20" z="5"/>
+    </tile>
+    <tile>
+        <position x="10" y="60" z="5"/>
+    </tile>
+    <tile>
+        <position x="9" y="40" z="5"/>
+    </tile>
+    <tile>
+        <position x="8" y="48" z="7"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="18" y="7" z="5"/>
+    </tile>
+    <tile>
+        <position x="17" y="7" z="4"/>
+    </tile>
+    <tile>
+        <position x="16" y="0" z="4"/>
+    </tile>
+    <tile>
+        <position x="17" y="9" z="3"/>
+    </tile>
+    <tile>
+        <position x="16" y="0" z="3"/>
+    </tile>
+    <tile>
+        <position x="15" y="0" z="3"/>
+    </tile>
+    <tile>
+        <position x="18" y="14" z="4"/>
+    </tile>
+    <tile>
+        <position x="18" y="14" z="3"/>
+    </tile>
+    <tile>
+        <position x="17" y="7" z="2"/>
+    </tile>
+    <tile>
+        <position x="19" y="9" z="4"/>
+    </tile>
+    <tile>
+        <position x="19" y="14" z="3"/>
+    </tile>
+    <tile>
+        <position x="20" y="21" z="5"/>
+    </tile>
+    <tile>
+        <position x="20" y="24" z="4"/>
+    </tile>
+    <tile>
+        <position x="21" y="21" z="5"/>
+    </tile>
+    <tile>
+        <position x="21" y="30" z="4"/>
+    </tile>
+    <tile>
+        <position x="22" y="21" z="6"/>
+    </tile>
+    <tile>
+        <position x="22" y="28" z="5"/>
+    </tile>
+    <tile>
+        <position x="22" y="12" z="7"/>
+    </tile>
+    <tile>
+        <position x="22" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="22" y="10" z="8"/>
+    </tile>
+    <tile>
+        <position x="22" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="22" y="-1" z="11"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="23" y="-1" z="11"/>
+        <texture layer="2"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="22" y="0" z="12"/>
+    </tile>
+    <tile>
+        <position x="24" y="3" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="11"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="25" y="6" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="25" y="3" z="11"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="24" y="3" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="26" y="10" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="26" y="54" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="25" y="46" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="26" y="0" z="11"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="25" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="21" y="0" z="12"/>
+    </tile>
+    <tile>
+        <position x="22" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="27" y="10" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="27" y="10" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="26" y="10" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="27" y="60" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="25" y="0" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="26" y="0" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="28" y="40" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="27" y="0" z="11"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="29" y="10" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="29" y="0" z="12"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="28" y="10" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="28" y="10" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="27" y="0" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="8"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="8"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="7"/>
+    </tile>
+    <tile>
+        <position x="25" y="0" z="8"/>
+        <mesh>hexatree02.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.89999998" y="0.89999998" z="0.89999998"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+    </tile>
+    <tile>
+        <position x="25" y="0" z="7"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="7"/>
+    </tile>
+    <tile>
+        <position x="25" y="0" z="6"/>
+        <mesh>hexatree02.dae</mesh>
+        <material>bark2.xml</material>
+        <scale x="0.85000002" y="0.85000002" z="0.85000002"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="6"/>
+        <mesh>hexatree01.dae</mesh>
+        <material>bark2.xml</material>
+        <scale x="0.80000001" y="0.80000001" z="0.80000001"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+    </tile>
+    <tile>
+        <position x="23" y="8" z="6"/>
+    </tile>
+    <tile>
+        <position x="25" y="8" z="5"/>
+    </tile>
+    <tile>
+        <position x="24" y="11" z="5"/>
+        <mesh>hexatree02.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.85000002" y="0.85000002" z="0.85000002"/>
+        <rotation x="0" y="3.1415927" z="0"/>
+    </tile>
+    <tile>
+        <position x="23" y="8" z="5"/>
+    </tile>
+    <tile>
+        <position x="25" y="19" z="4"/>
+    </tile>
+    <tile>
+        <position x="24" y="16" z="4"/>
+    </tile>
+    <tile>
+        <position x="23" y="17" z="4"/>
+    </tile>
+    <tile>
+        <position x="26" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="26" y="0" z="8"/>
+    </tile>
+    <tile>
+        <position x="25" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="27" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="27" y="0" z="8"/>
+    </tile>
+    <tile>
+        <position x="26" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="27" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="29" y="8" z="10"/>
+    </tile>
+    <tile>
+        <position x="29" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="11"/>
+    </tile>
+    <tile>
+        <position x="30" y="16" z="11"/>
+    </tile>
+    <tile>
+        <position x="30" y="16" z="10"/>
+    </tile>
+    <tile>
+        <position x="29" y="0" z="11"/>
+    </tile>
+    <tile>
+        <position x="26" y="0" z="7"/>
+    </tile>
+    <tile>
+        <position x="26" y="0" z="6"/>
+        <mesh>hexatree01.dae</mesh>
+        <material>bark.xml</material>
+        <scale x="0.80000001" y="0.80000001" z="0.80000001"/>
+        <rotation x="0" y="2.0943952" z="0"/>
+    </tile>
+    <tile>
+        <position x="27" y="0" z="7"/>
+        <mesh>hexatree01.dae</mesh>
+        <material>bark2.xml</material>
+        <scale x="0.75" y="0.75" z="0.75"/>
+        <rotation x="0" y="2.0943952" z="0"/>
+    </tile>
+    <tile>
+        <position x="27" y="8" z="6"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="8"/>
+    </tile>
+    <tile>
+        <position x="28" y="8" z="7"/>
+    </tile>
+    <tile>
+        <position x="29" y="8" z="8"/>
+    </tile>
+    <tile>
+        <position x="29" y="8" z="7"/>
+    </tile>
+    <tile>
+        <position x="30" y="16" z="9"/>
+    </tile>
+    <tile>
+        <position x="30" y="16" z="8"/>
+    </tile>
+    <tile>
+        <position x="27" y="16" z="5"/>
+    </tile>
+    <tile>
+        <position x="26" y="16" z="5"/>
+    </tile>
+    <tile>
+        <position x="29" y="16" z="6"/>
+    </tile>
+    <tile>
+        <position x="28" y="16" z="6"/>
+    </tile>
+    <tile>
+        <position x="20" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="21" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="20" y="0" z="14"/>
+    </tile>
+    <tile>
+        <position x="21" y="0" z="14"/>
+    </tile>
+    <tile>
+        <position x="19" y="0" z="14"/>
+    </tile>
+    <tile>
+        <position x="20" y="0" z="15"/>
+    </tile>
+    <tile>
+        <position x="22" y="1" z="15"/>
+    </tile>
+    <tile>
+        <position x="22" y="0" z="14"/>
+    </tile>
+    <tile>
+        <position x="21" y="1" z="15"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="15"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="14"/>
+    </tile>
+    <tile>
+        <position x="22" y="1" z="16"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="16"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="15"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="16"/>
+    </tile>
+    <tile>
+        <position x="25" y="0" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="25" y="0" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="17"/>
+    </tile>
+    <tile>
+        <position x="26" y="27" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="26" y="24" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="25" y="13" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="18" y="0" z="15"/>
+        <texture layer="1"/>
+        <mesh>hexarock04.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.85000002" y="0.85000002" z="0.85000002"/>
+        <rotation x="0" y="2.0943952" z="0"/>
+    </tile>
+    <tile>
+        <position x="19" y="0" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="20" y="0" z="16"/>
+        <texture layer="1"/>
+        <mesh>hexarock04.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.94999999" y="0.94999999" z="0.94999999"/>
+        <rotation x="0" y="2.0943952" z="0"/>
+    </tile>
+    <tile>
+        <position x="21" y="11" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="22" y="0" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="23" y="0" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="26" y="35" z="18"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="24" y="0" z="18"/>
+        <texture layer="1"/>
+        <mesh>hexarock01.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.89999998" y="0.89999998" z="0.89999998"/>
+        <rotation x="0" y="0" z="0"/>
+    </tile>
+    <tile>
+        <position x="25" y="35" z="18"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="18" y="0" z="16"/>
+        <texture layer="1"/>
+        <mesh>hexarock02.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.75" y="0.75" z="0.75"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+    </tile>
+    <tile>
+        <position x="19" y="35" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17" y="0" z="15"/>
+        <texture layer="1"/>
+        <mesh>hexarock03.dae</mesh>
+        <material>rock.xml</material>
+        <scale x="0.85000002" y="0.85000002" z="0.85000002"/>
+        <rotation x="0" y="1.0471976" z="0"/>
+    </tile>
+    <tile>
+        <position x="17" y="13" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="18" y="40" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="20" y="40" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="21" y="42" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="22" y="40" z="18"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="23" y="55" z="18"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="24" y="33" z="19"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="25" y="40" z="19"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="23" y="55" z="19"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="24" y="65" z="20"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="16" y="40" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="16" y="33" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="17" y="41" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="15" y="80" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="15" y="60" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="16" y="51" z="18"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="16" y="50" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="15" y="60" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="29" y="52" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="29" y="10" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="30" y="13" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="30" y="10" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="29" y="0" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="31" y="13" z="16"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="31" y="10" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="30" y="0" z="17"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="30" y="68" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="31" y="10" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="31" y="0" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="30" y="0" z="13"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="31" y="8" z="12"/>
+    </tile>
+    <tile>
+        <position x="30" y="1" z="12"/>
+    </tile>
+    <tile>
+        <position x="32" y="0" z="14"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="32" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="32" y="10" z="15"/>
+        <texture layer="1"/>
+    </tile>
+    <tile>
+        <position x="32" y="8" z="12"/>
+    </tile>
+    <tile>
+        <position x="31" y="14" z="11"/>
+    </tile>
+    <tile>
+        <position x="22" y="2.2" z="19"/>
+    </tile>
+    <tile>
+        <position x="22" y="2.2" z="20"/>
+    </tile>
+    <tile>
+        <position x="23" y="2.2" z="20"/>
+    </tile>
+    <tile>
+        <position x="14" y="3.2" z="16"/>
+    </tile>
+    <tile>
+        <position x="14" y="3.2" z="17"/>
+    </tile>
+    <tile>
+        <position x="14" y="2.4000001" z="15"/>
+    </tile>
+    <tile>
+        <position x="12" y="2" z="14"/>
+    </tile>
+    <tile>
+        <position x="13" y="2" z="14"/>
+    </tile>
+    <tile>
+        <position x="9" y="1.6" z="4"/>
+    </tile>
+    <tile>
+        <position x="8" y="1.6" z="5"/>
+    </tile>
+    <tile>
+        <position x="8" y="1.6" z="6"/>
+    </tile>
+    <tile>
+        <position x="11" y="1.8000001" z="4"/>
+    </tile>
+    <tile>
+        <position x="10" y="1.8000001" z="4"/>
+    </tile>
+    <tile>
+        <position x="19" y="1.2" z="17"/>
+    </tile>
+    <tile>
+        <position x="18" y="1.2" z="18"/>
+    </tile>
+    <tile>
+        <position x="33" y="1" z="15"/>
+    </tile>
+    <tile>
+        <position x="33" y="0.2" z="14"/>
+    </tile>
+    <tile>
+        <position x="32" y="0.2" z="16"/>
+    </tile>
+    <tile>
+        <position x="34" y="0.2" z="15"/>
+    </tile>
+    <tile>
+        <position x="34" y="0.2" z="14"/>
+    </tile>
+    <tile>
+        <position x="33" y="0.2" z="13"/>
+    </tile>
+    <tile>
+        <position x="31" y="0.60000002" z="9"/>
+    </tile>
+    <tile>
+        <position x="31" y="2" z="8"/>
+    </tile>
+    <tile>
+        <position x="32" y="1" z="9"/>
+    </tile>
+    <tile>
+        <position x="32" y="3" z="8"/>
+    </tile>
+    <tile>
+        <position x="31" y="1" z="7"/>
+    </tile>
+    <tile>
+        <position x="32" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="31" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="33" y="1" z="12"/>
+    </tile>
+    <tile>
+        <position x="33" y="1" z="11"/>
+    </tile>
+    <tile>
+        <position x="32" y="2" z="11"/>
+    </tile>
+    <tile>
+        <position x="33" y="4" z="8"/>
+    </tile>
+    <tile>
+        <position x="33" y="6" z="7"/>
+    </tile>
+    <tile>
+        <position x="32" y="2" z="7"/>
+    </tile>
+    <tile>
+        <position x="31" y="1" z="6"/>
+    </tile>
+    <tile>
+        <position x="30" y="0" z="7"/>
+    </tile>
+    <tile>
+        <position x="34" y="0" z="8"/>
+    </tile>
+    <tile>
+        <position x="34" y="1" z="7"/>
+    </tile>
+    <tile>
+        <position x="33" y="2" z="6"/>
+    </tile>
+    <tile>
+        <position x="35" y="0" z="14"/>
+    </tile>
+    <tile>
+        <position x="35" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="34" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="35" y="0" z="12"/>
+    </tile>
+    <tile>
+        <position x="34" y="0" z="12"/>
+    </tile>
+    <tile>
+        <position x="34" y="7" z="11"/>
+    </tile>
+    <tile>
+        <position x="33" y="1" z="10"/>
+    </tile>
+    <tile>
+        <position x="34" y="1" z="10"/>
+    </tile>
+    <tile>
+        <position x="33" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="35" y="0" z="10"/>
+    </tile>
+    <tile>
+        <position x="35" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="34" y="0" z="9"/>
+    </tile>
+    <tile>
+        <position x="36" y="4" z="10"/>
+    </tile>
+    <tile>
+        <position x="36" y="8" z="9"/>
+    </tile>
+    <tile>
+        <position x="35" y="8" z="8"/>
+    </tile>
+    <tile>
+        <position x="35" y="9" z="7"/>
+    </tile>
+    <tile>
+        <position x="35" y="4" z="6"/>
+    </tile>
+    <tile>
+        <position x="34" y="9" z="6"/>
+    </tile>
+    <tile>
+        <position x="32" y="0" z="6"/>
+    </tile>
+    <tile>
+        <position x="31" y="0" z="5"/>
+    </tile>
+    <tile>
+        <position x="30" y="0" z="6"/>
+    </tile>
+    <tile>
+        <position x="27" y="0" z="16"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="17"/>
+    </tile>
+    <tile>
+        <position x="29" y="0" z="17"/>
+    </tile>
+    <tile>
+        <position x="32" y="0.60000002" z="17"/>
+    </tile>
+    <tile>
+        <position x="31" y="0.60000002" z="17"/>
+    </tile>
+    <tile>
+        <position x="30" y="0.2" z="18"/>
+    </tile>
+    <tile>
+        <position x="33" y="0" z="16"/>
+    </tile>
+    <tile>
+        <position x="34" y="0" z="16"/>
+    </tile>
+    <tile>
+        <position x="36" y="0" z="13"/>
+    </tile>
+    <tile>
+        <position x="36" y="0" z="12"/>
+    </tile>
+    <tile>
+        <position x="35" y="0" z="11"/>
+    </tile>
+    <tile>
+        <position x="36" y="0" z="11"/>
+    </tile>
+    <tile>
+        <position x="33" y="8" z="5"/>
+    </tile>
+    <tile>
+        <position x="32" y="4" z="5"/>
+    </tile>
+    <tile>
+        <position x="30" y="0" z="5"/>
+    </tile>
+    <tile>
+        <position x="29" y="0" z="5"/>
+    </tile>
+    <tile>
+        <position x="31" y="6" z="4"/>
+    </tile>
+    <tile>
+        <position x="30" y="0" z="4"/>
+    </tile>
+    <tile>
+        <position x="29" y="0" z="4"/>
+    </tile>
+    <tile>
+        <position x="29" y="0" z="3"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="4"/>
+    </tile>
+    <tile>
+        <position x="28" y="0" z="5"/>
+    </tile>
 </hexaTerrain>

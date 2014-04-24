@@ -8,6 +8,7 @@ VOut VS(VIn input) {
 	output.positionH 	= mul(output.positionH, gProjection);
 	output.uv 			= float2(input.uv.x, -input.uv.y); 
 	output.normalW 		= normalize(mul(float4(input.normal, 0.0f), gWorld));
+	output.color 		= input.color;
 	return output;
 }
 

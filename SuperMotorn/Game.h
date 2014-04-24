@@ -5,8 +5,12 @@
 #include "Renderer.h"
 #include "ResourceLoader.h"
 #include "World.h"
-#include "InputComponent.h"
+#include "InputInterface.h"
 #include "DroneEntity.h"
+#ifdef _DEBUG
+    #include "HexagonTool.h"
+    #include "DebugCamera.h"
+#endif
 class Configuration;
 class Game : public NetworkListener {
     HWND                                mWindow;
@@ -15,7 +19,7 @@ class Game : public NetworkListener {
     ResourceLoader                      mResourceLoader;
     World                               mWorld;
     std::vector<BaseCamera*>*           mCameras;
-    std::vector<InputComponent*>        mInputComponents;
+    std::vector<InputInterface*>        mInputs;
     std::vector<DroneEntity*>           mDrones;
     Client                              mClient;
     bool                                mConnected = false;
@@ -24,12 +28,20 @@ class Game : public NetworkListener {
     int                                 mFrameCount = 0;
     bool                                mShowFps;
     int                                 mCurrentCamera = 0;
+#ifdef _DEBUG
+    DebugCamera*                        mDebugCamera;
+    std::vector<HexagonTool*>           mTools;
+    HexagonTool*                        mCurrentTool;
+#endif
 
     void                            calcFps(float pDelta);
 public:
     void                toggleFps();
     void                keyDown(UINT key);
     void                keyUp(UINT key);
+    void                mouseMoved(UINT x, UINT y, UINT winX, UINT winY);
+    void                mouseWheel(int delta);
+    void                mouseDown(UINT button);
     void                nextCamera();
     void                debug();
     void                tick(float pDelta);

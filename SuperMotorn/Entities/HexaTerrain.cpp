@@ -6,16 +6,21 @@ HexaTerrain::HexaTerrain(const std::wstring& pTerrainName) : mTerrainName(pTerra
 void    
 HexaTerrain::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     mTerrainResource = pResourceLoader->getResource<HexaTerrainResource>(mTerrainName);
-    mTerrainMaterial = pResourceLoader->getResource<Material>(Util::string2wstring(mTerrainResource->getMaterial()));
     mRenderer = pRenderer;
     Entity::init(pRenderer, pResourceLoader);
 }
 void    
 HexaTerrain::draw() {
     std::vector<Mesh*>* meshes = mTerrainResource->getMeshes();
-    for ( auto it = meshes->begin(); it != meshes->end(); ++it ) {
-        mRenderer->drawSolid(*it, mWorldTransform, mTerrainMaterial);
+    std::vector<Material*>* materials = mTerrainResource->getMaterials();
+    std::vector<Matrix>* transforms = mTerrainResource->getTransforms();
+    for ( int i = 0; i < meshes->size(); i++ ) {
+        mRenderer->drawSolid((*meshes)[i], (*transforms)[i], (*materials)[i]);
     }
+}
+HexaTerrainResource*    
+HexaTerrain::getTerrainResource() {
+    return mTerrainResource;
 }
 HexaTerrain::~HexaTerrain() {
 }

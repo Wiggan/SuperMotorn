@@ -4,6 +4,8 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "ComputeShader.h"
+#include "Material.h"
+#include "Mesh.h"
 ResourceLoader::ResourceLoader() {
 }
 ResourceLoader::~ResourceLoader() {
@@ -51,6 +53,14 @@ ResourceLoader::getPixelShader(const std::wstring &pFileName) {
 AbstractResource*
 ResourceLoader::getComputeShader(const std::wstring &pFileName) {
     return getResource<ComputeShader>(pFileName);
+}
+AbstractResource*
+ResourceLoader::getMaterial(const std::wstring &pFileName) {
+    return getResource<Material>(pFileName);
+}
+AbstractResource*
+ResourceLoader::getMesh(const std::wstring &pFileName) {
+    return getResource<Mesh>(pFileName);
 }
 TimeStamp 
 ResourceLoader::getFileTimeStamp(const std::wstring &pPath) {

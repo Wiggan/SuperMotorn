@@ -34,6 +34,7 @@ public:
     void            setParent(Entity* pParent);
     virtual void    keyDown(unsigned int key) {}
     virtual void    keyUp(unsigned int key) {}
+    virtual void    mouseMoved(int x, int y, int winX, int winY) {}
     virtual void    onEvent(Events pType, void* pObject) {}
     void            setDesiredRotation(Matrix pRotation);
     void            setDesiredPosition(Vector3 pPosition);

@@ -71,6 +71,12 @@ Matrix::transposed() const {
     using namespace DirectX;
     return XMMatrixTranspose(XMLoadFloat4x4(&mMatrix));
 }
+Matrix 
+Matrix::inversed() {
+    using namespace DirectX;
+    DirectX::XMVECTOR det;
+    return XMMatrixInverse(&det, *this);
+}
 Vector3      
 Matrix::getDirection() const {
     return Vector3(mMatrix._31, mMatrix._32, mMatrix._33);
