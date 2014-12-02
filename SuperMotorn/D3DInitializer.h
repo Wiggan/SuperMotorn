@@ -13,12 +13,12 @@ struct PerObjectConstants {
     DirectX::XMFLOAT4   diffuse;
     DirectX::XMFLOAT4   specular;
     DirectX::XMFLOAT4   reflect;
-    DirectX::XMFLOAT3   color;
+    DirectX::XMFLOAT4   color;
     int                 useDiffuseMap;
     int                 useSpecularMap;
     int                 useGlossMap;
     int                 useGlowMap;
-    float               pad;
+    //float               pad;
 };
 struct PerFrameConstants {
     PerFrameConstants() {
@@ -63,6 +63,8 @@ public:
     IDXGISwapChain*             mSwapChain;
     ID3D11DepthStencilView*     mDepthStencilView;
     ID3D11RasterizerState*      mRasterStateSolid;
+    ID3D11BlendState*           mBlendStateTransparent;
+    //ID3D11RasterizerState*      mRasterStateTransparent;
 #ifdef _DEBUG
     ID3D11Debug*                mDebug;
     ID3D11InfoQueue*            mInfoQueue;
@@ -77,6 +79,7 @@ public:
     void                        setRenderTarget();
     void                        loadShader();
     void                        createRasterizerStates();
+    void                        createBlendStates();
     void                        createComputeTexture(ID3D11ShaderResourceView** pSRV, ID3D11UnorderedAccessView** pUAV);
     void                        createOffscreenTexture(ID3D11ShaderResourceView** pSRV, ID3D11RenderTargetView** pRTV);
     void                        createTexture(ID3D11ShaderResourceView** pSRV, ID3D11RenderTargetView** pRTV, ID3D11UnorderedAccessView** pUAV);

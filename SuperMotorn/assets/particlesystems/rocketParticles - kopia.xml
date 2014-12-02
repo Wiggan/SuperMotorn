@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<particleSystem>
+	<controlPoints>
+		<time t="0">
+			<color x="7.0" y="0.5" z="0.0" w="0.0"/>
+			<scale x="1" y="1" z="1"/>
+		</time>
+		<time t="0.5">
+			<color x="1.0" y="0.8" z="0.0" w="0.8"/>
+		</time>
+		<time t="2">
+			<color x="1.0" y="0.6" z="0.0" w="0.8"/>
+		</time>
+		<time t="3">
+			<color x="0.7" y="0.1" z="0.0" w="0.4"/>
+		</time>
+		<time t="4">
+			<color x="0.01" y="0.01" z="0.01" w="0.0"/>
+			<scale x="4" y="4" z="4"/>
+		</time>
+	</controlPoints>
+</particleSystem>

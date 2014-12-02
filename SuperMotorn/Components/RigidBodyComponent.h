@@ -7,9 +7,10 @@ class RigidBodyComponent : public Component, public CollisionListener {
     Vector3             mCenterOfGravity;
     Vector3             mVelocity;
     Vector3             mAngularVelocity;
+    Vector3             mTorque;
     float               mMaxAngularVelocity = 20;
     float               mDrag = 0.0f;
-    float               mAngularDrag = 5.1f;
+    float               mAngularDrag = 2.1f;
     DirectX::XMFLOAT3   mPreviousCorners[DirectX::BoundingOrientedBox::CORNER_COUNT];
 public:
     virtual void        onCollision(const ColliderComponent& pOther);

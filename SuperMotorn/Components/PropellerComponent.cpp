@@ -33,10 +33,10 @@ void
 PropellerComponent::setInput(char pInpunt) {
     mInput = pInpunt;
 }
-float          
+Vector3          
 PropellerComponent::getForce() {
     //return (Vector3(0.0f, -1.0f, 0.0f) + mLocalPosition)*-mRotationSpeed;
-    return mRotationSpeed * 0.0005f;
+    return getWorldUp() * (mRotationSpeed / 5.0f);
 }
 PropellerComponent::~PropellerComponent() {
 }

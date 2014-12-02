@@ -6,12 +6,14 @@ class BaseCamera {
 private:
     Matrix mViewTransform;
 public:
-    static std::vector<BaseCamera*>  mCameras;
-                    BaseCamera();
-    Matrix          getViewTransform();
-    virtual Vector3  getPosition();
-    virtual Vector3  getLookAt();
-    virtual Vector3  getUp();
-    virtual         ~BaseCamera();
+    static std::vector<BaseCamera*>  gCameras;
+    static BaseCamera*               gCurrentCamera;
+
+                        BaseCamera();
+    Matrix              getViewTransform();
+    virtual Vector3     getPosition();
+    virtual Vector3     getLookAt();
+    virtual Vector3     getUp();
+    virtual             ~BaseCamera();
 };
 

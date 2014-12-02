@@ -9,7 +9,7 @@ public:
     void            keyDown(unsigned int key);
     void            keyUp(unsigned int key);
     virtual void    update(float pDelta);
-    float           getForce();
+    Vector3         getForce();
     void            setInput(char pInpunt);
                     ~PropellerComponent();
 };

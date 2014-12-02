@@ -8,13 +8,10 @@
 #include "ComputeShader.h"
 #include <iostream>
 #include "MeshComponent.h"
+#include <algorithm>
 Renderer::Renderer(HWND pWindow, int width, int height, float pNear, float pFar) : mD3DInit(new D3DInitializer(pWindow, width, height)), mWindow(pWindow),
     mProjectionTransform(DirectX::XMMatrixPerspectiveFovLH(0.25f*DirectX::XM_PI, (float)width / (float)height, pNear, pFar)),
     mStride(sizeof(Vertex)), mWidth(width), mHeight(height) {
-}
-void
-Renderer::setActiveCamera(BaseCamera* pCamera) {
-    mCamera = pCamera;
 }
 void
 Renderer::init(ResourceLoader* pResourceLoader) {
@@ -22,6 +19,7 @@ Renderer::init(ResourceLoader* pResourceLoader) {
     mD3DInit->createSwapChain();
     mD3DInit->createDepthStencil();
     mD3DInit->setRenderTarget();
+    mD3DInit->createBlendStates();
     mD3DInit->createRasterizerStates();
     mD3DInit->createConstantBuffers();
     mD3DInit->setSamplerState();
@@ -49,7 +47,12 @@ Renderer::getContext() {
 }
 void
 Renderer::drawSolid(Mesh* pMesh, const Matrix& pWorldTransform, Material* pMaterial) {
-    mRenderOrders.push_back(RenderOrder(pMesh, pWorldTransform, pMaterial));
+    mSolidOrders.push_back(RenderOrder(pMesh, pWorldTransform, pMaterial));
+}
+void
+Renderer::drawTransparent(Mesh* pMesh, const Matrix& pWorldTransform, Material* pMaterial) {
+    mTransparentOrders.push_back(RenderOrder(pMesh, pWorldTransform, pMaterial,
+        (pWorldTransform.getPosition() - BaseCamera::gCurrentCamera->getPosition()).getLength()));
 }
 void
 Renderer::drawPointLight(const PointLight* pPointLight) {
@@ -64,9 +67,9 @@ Renderer::begin() {
     mContext->ClearRenderTargetView(mD3DInit->mGlowRTV, color);
     mContext->ClearDepthStencilView(mD3DInit->mDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
     PerFrameConstants constants;
-    constants.viewMatrix = mCamera->getViewTransform().transposed();
+    constants.viewMatrix = BaseCamera::gCurrentCamera->getViewTransform().transposed();
     constants.projectionMatrix = mProjectionTransform.transposed();
-    constants.cameraPosition = mCamera->getPosition();
+    constants.cameraPosition = BaseCamera::gCurrentCamera->getPosition();
     constants.pointLightCount = mPointLights.size();
     for ( int i = 0; i < constants.pointLightCount; ++i ) {
         constants.pointLights[i] = *mPointLights[i];
@@ -76,11 +79,31 @@ Renderer::begin() {
 void
 Renderer::renderSolids() {
     mContext->RSSetState(mD3DInit->mRasterStateSolid);
-    int orderCount = mRenderOrders.size();
+    int orderCount = mSolidOrders.size();
     for ( int i = orderCount-1; i >= 0; i-- ) {
-        drawMesh(mRenderOrders[i].transform, mRenderOrders[i].mesh, mRenderOrders[i].material);
+        drawMesh(mSolidOrders[i].transform, mSolidOrders[i].mesh, mSolidOrders[i].material);
     }
-    drawMesh(Matrix(Vector3(300.0f, 300.0f, 300.0f), Vector3(0,0,0), mCamera->getPosition()), mSkyMesh->getMesh(), mSkyMaterial);
+    drawMesh(Matrix(Vector3(300.0f, 300.0f, 300.0f), Vector3(0,0,0), BaseCamera::gCurrentCamera->getPosition()), mSkyMesh->getMesh(), mSkyMaterial);
+}
+bool 
+distanceCompareOld(RenderOrder& order1, RenderOrder& order2) {
+    return (order1.transform.getPosition() - BaseCamera::gCurrentCamera->getPosition()).getLength() > 
+        (order2.transform.getPosition() - BaseCamera::gCurrentCamera->getPosition()).getLength();
+}
+bool 
+distanceCompare(RenderOrder& order1, RenderOrder& order2) {
+    return order1.distanceToCamera > order2.distanceToCamera;
+}
+void
+Renderer::renderTransparents() {
+    float blendFactors[] = {0.0f, 0.0f, 0.0f, 0.0f};
+    mContext->OMSetBlendState(mD3DInit->mBlendStateTransparent, blendFactors, 0xffffffff);
+    int orderCount = mTransparentOrders.size();
+    std::sort(mTransparentOrders.begin(), mTransparentOrders.end(), distanceCompare);
+    for ( int i = 0; i < orderCount; i++ ) {
+        drawMesh(mTransparentOrders[i].transform, mTransparentOrders[i].mesh, mTransparentOrders[i].material);
+    }
+    mContext->OMSetBlendState(NULL, blendFactors, 0xffffffff);
 }
 void
 Renderer::blur(ID3D11ShaderResourceView* pSRV, ID3D11UnorderedAccessView* pUAV, int blurCount) {
@@ -101,9 +124,6 @@ Renderer::blur(ID3D11ShaderResourceView* pSRV, ID3D11UnorderedAccessView* pUAV, 
         mContext->CSSetShaderResources( OFFSCREEN2, 1, ppSRVNULL );  
     }
     mContext->CSSetShader(0, 0, 0);
-}
-void
-Renderer::renderTransparents() {
 }
 void                    
 Renderer::renderToBackBuffer() {
@@ -141,7 +161,8 @@ Renderer::renderToBackBuffer() {
 void 
 Renderer::end() {
     mPointLights.clear();
-    mRenderOrders.clear();
+    mSolidOrders.clear();
+    mTransparentOrders.clear();
     mD3DInit->mSwapChain->Present(0, 0);
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL | D3D11_RLDO_SUMMARY);
 }

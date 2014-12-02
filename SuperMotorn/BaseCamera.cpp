@@ -1,10 +1,11 @@
 #include "BaseCamera.h"
 #include <DirectXMath.h>
 
-std::vector<BaseCamera*>  BaseCamera::mCameras;
+std::vector<BaseCamera*>    BaseCamera::gCameras;
+BaseCamera*                 BaseCamera::gCurrentCamera;
 
 BaseCamera::BaseCamera() {
-    mCameras.push_back(this);
+    gCameras.push_back(this);
 }
 Vector3 
 BaseCamera::getPosition() {
@@ -24,6 +25,6 @@ BaseCamera::getViewTransform() {
     return mViewTransform;
 }
 BaseCamera::~BaseCamera() {
-    auto me = std::find(mCameras.begin(), mCameras.end(), this);
-    mCameras.erase(me);
+    auto me = std::find(gCameras.begin(), gCameras.end(), this);
+    gCameras.erase(me);
 }

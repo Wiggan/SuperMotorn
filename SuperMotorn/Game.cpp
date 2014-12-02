@@ -14,25 +14,25 @@
 #include "HexagonMeshTool.h"
 #include "HexagonMaterialTool.h"
 #include "HexagonTextureTool.h"
+#include "EmitterComponent.h"
 Game::Game(HWND pWindow, int width, int height, Timer* pTimer) : mWindow(pWindow),
 mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height, 1.0f, 1000.0f), mWorld(&mRenderer) {
     using namespace std;
     cout << "Starting game" << endl;
-    mCameras = &BaseCamera::mCameras;
     cout << "Initializing renderer" << endl;
     mRenderer.init(&mResourceLoader);
     //mResourceLoader.init(mRenderer.getDevice(), mRenderer.getContext());
-    HexaTerrain* hexa = new HexaTerrain(L"terrain1.xml");
+    //HexaTerrain* hexa = new HexaTerrain(L"terrain1.xml");
 #ifdef _DEBUG
     cout << "Loading tools" << endl;
     DebugRenderer::init(&mRenderer, &mResourceLoader);
-    mCurrentTool = new HexagonYTool(hexa);
+    /*mCurrentTool = new HexagonYTool(hexa);
     mTools.push_back(mCurrentTool);
     mTools.push_back(new HexagonAddTool(hexa));
     mTools.push_back(new HexagonMeshTool(hexa, &mResourceLoader));
     mTools.push_back(new HexagonMaterialTool(hexa, &mResourceLoader) );
     mTools.push_back(new HexagonTextureTool(hexa, &mResourceLoader) );
-    InputComponent::inputs.push_back(mCurrentTool);
+    InputComponent::inputs.push_back(mCurrentTool);*/
     mDebugCamera = new DebugCamera;
     mWorld.add(mDebugCamera);
 #endif
@@ -55,9 +55,14 @@ mTimer(pTimer), mShowFps(false), mRenderer(pWindow, width, height, 1.0f, 1000.0f
         cout << "Connected!" << endl;
     }
     cout << "Initializing world" << endl;
-    mWorld.add(hexa);
+    //mWorld.add(hexa);
+    Entity* entity = new Entity;
+    EmitterComponent* emitter = new EmitterComponent;
+    emitter->start();
+    entity->add(emitter);
+    mWorld.add(entity);
     mWorld.init(&mResourceLoader);
-    mRenderer.setActiveCamera(mCameras->back());
+    BaseCamera::gCurrentCamera = BaseCamera::gCameras.back();
 #ifdef _DEBUG
     for ( auto it = mTools.begin(); it != mTools.end(); ++it ) {
         (*it)->setCamera(mDebugCamera->getCamera());
@@ -77,7 +82,7 @@ Game::tick(float pDelta) {
 #endif
     mRenderer.begin();
     mRenderer.renderSolids();
-    //mRenderer.renderTransparents();
+    mRenderer.renderTransparents();
     mRenderer.renderToBackBuffer();
     mRenderer.end();
     calcFps(delta);
@@ -158,8 +163,7 @@ Game::debug() {
 }
 void
 Game::nextCamera() {
-    BaseCamera* nextCam =  (*mCameras)[++mCurrentCamera % mCameras->size()];
-    mRenderer.setActiveCamera(nextCam);
+    BaseCamera::gCurrentCamera = BaseCamera::gCameras[++mCurrentCamera % BaseCamera::gCameras.size()];
 }
 Entity*    
 Game::onSelfConnected(int pPlayerId, int pTeam) {
@@ -173,7 +177,6 @@ Game::onSelfConnected(int pPlayerId, int pTeam) {
     mWorld.add(drone);
     mDrones.push_back(drone);
     drone->init(&mRenderer, &mResourceLoader);
-    mRenderer.setActiveCamera(mCameras->back());
     return drone;
 }
 void    

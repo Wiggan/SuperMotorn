@@ -26,9 +26,11 @@ enum TextureSlots {
 };
 struct RenderOrder {
     RenderOrder(Mesh* pMesh, const Matrix& pWorldTransform, Material* pMaterial) : mesh(pMesh), transform(pWorldTransform), material(pMaterial) {}
+    RenderOrder(Mesh* pMesh, const Matrix& pWorldTransform, Material* pMaterial, double pDistance) : mesh(pMesh), transform(pWorldTransform), material(pMaterial), distanceToCamera(pDistance) {}
     Mesh*       mesh;
     Matrix      transform;
     Material*   material;
+    double      distanceToCamera;
 };
 class Renderer {
 private:
@@ -36,12 +38,12 @@ private:
     ID3D11Device*                   mDevice;
     ID3D11DeviceContext*            mContext;
     UINT                            mStride;
-    BaseCamera*                     mCamera;
     HWND                            mWindow;
     Matrix                          mProjectionTransform;
     int                             mWidth;
     int                             mHeight;
-    std::vector<RenderOrder>        mRenderOrders;
+    std::vector<RenderOrder>        mSolidOrders;
+    std::vector<RenderOrder>        mTransparentOrders;
     std::vector<const PointLight*>  mPointLights;
     MeshComponent*                  mSkyMesh;
     Material*                       mSkyMaterial;
@@ -68,7 +70,6 @@ public:
     void                    setSeldomConstants(const SeldomConstants& pConstants);
     void                    setSkyBox(Material* pMaterial, MeshComponent* pMesh);
     void                    init(ResourceLoader* pResourceLoader);
-    void                    setActiveCamera(BaseCamera* pCamera);
     void                    begin();
     void                    renderSolids();
     void                    renderTransparents();
@@ -77,7 +78,7 @@ public:
     void                    end();
     void                    drawPointLight(const PointLight* pPointLight);
     void                    drawSolid(Mesh* pMesh, const Matrix& pWorldTransform, Material* pMaterial);
-    void                    drawTransparent();
+    void                    drawTransparent(Mesh* pMesh, const Matrix& pWorldTransform, Material* pMaterial);
 };
 
 #endif

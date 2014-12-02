@@ -6,16 +6,20 @@ RigidBodyComponent::RigidBodyComponent(ColliderComponent* pCollider) : mCollider
 }
 void    
 RigidBodyComponent::update(float pDelta) {
-    DebugRenderer::instance()->renderArrow(mOwner->getWorldPosition() + Vector3(0.0f, 4.0f, 0.0f), mAngularVelocity, Vector3(1.0f, 1.0f, mAngularVelocity.getLengthEst()*50));
-    mAngularVelocity = mAngularVelocity * mAngularDrag;
+    //DebugRenderer::instance()->renderArrow(mOwner->getWorldPosition() + Vector3(0.0f, 4.0f, 0.0f), mAngularVelocity, Vector3(1.0f, 1.0f, mAngularVelocity.getLengthEst()*50));
+    mAngularVelocity = (mAngularVelocity + mTorque * pDelta) * mAngularDrag;
+    mTorque = Vector3(0.0f, 0.0f, 0.0f);
     mAngularVelocity.setX(max(min(mAngularVelocity.getX(), mMaxAngularVelocity), -mMaxAngularVelocity));
     mAngularVelocity.setY(max(min(mAngularVelocity.getY(), mMaxAngularVelocity), -mMaxAngularVelocity));
     mAngularVelocity.setZ(max(min(mAngularVelocity.getZ(), mMaxAngularVelocity), -mMaxAngularVelocity));
     if ( mAngularVelocity.getLengthEst() > 0.0001f ) {
         Vector3 axis = mOwner->getLocalUp().cross((mAngularVelocity*mOwner->getRotationMatrix()).normalized());
-        DebugRenderer::instance()->renderArrow(mOwner->getWorldPosition() + Vector3(0.0f, 4.0f, 0.0f), axis, Vector3(1.0f, 1.0f, mAngularVelocity.getLengthEst()*50));
+        //DebugRenderer::instance()->renderArrow(mOwner->getWorldPosition() + Vector3(0.0f, 4.0f, 0.0f), axis, Vector3(1.0f, 1.0f, mAngularVelocity.getLengthEst()*50));
         mOwner->rotate(axis, mAngularVelocity.getLengthEst());
     }
+    mVelocity = mVelocity + Vector3(0.0f, -9.81f, 0.0f)*pDelta;
+    //mOwner->setPosition(mOwner->getLocalPosition() + mVelocity * pDelta);
+    //DebugRenderer::instance()->setStaticRay(mOwner->getWorldPosition() + Vector3(0.0f, 4.0f, 0.0f), mOwner->getWorldPosition() + Vector3(0.0f, 4.0f, 0.0f) + mTorque);
     //Vector3 newPosition = getLocalPosition() + mVelocity*pDelta;
     //if ( newPosition.getY() < -40.0f ) {
     //    newPosition.setY(-40.0f);
@@ -62,10 +66,13 @@ RigidBodyComponent::setMaxAngularVelocity(float pMaxAngularVelocity) {
 }
 void
 RigidBodyComponent::addForceAtPoint(Vector3 pPoint, Vector3 pForce, float pTime) {
-    mVelocity = mVelocity + pForce*pTime;
+    mVelocity = mVelocity + pForce * mOwner->getRotationMatrix() *pTime;
     if ( pForce.getLengthEst() > 0.0000001f ) {
         //std::cout << mAngularVelocity.toString() << std::endl;
-        mAngularVelocity = mAngularVelocity + (pPoint * pForce.getLengthEst())*pTime;
+        //mAngularVelocity = mAngularVelocity + (pPoint * pForce.getLengthEst())*pTime;
+        //DebugRenderer::instance()->setStaticRay(pPoint, pForce.dot(getLocalUp() + pPoint));
+       // DebugRenderer::instance()->renderSphere(pPoint + pForce.dot(getWorldUp() + pPoint));
+        mTorque = mTorque + pForce.dot(getLocalUp() + pPoint);
     }
 }
 Vector3             

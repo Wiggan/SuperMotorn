@@ -8,7 +8,7 @@ mAmbient(0.1f, 0.1f, 0.1f, 1.0f),
 mDiffuse(0.1f, 0.1f, 0.1f, 1.0f),
 mSpecular(0.1f, 0.1f, 0.1f, 1.0f),
 mReflect(0.1f, 0.1f, 0.1f, 1.0f), 
-mColor(1.0f, 0.0f, 0.0f), mVertexShader(NULL), mPixelShader(NULL), mComputeShader(NULL), mDiffuseMap(NULL), mSpecularMap(NULL) {
+mColor(1.0f, 1.0f, 1.0f, 1.0f), mVertexShader(NULL), mPixelShader(NULL), mComputeShader(NULL), mDiffuseMap(NULL), mSpecularMap(NULL) {
 }
 void
 Material::load() {
@@ -61,11 +61,26 @@ Material::load() {
         if ( glowMapName != NULL ) {
             mGlowMap = (Texture*)mLoadingTools->getTexture(Util::string2wstring(glowMapName->GetText()));
         }
-        mAmbient = Vector4(materialElement->FirstChildElement("ambient"));
-        mDiffuse = Vector4(materialElement->FirstChildElement("diffuse"));
-        mSpecular = Vector4(materialElement->FirstChildElement("specular"));
-        mReflect = Vector4(materialElement->FirstChildElement("reflect"));
-        mColor = Vector3(materialElement->FirstChildElement("color"));
+        XMLElement* element = materialElement->FirstChildElement("ambient");
+        if ( element ) {
+            mAmbient = Vector4(element);
+        }
+        element = materialElement->FirstChildElement("diffuse");
+        if ( element ) {
+            mDiffuse = Vector4(element);
+        }
+        element = materialElement->FirstChildElement("specular");
+        if ( element ) {
+            mSpecular = Vector4(element);
+        }
+        element = materialElement->FirstChildElement("reflect");
+        if ( element ) {
+            mReflect = Vector4(element);
+        }
+        element = materialElement->FirstChildElement("color");
+        if ( element ) {
+            mColor = Vector4(element);
+        }
     }
 }
 Vector4&        
@@ -84,7 +99,7 @@ Vector4&
 Material::getReflect() {
     return mReflect;
 }
-Vector3&        
+Vector4&        
 Material::getColor() {
     return mColor;
 }
@@ -111,6 +126,10 @@ Material::getGlossMap() {
 Texture*
 Material::getGlowMap() {
     return mGlowMap;
+}
+void            
+Material::setColor(Vector4 pColor) {
+    mColor = pColor;
 }
 Material::~Material() {
 }

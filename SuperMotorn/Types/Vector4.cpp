@@ -55,6 +55,10 @@ float
 Vector4::getZ() {
     return mVector.z;
 }
+float   
+Vector4::getW() {
+    return mVector.w;
+}
 void   
 Vector4::setX(float x) {
     mVector.x = x;
@@ -67,5 +71,13 @@ void
 Vector4::setZ(float z) {
     mVector.z = z;
 }
+void   
+Vector4::setW(float w) {
+    mVector.w = w;
+}
 Vector4::~Vector4() {
+}
+Vector4          
+Vector4::lerp(const Vector4& pStart, const Vector4& pEnd, float pProgress) {
+    return Vector4(DirectX::XMVectorLerp(pStart, pEnd, pProgress));
 }

@@ -3,6 +3,7 @@
 #include "DebugRenderer.h"
 #include "MeshComponent.h"
 #include "ColliderComponent.h"
+#include "EmitterComponent.h"
 Rocket::Rocket(int pTeam) : mFree(true), mTeam(pTeam), mFlyTime(0.0f) {
 }
 void
@@ -13,6 +14,9 @@ Rocket::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     add(rocketMesh);
     ColliderComponent* collider = new ColliderComponent(Vector3(0.3f, 0.3f, 0.6f), 3);
     add(collider);
+    mEmitter = new EmitterComponent;
+    mEmitter->setPosition(Vector3(0.0f, 0.1f, 0.0f));
+    add(mEmitter);
     Entity::init(pRenderer, pResourceLoader);
 }
 void
@@ -27,6 +31,8 @@ Rocket::update(float pDelta) {
         }
         mFlyTime += pDelta;
         Entity::update(pDelta);
+    } else {
+        mEmitter->update(pDelta);
     }
 }
 Matrix  
@@ -37,6 +43,8 @@ void
 Rocket::draw() {
     if ( !mFree ) {
         Entity::draw();
+    } else {
+        mEmitter->draw();
     }
 }
 bool            
@@ -58,6 +66,8 @@ Rocket::reset() {
     mVelocity = Vector3(0.0f, 0.0f, 0.0f);
     mFlyTime = 0.0f;
     setRotation(Vector3(0.0f, 0.0f, 0.0f));
+    
+    mEmitter->pause();
     mLocalRotation.reset();
 }
 void            
@@ -65,6 +75,8 @@ Rocket::fire(Vector3 pPosition, Vector3 pDirection) {
     setPosition(pPosition);
     setRotation(pDirection.dir2Rot());
     mVelocity = pDirection*25.0f;
+    mEmitter->reset();
+    mEmitter->start();
     mFree = false;
 }
 Rocket::~Rocket() {

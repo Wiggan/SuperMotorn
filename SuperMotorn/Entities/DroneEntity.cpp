@@ -9,6 +9,7 @@
 #include "ColliderComponent.h"
 #include "RigidBodyComponent.h"
 #include "DroneCamera.h"
+
 DroneEntity::DroneEntity(int pPlayerId, int pTeam) : mPlayerId(pPlayerId), mTeam(pTeam) {
 }
 void
@@ -36,7 +37,7 @@ DroneEntity::init(Renderer* pRenderer, ResourceLoader* pResourceLoader) {
     
     ColliderComponent* collider = new ColliderComponent(Vector3(3.0f, 0.8f, 4.0f), Vector3(0,0,0), mTeam);
     mRigidBody = new RigidBodyComponent(collider);
-    mRigidBody->setAngularDrag(0.9f);
+    mRigidBody->setAngularDrag(0.2f);
     mRigidBody->setMaxAngularVelocity(0.1f);
     add(collider);
     add(mRigidBody);
@@ -52,7 +53,7 @@ void
 DroneEntity::update(float pDelta) {
     //Vector3 sum;
     for ( auto it = mPropellers.begin(); it != mPropellers.end(); ++it ) {
-        mRigidBody->addForceAtPoint((*it)->getLocalPosition(), Vector3(0.0f, (*it)->getForce(), 0.0f), pDelta);
+        mRigidBody->addForceAtPoint((*it)->getWorldPosition(), (*it)->getForce(), pDelta);
         //sum = sum - (*it)->getLocalPosition()*(*it)->getForce();
     }
     //mRigidBody->setAngularVelocity(mAngularVelocity*0.95f + sum * pDelta);

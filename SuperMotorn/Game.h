@@ -18,7 +18,6 @@ class Game : public NetworkListener {
     Configuration*                      mConfig;
     ResourceLoader                      mResourceLoader;
     World                               mWorld;
-    std::vector<BaseCamera*>*           mCameras;
     std::vector<InputInterface*>        mInputs;
     std::vector<DroneEntity*>           mDrones;
     Client                              mClient;

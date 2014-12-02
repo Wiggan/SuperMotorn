@@ -1,11 +1,13 @@
 #pragma once
 #include "Entity.h"
+class EmitterComponent;
 class Rocket : public Entity {
-    bool        mFree;
-    int         mTeam;
-    float       mFlyTime;
-    Vector3     mVelocity;
-    Matrix      mRotationMatrix;
+    bool                mFree;
+    int                 mTeam;
+    float               mFlyTime;
+    Vector3             mVelocity;
+    Matrix              mRotationMatrix;
+    EmitterComponent*   mEmitter;
 public:
                     Rocket(int pTeam);
     virtual void    init(Renderer* pRenderer, ResourceLoader* pResourceLoader);

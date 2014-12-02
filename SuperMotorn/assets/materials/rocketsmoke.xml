@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<material>
+	<diffuseMap>smoke2.png</diffuseMap>
+	<!--glowMap>smoke2glow.png</glowMap-->
+	<pixelShader>particlePixel.fx</pixelShader>
+	<ambient x="1.0" y="1.0" z="1.0" w="1.0"/>
+	<diffuse x="0.0" y="0.0" z="0.0" w="1.0"/>
+	<specular x="0.0" y="0.0" z="0.0" w="6.0"/>
+	<reflect x="0" y="0" z="0" w="10.0"/>
+</material>

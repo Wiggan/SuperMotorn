@@ -1089,7 +1089,7 @@
         <texture layer="1"/>
     </tile>
     <tile>
-        <position x="16" y="40" z="16"/>
+        <position x="16" y="68" z="16"/>
         <texture layer="1"/>
     </tile>
     <tile>

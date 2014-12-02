@@ -51,6 +51,10 @@ float
 Vector3::getLengthEst() {
     return Vector3(DirectX::XMVector3LengthEst(*this)).getX();
 }
+float
+Vector3::getLength() {
+    return Vector3(DirectX::XMVector3Length(*this)).getX();
+}
 float   
 Vector3::getX() {
     return mVector.x;
@@ -78,6 +82,10 @@ Vector3::setZ(float z) {
 Vector3     
 Vector3::cross(const Vector3 & pOther) {
     return Vector3(DirectX::XMVector3Cross(*this, pOther));
+}
+Vector3     
+Vector3::dot(const Vector3 & pOther) {
+    return Vector3(DirectX::XMVector3Dot(*this, pOther));
 }
 Vector3        
 Vector3::normalized() const {
@@ -110,4 +118,8 @@ Vector3::toXml(tinyxml2::XMLDocument* pDocument, std::string pName) {
     return element;
 }
 Vector3::~Vector3() {
+}
+Vector3          
+Vector3::lerp(const Vector3& pStart, const Vector3& pEnd, float pProgress) {
+    return Vector3(DirectX::XMVectorLerp(pStart, pEnd, pProgress));
 }

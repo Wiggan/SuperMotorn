@@ -63,9 +63,9 @@ ColliderComponent::update(float pDelta) {
         }
     }
     if ( mAABB ) {
-        DebugRenderer::instance()->renderCube(mAABB->Center, Vector3(0.0f, 0.0f, 0.0f), Vector3(mAABB->Extents));
+        //DebugRenderer::instance()->renderCube(mAABB->Center, Vector3(0.0f, 0.0f, 0.0f), Vector3(mAABB->Extents));
     } else if ( mBOB ) {
-        DebugRenderer::instance()->renderCube(mBOB->Center, mBOB->Orientation, Vector3(mBOB->Extents));
+        //DebugRenderer::instance()->renderCube(mBOB->Center, mBOB->Orientation, Vector3(mBOB->Extents));
     }
     mUpdatedThisFrame = false;
 }

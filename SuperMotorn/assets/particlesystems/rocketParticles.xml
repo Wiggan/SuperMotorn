@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<particleSystem rate="0.1">
+	
+
+
+
+<controlPoints>
+<time t="0">
+			<color w="1.0" x="0.0" y="0.5019608" z="1.0"/>
+			<scale x="10" y="10" z="10"/>
+		</time>
+<time t="0.5">
+			<color w="0.8" x="1.0" y="0.8" z="0.0"/>
+		</time>
+<time t="1.2462908">
+<color w="0.5" x="0.5" y="0.5" z="0.5"/>
+</time>
+<time t="2">
+			<color w="0.8" x="1.0" y="0.6" z="0.0"/>
+		</time>
+<time t="3">
+			<color w="0.4" x="0.7" y="0.1" z="0.0"/>
+		</time>
+<time t="4">
+			<color w="0.0" x="0.01" y="0.01" z="0.01"/>
+			<scale x="4" y="4" z="4"/>
+		</time>
+</controlPoints>
+</particleSystem>
